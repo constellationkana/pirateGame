@@ -5,14 +5,21 @@ public class PlayerWalk2D : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
+    
+    [Header("Directional Sprites")]
+    public Sprite frontSprite;
+    public Sprite backSprite;
+    public Sprite sideSprite;
 
     private Rigidbody2D rb;
-    private Vector2 moveInput;
+    private SpriteRenderer spriteRenderer;
+    private Vector2 movement;
     private bool canMove = true;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb.gravityScale = 0f;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
@@ -21,18 +28,43 @@ public class PlayerWalk2D : MonoBehaviour
     {
         if (!canMove)
         {
-            moveInput = Vector2.zero;
+            movement = Vector2.zero;
             return;
         }
 
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-        moveInput = new Vector2(x, y).normalized;
+        movement = new Vector2(x, y).normalized;
+        UpdateDirectionalSprite(x, y);
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = moveInput * moveSpeed;
+        rb.linearVelocity = movement * moveSpeed;
+    }
+
+    private void UpdateDirectionalSprite(float x, float y)
+    {
+        if (spriteRenderer == null || (x == 0f && y == 0f))
+        {
+            return;
+        }
+
+        if (Mathf.Abs(x) > Mathf.Abs(y))
+        {
+            spriteRenderer.sprite = sideSprite;
+            spriteRenderer.flipX = x < 0f;
+        }
+        else if (y > 0f)
+        {
+            spriteRenderer.sprite = backSprite;
+            spriteRenderer.flipX = false;
+        }
+        else if (y < 0f)
+        {
+            spriteRenderer.sprite = frontSprite;
+            spriteRenderer.flipX = false;
+        }
     }
 
     public void SetCanMove(bool value)
