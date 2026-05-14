@@ -1,36 +1,61 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BoardShipTrigger : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private ShipController2D ship;
+    [SerializeField] private GameObject playerObject;
+    [SerializeField] private ShipController2D shipController;
     [SerializeField] private Transform deckPoint;
-    [SerializeField] private Transform unboardPoint;
 
-    private bool playerInside;
-    private PlayerWalk2D player;
+    [Header("Options")]
+    [SerializeField] private bool disablePlayerPhysicsWhileBoarded = true;
+
+    private bool playerInsideZone;
+    private bool isBoarded;
+
+    private PlayerWalk2D playerWalk;
     private Rigidbody2D playerRb;
-    private Transform originalParent;
+    private Transform cachedPlayerParent;
 
-    private bool playerInside;
-    private PlayerWalk2D player;
+    private void Awake()
+    {
+        if (playerObject != null)
+        {
+            CachePlayerComponents();
+        }
+
+        if (shipController == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: ShipController2D reference is missing.", this);
+        }
+
+        if (deckPoint == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: DeckPoint reference is missing.", this);
+        }
+    }
 
     private void Reset()
     {
-        ship = GetComponentInParent<ShipController2D>();
+        shipController = GetComponentInParent<ShipController2D>();
     }
 
     private void Update()
     {
-        if (!playerInside || player == null)
+        if (!playerInsideZone)
         {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Keyboard.current == null)
         {
-            bool board = !ship.PlayerOnBoard;
-            if (board)
+            return;
+        }
+
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            if (!isBoarded)
             {
                 BoardPlayer();
             }
@@ -41,88 +66,129 @@ public class BoardShipTrigger : MonoBehaviour
         }
     }
 
+    private void CachePlayerComponents()
+    {
+        playerWalk = playerObject.GetComponent<PlayerWalk2D>();
+        playerRb = playerObject.GetComponent<Rigidbody2D>();
+
+        if (playerWalk == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: PlayerWalk2D not found on Player object.", this);
+        }
+
+        if (playerRb == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: Rigidbody2D not found on Player object.", this);
+        }
+    }
+
     private void BoardPlayer()
     {
-        if (deckPoint == null || player == null || ship == null)
+        if (!ValidateReferences())
         {
             return;
         }
 
-        originalParent = player.transform.parent;
-        playerRb = player.GetComponent<Rigidbody2D>();
+        cachedPlayerParent = playerObject.transform.parent;
 
-        player.SetCanMove(false);
+        playerWalk?.SetCanMove(false);
 
         if (playerRb != null)
         {
             playerRb.linearVelocity = Vector2.zero;
             playerRb.angularVelocity = 0f;
-            playerRb.simulated = false;
+
+            if (disablePlayerPhysicsWhileBoarded)
+            {
+                playerRb.simulated = false;
+            }
         }
 
-        player.transform.position = deckPoint.position;
-        player.transform.SetParent(ship.transform, true);
+        playerObject.transform.position = deckPoint.position;
+        playerObject.transform.rotation = deckPoint.rotation;
+        playerObject.transform.SetParent(shipController.transform, true);
 
-        ship.SetPlayerOnBoard(true);
+        shipController.SetPlayerOnBoard(true);
+        isBoarded = true;
     }
 
     private void UnboardPlayer()
     {
-        if (player == null || ship == null)
+        if (playerObject == null || shipController == null)
         {
+            Debug.LogWarning("BoardShipTrigger: Cannot unboard because playerObject or shipController is missing.", this);
             return;
         }
 
-        player.transform.SetParent(originalParent, true);
-        if (unboardPoint != null)
-        {
-            player.transform.position = unboardPoint.position;
-        }
+        playerObject.transform.SetParent(cachedPlayerParent, true);
 
         if (playerRb != null)
         {
-            playerRb.simulated = true;
+            if (disablePlayerPhysicsWhileBoarded)
+            {
+                playerRb.simulated = true;
+            }
+
             playerRb.linearVelocity = Vector2.zero;
             playerRb.angularVelocity = 0f;
         }
 
-        player.SetCanMove(true);
-        ship.SetPlayerOnBoard(false);
+        playerWalk?.SetCanMove(true);
+        shipController.SetPlayerOnBoard(false);
+        isBoarded = false;
     }
 
-            ship.SetPlayerOnBoard(board);
-            player.SetCanMove(!board);
-
-            if (board && deckPoint != null)
-            {
-                player.transform.position = deckPoint.position;
-            }
+    private bool ValidateReferences()
+    {
+        if (playerObject == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: Player GameObject reference is missing.", this);
+            return false;
         }
+
+        if (shipController == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: ShipController2D reference is missing.", this);
+            return false;
+        }
+
+        if (deckPoint == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: DeckPoint reference is missing.", this);
+            return false;
+        }
+
+        if (playerWalk == null || playerRb == null)
+        {
+            CachePlayerComponents();
+        }
+
+        return true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
+        if (playerObject == null)
         {
             return;
         }
 
-        player = other.GetComponent<PlayerWalk2D>();
-        if (player == null)
+        if (other.gameObject == playerObject)
         {
-            return;
+            playerInsideZone = true;
         }
-
-        playerInside = true;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
+        if (playerObject == null)
         {
             return;
         }
 
-        playerInside = false;
+        if (other.gameObject == playerObject)
+        {
+            playerInsideZone = false;
+        }
     }
 }
