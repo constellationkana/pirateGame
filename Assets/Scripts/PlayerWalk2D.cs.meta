@@ -4,6 +4,10 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences: []
+  defaultReferences:
+  - frontSprite: {instanceID: 0}
+  - backSprite: {instanceID: 0}
+  - sideSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

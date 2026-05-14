@@ -6,6 +6,9 @@ public class ShipController2D : MonoBehaviour
     [Header("Ship Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 540f;
+    [SerializeField] private float thrust = 6f;
+    [SerializeField] private float turnSpeed = 130f;
+    [SerializeField] private float maxSpeed = 5f;
 
     [Header("State")]
     [SerializeField] private bool playerOnBoard;
@@ -51,6 +54,28 @@ public class ShipController2D : MonoBehaviour
             float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime);
             rb.MoveRotation(newAngle);
         }
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    private void FixedUpdate()
+    {
+        if (!playerOnBoard)
+        {
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, 0.05f);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, 0f, 0.1f);
+            return;
+        }
+
+        float forwardInput = Input.GetAxis("Vertical");
+        float turnInput = -Input.GetAxis("Horizontal");
+
+        Vector2 force = (Vector2)transform.up * (forwardInput * thrust);
+        rb.AddForce(force);
+
+        float targetAngularVelocity = turnInput * turnSpeed;
+        rb.angularVelocity = targetAngularVelocity;
+
+        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
     }
 
     public void SetPlayerOnBoard(bool value)

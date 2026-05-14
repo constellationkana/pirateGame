@@ -12,6 +12,9 @@ public class BoardShipTrigger : MonoBehaviour
     private Rigidbody2D playerRb;
     private Transform originalParent;
 
+    private bool playerInside;
+    private PlayerWalk2D player;
+
     private void Reset()
     {
         ship = GetComponentInParent<ShipController2D>();
@@ -85,6 +88,16 @@ public class BoardShipTrigger : MonoBehaviour
 
         player.SetCanMove(true);
         ship.SetPlayerOnBoard(false);
+    }
+
+            ship.SetPlayerOnBoard(board);
+            player.SetCanMove(!board);
+
+            if (board && deckPoint != null)
+            {
+                player.transform.position = deckPoint.position;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
