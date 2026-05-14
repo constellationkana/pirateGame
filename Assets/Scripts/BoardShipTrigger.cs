@@ -7,10 +7,9 @@ public class BoardShipTrigger : MonoBehaviour
     [SerializeField] private GameObject playerObject;
     [SerializeField] private ShipController2D shipController;
     [SerializeField] private Transform deckPoint;
-    [SerializeField] private Transform unboardPoint;
 
-    [Header("Fallback Unboard")]
-    [SerializeField] private Vector2 unboardOffset = new Vector2(1.5f, 0f);
+    [Header("Unboarding")]
+    [SerializeField] private Vector3 unboardOffset = new Vector3(0f, -1.5f, 0f);
 
     private bool playerInsideZone;
     private bool isBoarded;
@@ -18,6 +17,8 @@ public class BoardShipTrigger : MonoBehaviour
     private PlayerWalk2D playerWalk;
     private Rigidbody2D playerRb;
     private Collider2D playerCollider;
+    private Rigidbody2D shipRb;
+    private Transform cachedPlayerParent;
 
     private void Awake()
     {
@@ -26,7 +27,12 @@ public class BoardShipTrigger : MonoBehaviour
             CachePlayerComponents();
         }
 
-        if (shipController == null)
+        if (shipController != null)
+        {
+            shipRb = shipController.GetComponent<Rigidbody2D>();
+            shipController.SetPlayerOnBoard(false);
+        }
+        else
         {
             Debug.LogWarning("BoardShipTrigger: ShipController2D reference is missing.", this);
         }
@@ -44,7 +50,12 @@ public class BoardShipTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInsideZone || Keyboard.current == null)
+        if (!playerInsideZone && !isBoarded)
+        {
+            return;
+        }
+
+        if (Keyboard.current == null)
         {
             return;
         }
@@ -69,9 +80,7 @@ public class BoardShipTrigger : MonoBehaviour
             return;
         }
 
-        playerObject.transform.SetParent(deckPoint, false);
-        playerObject.transform.localPosition = Vector3.zero;
-        playerObject.transform.localRotation = Quaternion.identity;
+        // Hard-lock the player visually to the deck point every frame.
         playerObject.transform.position = deckPoint.position;
         playerObject.transform.rotation = Quaternion.identity;
     }
@@ -105,10 +114,23 @@ public class BoardShipTrigger : MonoBehaviour
             return;
         }
 
-        playerObject.transform.position = deckPoint.position;
+        cachedPlayerParent = playerObject.transform.parent;
 
-        playerWalk?.SetCanMove(false);
+        // Stop the ship before boarding to prevent physics launch.
+        if (shipRb != null)
+        {
+            shipRb.linearVelocity = Vector2.zero;
+            shipRb.angularVelocity = 0f;
+        }
 
+        // Disable player movement first.
+        if (playerWalk != null)
+        {
+            playerWalk.SetCanMove(false);
+            playerWalk.enabled = false;
+        }
+
+        // Always disable player physics while boarded.
         if (playerRb != null)
         {
             playerRb.linearVelocity = Vector2.zero;
@@ -116,14 +138,19 @@ public class BoardShipTrigger : MonoBehaviour
             playerRb.simulated = false;
         }
 
+        // Always disable the player collider while boarded.
         if (playerCollider != null)
         {
             playerCollider.enabled = false;
         }
 
-        playerObject.transform.SetParent(deckPoint, false);
-        playerObject.transform.localPosition = Vector3.zero;
-        playerObject.transform.localRotation = Quaternion.identity;
+        // Keep Player separate from the ship hierarchy.
+        playerObject.transform.SetParent(null, true);
+
+        // Snap Player to the deck point.
+        playerObject.transform.position = deckPoint.position;
+        playerObject.transform.rotation = Quaternion.identity;
+
         shipController.SetPlayerOnBoard(true);
         isBoarded = true;
     }
@@ -138,6 +165,23 @@ public class BoardShipTrigger : MonoBehaviour
 
         isBoarded = false;
 
+        shipController.SetPlayerOnBoard(false);
+
+        if (shipRb != null)
+        {
+            shipRb.linearVelocity = Vector2.zero;
+            shipRb.angularVelocity = 0f;
+        }
+
+        playerObject.transform.SetParent(cachedPlayerParent, true);
+
+        if (deckPoint != null)
+        {
+            playerObject.transform.position = deckPoint.position + unboardOffset;
+        }
+
+        playerObject.transform.rotation = Quaternion.identity;
+
         if (playerRb != null)
         {
             playerRb.simulated = true;
@@ -150,19 +194,11 @@ public class BoardShipTrigger : MonoBehaviour
             playerCollider.enabled = true;
         }
 
-        if (unboardPoint != null)
+        if (playerWalk != null)
         {
-            playerObject.transform.SetParent(null, true);
-            playerObject.transform.position = unboardPoint.position;
+            playerWalk.enabled = true;
+            playerWalk.SetCanMove(true);
         }
-        else
-        {
-            playerObject.transform.SetParent(null, true);
-            playerObject.transform.position = shipController.transform.position + (Vector3)unboardOffset;
-        }
-
-        playerWalk?.SetCanMove(true);
-        shipController.SetPlayerOnBoard(false);
     }
 
     private bool ValidateReferences()
@@ -190,12 +226,22 @@ public class BoardShipTrigger : MonoBehaviour
             CachePlayerComponents();
         }
 
+        if (shipRb == null)
+        {
+            shipRb = shipController.GetComponent<Rigidbody2D>();
+        }
+
         return true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (playerObject != null && other.gameObject == playerObject)
+        if (playerObject == null)
+        {
+            return;
+        }
+
+        if (other.gameObject == playerObject)
         {
             playerInsideZone = true;
         }
@@ -203,7 +249,12 @@ public class BoardShipTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (playerObject != null && other.gameObject == playerObject)
+        if (playerObject == null)
+        {
+            return;
+        }
+
+        if (other.gameObject == playerObject)
         {
             playerInsideZone = false;
         }
