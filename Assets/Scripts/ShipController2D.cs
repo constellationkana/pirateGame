@@ -4,6 +4,8 @@ using UnityEngine;
 public class ShipController2D : MonoBehaviour
 {
     [Header("Ship Movement")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 540f;
     [SerializeField] private float thrust = 6f;
     [SerializeField] private float turnSpeed = 130f;
     [SerializeField] private float maxSpeed = 5f;
@@ -12,6 +14,7 @@ public class ShipController2D : MonoBehaviour
     [SerializeField] private bool playerOnBoard;
 
     private Rigidbody2D rb;
+    private Vector2 movementInput;
 
     public bool PlayerOnBoard => playerOnBoard;
 
@@ -19,6 +22,38 @@ public class ShipController2D : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
+        rb.constraints = RigidbodyConstraints2D.None;
+    }
+
+    private void Update()
+    {
+        if (!playerOnBoard)
+        {
+            movementInput = Vector2.zero;
+            return;
+        }
+
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+        movementInput = new Vector2(x, y).normalized;
+    }
+
+    private void FixedUpdate()
+    {
+        if (!playerOnBoard)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        rb.linearVelocity = movementInput * moveSpeed;
+
+        if (movementInput.sqrMagnitude > 0.001f)
+        {
+            float targetAngle = Mathf.Atan2(movementInput.y, movementInput.x) * Mathf.Rad2Deg - 90f;
+            float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime);
+            rb.MoveRotation(newAngle);
+        }
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
