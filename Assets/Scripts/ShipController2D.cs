@@ -5,7 +5,6 @@ public class ShipController2D : MonoBehaviour
 {
     [Header("Ship Movement")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 540f;
 
     [Header("State")]
     [SerializeField] private bool playerOnBoard;
@@ -19,7 +18,7 @@ public class ShipController2D : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
-        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     private void Update()
@@ -40,21 +39,22 @@ public class ShipController2D : MonoBehaviour
         if (!playerOnBoard)
         {
             rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
             return;
         }
 
         rb.linearVelocity = movementInput * moveSpeed;
-
-        if (movementInput.sqrMagnitude > 0.001f)
-        {
-            float targetAngle = Mathf.Atan2(movementInput.y, movementInput.x) * Mathf.Rad2Deg - 90f;
-            float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime);
-            rb.MoveRotation(newAngle);
-        }
+        rb.angularVelocity = 0f;
     }
 
     public void SetPlayerOnBoard(bool value)
     {
         playerOnBoard = value;
+
+        if (!playerOnBoard)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
     }
 }
