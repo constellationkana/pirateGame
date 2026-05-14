@@ -9,7 +9,7 @@ using TMPro;
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene Loading")]
-    [SerializeField] private string gameplaySceneName = "SampleScene";
+    [SerializeField] private string gameplaySceneName = "MainSea";
 
     [Header("Panels")]
     [SerializeField] private GameObject mainButtonsPanel;

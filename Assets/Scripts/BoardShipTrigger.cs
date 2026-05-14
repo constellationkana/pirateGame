@@ -8,14 +8,16 @@ public class BoardShipTrigger : MonoBehaviour
     [SerializeField] private ShipController2D shipController;
     [SerializeField] private Transform deckPoint;
 
-    [Header("Options")]
-    [SerializeField] private bool disablePlayerPhysicsWhileBoarded = true;
+    [Header("Unboarding")]
+    [SerializeField] private Vector3 unboardOffset = new Vector3(0f, -1.5f, 0f);
 
     private bool playerInsideZone;
     private bool isBoarded;
 
     private PlayerWalk2D playerWalk;
     private Rigidbody2D playerRb;
+    private Collider2D playerCollider;
+    private Rigidbody2D shipRb;
     private Transform cachedPlayerParent;
 
     private void Awake()
@@ -25,7 +27,12 @@ public class BoardShipTrigger : MonoBehaviour
             CachePlayerComponents();
         }
 
-        if (shipController == null)
+        if (shipController != null)
+        {
+            shipRb = shipController.GetComponent<Rigidbody2D>();
+            shipController.SetPlayerOnBoard(false);
+        }
+        else
         {
             Debug.LogWarning("BoardShipTrigger: ShipController2D reference is missing.", this);
         }
@@ -43,7 +50,7 @@ public class BoardShipTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInsideZone)
+        if (!playerInsideZone && !isBoarded)
         {
             return;
         }
@@ -66,10 +73,23 @@ public class BoardShipTrigger : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        if (!isBoarded || playerObject == null || deckPoint == null)
+        {
+            return;
+        }
+
+        // Hard-lock the player visually to the deck point every frame.
+        playerObject.transform.position = deckPoint.position;
+        playerObject.transform.rotation = Quaternion.identity;
+    }
+
     private void CachePlayerComponents()
     {
         playerWalk = playerObject.GetComponent<PlayerWalk2D>();
         playerRb = playerObject.GetComponent<Rigidbody2D>();
+        playerCollider = playerObject.GetComponent<Collider2D>();
 
         if (playerWalk == null)
         {
@@ -79,6 +99,11 @@ public class BoardShipTrigger : MonoBehaviour
         if (playerRb == null)
         {
             Debug.LogWarning("BoardShipTrigger: Rigidbody2D not found on Player object.", this);
+        }
+
+        if (playerCollider == null)
+        {
+            Debug.LogWarning("BoardShipTrigger: Collider2D not found on Player object.", this);
         }
     }
 
@@ -91,22 +116,40 @@ public class BoardShipTrigger : MonoBehaviour
 
         cachedPlayerParent = playerObject.transform.parent;
 
-        playerWalk?.SetCanMove(false);
+        // Stop the ship before boarding to prevent physics launch.
+        if (shipRb != null)
+        {
+            shipRb.linearVelocity = Vector2.zero;
+            shipRb.angularVelocity = 0f;
+        }
 
+        // Disable player movement first.
+        if (playerWalk != null)
+        {
+            playerWalk.SetCanMove(false);
+            playerWalk.enabled = false;
+        }
+
+        // Always disable player physics while boarded.
         if (playerRb != null)
         {
             playerRb.linearVelocity = Vector2.zero;
             playerRb.angularVelocity = 0f;
-
-            if (disablePlayerPhysicsWhileBoarded)
-            {
-                playerRb.simulated = false;
-            }
+            playerRb.simulated = false;
         }
 
+        // Always disable the player collider while boarded.
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = false;
+        }
+
+        // Keep Player separate from the ship hierarchy.
+        playerObject.transform.SetParent(null, true);
+
+        // Snap Player to the deck point.
         playerObject.transform.position = deckPoint.position;
-        playerObject.transform.rotation = deckPoint.rotation;
-        playerObject.transform.SetParent(shipController.transform, true);
+        playerObject.transform.rotation = Quaternion.identity;
 
         shipController.SetPlayerOnBoard(true);
         isBoarded = true;
@@ -120,22 +163,42 @@ public class BoardShipTrigger : MonoBehaviour
             return;
         }
 
+        isBoarded = false;
+
+        shipController.SetPlayerOnBoard(false);
+
+        if (shipRb != null)
+        {
+            shipRb.linearVelocity = Vector2.zero;
+            shipRb.angularVelocity = 0f;
+        }
+
         playerObject.transform.SetParent(cachedPlayerParent, true);
+
+        if (deckPoint != null)
+        {
+            playerObject.transform.position = deckPoint.position + unboardOffset;
+        }
+
+        playerObject.transform.rotation = Quaternion.identity;
 
         if (playerRb != null)
         {
-            if (disablePlayerPhysicsWhileBoarded)
-            {
-                playerRb.simulated = true;
-            }
-
+            playerRb.simulated = true;
             playerRb.linearVelocity = Vector2.zero;
             playerRb.angularVelocity = 0f;
         }
 
-        playerWalk?.SetCanMove(true);
-        shipController.SetPlayerOnBoard(false);
-        isBoarded = false;
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = true;
+        }
+
+        if (playerWalk != null)
+        {
+            playerWalk.enabled = true;
+            playerWalk.SetCanMove(true);
+        }
     }
 
     private bool ValidateReferences()
@@ -158,9 +221,14 @@ public class BoardShipTrigger : MonoBehaviour
             return false;
         }
 
-        if (playerWalk == null || playerRb == null)
+        if (playerWalk == null || playerRb == null || playerCollider == null)
         {
             CachePlayerComponents();
+        }
+
+        if (shipRb == null)
+        {
+            shipRb = shipController.GetComponent<Rigidbody2D>();
         }
 
         return true;
