@@ -21,6 +21,9 @@ public class Cannonball : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
+    /// <summary>
+    /// Owner is the ship that fired this projectile. It will not be damaged by this cannonball.
+    /// </summary>
     public void Initialize(Vector2 direction, float speed, GameObject ownerObject)
     {
         owner = ownerObject;
@@ -29,12 +32,13 @@ public class Cannonball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (owner != null && (other.gameObject == owner || other.transform.IsChildOf(owner.transform)))
+        ShipHealth health = other.GetComponentInParent<ShipHealth>();
+
+        if (health != null && owner != null && health.transform.IsChildOf(owner.transform))
         {
             return;
         }
 
-        ShipHealth health = other.GetComponent<ShipHealth>();
         if (health != null)
         {
             health.TakeDamage(damage);
