@@ -9,7 +9,6 @@ public class CannonShooter : MonoBehaviour
 
     [Header("Shooting")]
     [SerializeField] private float shootCooldown = 0.4f;
-    [SerializeField] private Vector2 shootDirection = Vector2.up;
     [SerializeField] private float cannonballSpeed = 12f;
 
     private ShipController2D shipController;
@@ -54,6 +53,24 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
+        Camera currentCamera = Camera.main;
+        if (currentCamera == null)
+        {
+            Debug.LogWarning("CannonShooter: No Camera tagged MainCamera found.", this);
+            return;
+        }
+
+        Vector3 mouseScreen = Input.mousePosition;
+        Vector3 mouseWorld = currentCamera.ScreenToWorldPoint(mouseScreen);
+        mouseWorld.z = cannonPoint.position.z;
+
+        // Direction from cannon muzzle to mouse position.
+        Vector2 direction = (mouseWorld - cannonPoint.position);
+        if (direction.sqrMagnitude < 0.0001f)
+        {
+            direction = (Vector2)transform.up;
+        }
+
         GameObject cannonballObject = Instantiate(cannonballPrefab, cannonPoint.position, Quaternion.identity);
         Cannonball cannonball = cannonballObject.GetComponent<Cannonball>();
 
@@ -64,12 +81,6 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        Vector2 direction = shootDirection.normalized;
-        if (direction.sqrMagnitude < 0.001f)
-        {
-            direction = Vector2.up;
-        }
-
-        cannonball.Initialize(direction, cannonballSpeed, gameObject);
+        cannonball.Initialize(direction.normalized, cannonballSpeed, gameObject);
     }
 }
