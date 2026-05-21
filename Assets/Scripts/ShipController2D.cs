@@ -23,6 +23,7 @@ public class ShipController2D : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
+        rb.constraints = RigidbodyConstraints2D.FreezePositionZ;
     }
 
     private void Update()
