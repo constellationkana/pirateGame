@@ -13,7 +13,6 @@ public class ShipController2D : MonoBehaviour
     private Vector2 movementInput;
 
     public bool PlayerOnBoard => playerOnBoard;
-    public Vector2 LastMoveDirection { get; private set; } = Vector2.up;
 
     private void Awake()
     {
@@ -33,11 +32,6 @@ public class ShipController2D : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         movementInput = new Vector2(x, y).normalized;
-
-        if (movementInput.sqrMagnitude > 0.001f)
-        {
-            LastMoveDirection = movementInput;
-        }
     }
 
     private void FixedUpdate()

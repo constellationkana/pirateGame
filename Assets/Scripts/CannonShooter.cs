@@ -64,13 +64,7 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        Vector2 direction = shipController.LastMoveDirection;
-        if (direction.sqrMagnitude < 0.001f)
-        {
-            direction = shootDirection;
-        }
-
-        direction = direction.normalized;
+        Vector2 direction = shootDirection.normalized;
         if (direction.sqrMagnitude < 0.001f)
         {
             direction = Vector2.up;
