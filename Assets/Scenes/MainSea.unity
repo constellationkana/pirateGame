@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89e850a993412c04faa72ee2530afa54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow2D
-  target: {fileID: 0}
+  target: {fileID: 23795675}
   offset: {x: 0, y: 0, z: -10}
   smoothSpeed: 0.2
 --- !u!1 &616550480
@@ -884,7 +884,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipController2D
   moveSpeed: 5
-  playerOnBoard: 0
+  rotationSpeed: 140
+  useUpAsForward: 1
+  playerOnBoard: 1
 --- !u!50 &1331628593
 Rigidbody2D:
   serializedVersion: 5
@@ -1050,7 +1052,6 @@ MonoBehaviour:
   cannonPoint: {fileID: 438296907}
   cannonballPrefab: {fileID: 5583544770070118670, guid: 3405451b100907845a1bfdf285d96ea7, type: 3}
   shootCooldown: 0.4
-  shootDirection: {x: 0, y: 1}
   cannonballSpeed: 12
 --- !u!1 &1358974480
 GameObject:

@@ -23,8 +23,7 @@ public class ShipController2D : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
-        rb.constraints = RigidbodyConstraints2D.FreezePositionZ;
-    }
+           }
 
     private void Update()
     {
@@ -60,7 +59,7 @@ public class ShipController2D : MonoBehaviour
         rb.MoveRotation(nextRotation);
 
         // Move in the ship's forward axis (up or right based on sprite orientation).
-        Vector2 forwardAxis = useUpAsForward ? (Vector2)transform.up : (Vector2)transform.right;
+        Vector2 forwardAxis = useUpAsForward ? -(Vector2)transform.up : -(Vector2)transform.right;
         rb.linearVelocity = forwardAxis * (forwardInput * moveSpeed);
     }
 
