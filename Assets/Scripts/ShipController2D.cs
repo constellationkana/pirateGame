@@ -5,12 +5,17 @@ public class ShipController2D : MonoBehaviour
 {
     [Header("Ship Movement")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 140f;
+
+    [Header("Sprite Orientation")]
+    [SerializeField] private bool useUpAsForward = true;
 
     [Header("State")]
     [SerializeField] private bool playerOnBoard;
 
     private Rigidbody2D rb;
-    private Vector2 movementInput;
+    private float forwardInput;
+    private float rotationInput;
 
     public bool PlayerOnBoard => playerOnBoard;
 
@@ -18,20 +23,26 @@ public class ShipController2D : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-    }
+           }
 
     private void Update()
     {
         if (!playerOnBoard)
         {
-            movementInput = Vector2.zero;
+            forwardInput = 0f;
+            rotationInput = 0f;
             return;
         }
 
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
-        movementInput = new Vector2(x, y).normalized;
+        // W/S move the ship forward/back based on facing direction.
+        forwardInput = 0f;
+        if (Input.GetKey(KeyCode.W)) forwardInput += 1f;
+        if (Input.GetKey(KeyCode.S)) forwardInput -= 1f;
+
+        // A/D rotate left/right.
+        rotationInput = 0f;
+        if (Input.GetKey(KeyCode.A)) rotationInput += 1f;
+        if (Input.GetKey(KeyCode.D)) rotationInput -= 1f;
     }
 
     private void FixedUpdate()
@@ -43,8 +54,13 @@ public class ShipController2D : MonoBehaviour
             return;
         }
 
-        rb.linearVelocity = movementInput * moveSpeed;
-        rb.angularVelocity = 0f;
+        // Rotate the sprite smoothly in 2D for arcade-like steering.
+        float nextRotation = rb.rotation + (rotationInput * rotationSpeed * Time.fixedDeltaTime);
+        rb.MoveRotation(nextRotation);
+
+        // Move in the ship's forward axis (up or right based on sprite orientation).
+        Vector2 forwardAxis = useUpAsForward ? -(Vector2)transform.up : -(Vector2)transform.right;
+        rb.linearVelocity = forwardAxis * (forwardInput * moveSpeed);
     }
 
     public void SetPlayerOnBoard(bool value)
