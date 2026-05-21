@@ -4,14 +4,13 @@ using UnityEngine;
 public class ShipController2D : MonoBehaviour
 {
     [Header("Ship Movement")]
-    [SerializeField] private float thrust = 6f;
-    [SerializeField] private float turnSpeed = 130f;
-    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f;
 
     [Header("State")]
     [SerializeField] private bool playerOnBoard;
 
     private Rigidbody2D rb;
+    private Vector2 movementInput;
 
     public bool PlayerOnBoard => playerOnBoard;
 
@@ -22,29 +21,40 @@ public class ShipController2D : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
+    private void Update()
+    {
+        if (!playerOnBoard)
+        {
+            movementInput = Vector2.zero;
+            return;
+        }
+
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+        movementInput = new Vector2(x, y).normalized;
+    }
+
     private void FixedUpdate()
     {
         if (!playerOnBoard)
         {
-            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, 0.05f);
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, 0f, 0.1f);
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
             return;
         }
 
-        float forwardInput = Input.GetAxis("Vertical");
-        float turnInput = -Input.GetAxis("Horizontal");
-
-        Vector2 force = (Vector2)transform.up * (forwardInput * thrust);
-        rb.AddForce(force);
-
-        float targetAngularVelocity = turnInput * turnSpeed;
-        rb.angularVelocity = targetAngularVelocity;
-
-        rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
+        rb.linearVelocity = movementInput * moveSpeed;
+        rb.angularVelocity = 0f;
     }
 
     public void SetPlayerOnBoard(bool value)
     {
         playerOnBoard = value;
+
+        if (!playerOnBoard)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
     }
 }
