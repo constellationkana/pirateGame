@@ -7,16 +7,11 @@ public class BoardShipTrigger : MonoBehaviour
     [SerializeField] private GameObject playerObject;
     [SerializeField] private ShipController2D shipController;
     [SerializeField] private Transform deckPoint;
-<<<<<<< HEAD
 
-    [Header("Unboarding")]
-    [SerializeField] private Vector3 unboardOffset = new Vector3(0f, -1.5f, 0f);
-=======
     [SerializeField] private Transform unboardPoint;
 
     [Header("Fallback Unboard")]
     [SerializeField] private Vector2 unboardOffset = new Vector2(1.5f, 0f);
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
 
     private bool playerInsideZone;
     private bool isBoarded;
@@ -24,11 +19,8 @@ public class BoardShipTrigger : MonoBehaviour
     private PlayerWalk2D playerWalk;
     private Rigidbody2D playerRb;
     private Collider2D playerCollider;
-<<<<<<< HEAD
     private Rigidbody2D shipRb;
     private Transform cachedPlayerParent;
-=======
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
 
     private void Awake()
     {
@@ -37,16 +29,12 @@ public class BoardShipTrigger : MonoBehaviour
             CachePlayerComponents();
         }
 
-<<<<<<< HEAD
         if (shipController != null)
         {
             shipRb = shipController.GetComponent<Rigidbody2D>();
             shipController.SetPlayerOnBoard(false);
         }
         else
-=======
-        if (shipController == null)
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
         {
             Debug.LogWarning("BoardShipTrigger: ShipController2D reference is missing.", this);
         }
@@ -64,16 +52,13 @@ public class BoardShipTrigger : MonoBehaviour
 
     private void Update()
     {
-<<<<<<< HEAD
+        // Only process input when player is either inside the zone (to board) or already boarded (to unboard)
         if (!playerInsideZone && !isBoarded)
         {
             return;
         }
 
         if (Keyboard.current == null)
-=======
-        if (!playerInsideZone || Keyboard.current == null)
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
         {
             return;
         }
@@ -98,15 +83,10 @@ public class BoardShipTrigger : MonoBehaviour
             return;
         }
 
-<<<<<<< HEAD
-        // Hard-lock the player visually to the deck point every frame.
-=======
+        // Ensure the player stays visually locked to the deck while boarded.
         playerObject.transform.SetParent(deckPoint, false);
         playerObject.transform.localPosition = Vector3.zero;
         playerObject.transform.localRotation = Quaternion.identity;
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
-        playerObject.transform.position = deckPoint.position;
-        playerObject.transform.rotation = Quaternion.identity;
     }
 
     private void CachePlayerComponents()
@@ -138,7 +118,6 @@ public class BoardShipTrigger : MonoBehaviour
             return;
         }
 
-<<<<<<< HEAD
         cachedPlayerParent = playerObject.transform.parent;
 
         // Stop the ship before boarding to prevent physics launch.
@@ -155,13 +134,7 @@ public class BoardShipTrigger : MonoBehaviour
             playerWalk.enabled = false;
         }
 
-        // Always disable player physics while boarded.
-=======
-        playerObject.transform.position = deckPoint.position;
-
-        playerWalk?.SetCanMove(false);
-
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
+        // Disable player physics while boarded.
         if (playerRb != null)
         {
             playerRb.linearVelocity = Vector2.zero;
@@ -169,28 +142,17 @@ public class BoardShipTrigger : MonoBehaviour
             playerRb.simulated = false;
         }
 
-<<<<<<< HEAD
-        // Always disable the player collider while boarded.
-=======
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
+        // Disable the player collider while boarded.
         if (playerCollider != null)
         {
             playerCollider.enabled = false;
         }
 
-<<<<<<< HEAD
-        // Keep Player separate from the ship hierarchy.
-        playerObject.transform.SetParent(null, true);
-
-        // Snap Player to the deck point.
-        playerObject.transform.position = deckPoint.position;
-        playerObject.transform.rotation = Quaternion.identity;
-
-=======
+        // Parent the player to the deck point so they follow the ship.
         playerObject.transform.SetParent(deckPoint, false);
         playerObject.transform.localPosition = Vector3.zero;
         playerObject.transform.localRotation = Quaternion.identity;
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
+
         shipController.SetPlayerOnBoard(true);
         isBoarded = true;
     }
@@ -205,7 +167,6 @@ public class BoardShipTrigger : MonoBehaviour
 
         isBoarded = false;
 
-<<<<<<< HEAD
         shipController.SetPlayerOnBoard(false);
 
         if (shipRb != null)
@@ -214,18 +175,7 @@ public class BoardShipTrigger : MonoBehaviour
             shipRb.angularVelocity = 0f;
         }
 
-        playerObject.transform.SetParent(cachedPlayerParent, true);
-
-        if (deckPoint != null)
-        {
-            playerObject.transform.position = deckPoint.position + unboardOffset;
-        }
-
-        playerObject.transform.rotation = Quaternion.identity;
-
-=======
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
-        if (playerRb != null)
+            if (playerRb != null)
         {
             playerRb.simulated = true;
             playerRb.linearVelocity = Vector2.zero;
@@ -237,27 +187,30 @@ public class BoardShipTrigger : MonoBehaviour
             playerCollider.enabled = true;
         }
 
-<<<<<<< HEAD
+        // Restore parent to what it was before boarding (or null if none).
+        playerObject.transform.SetParent(cachedPlayerParent, true);
+
+        // Place player at unboard location: explicit point if provided, otherwise fallback to deckPoint/ship position + offset.
+        if (unboardPoint != null)
+        {
+            playerObject.transform.position = unboardPoint.position;
+        }
+        else if (deckPoint != null)
+        {
+            playerObject.transform.position = deckPoint.position + (Vector3)unboardOffset;
+        }
+        else
+        {
+            playerObject.transform.position = shipController.transform.position + (Vector3)unboardOffset;
+        }
+
+        playerObject.transform.rotation = Quaternion.identity;
+
         if (playerWalk != null)
         {
             playerWalk.enabled = true;
             playerWalk.SetCanMove(true);
         }
-=======
-        if (unboardPoint != null)
-        {
-            playerObject.transform.SetParent(null, true);
-            playerObject.transform.position = unboardPoint.position;
-        }
-        else
-        {
-            playerObject.transform.SetParent(null, true);
-            playerObject.transform.position = shipController.transform.position + (Vector3)unboardOffset;
-        }
-
-        playerWalk?.SetCanMove(true);
-        shipController.SetPlayerOnBoard(false);
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
     }
 
     private bool ValidateReferences()
@@ -285,29 +238,17 @@ public class BoardShipTrigger : MonoBehaviour
             CachePlayerComponents();
         }
 
-<<<<<<< HEAD
-        if (shipRb == null)
+        if (shipRb == null && shipController != null)
         {
             shipRb = shipController.GetComponent<Rigidbody2D>();
         }
 
-=======
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
         return true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-<<<<<<< HEAD
-        if (playerObject == null)
-        {
-            return;
-        }
-
-        if (other.gameObject == playerObject)
-=======
         if (playerObject != null && other.gameObject == playerObject)
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
         {
             playerInsideZone = true;
         }
@@ -315,16 +256,7 @@ public class BoardShipTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-<<<<<<< HEAD
-        if (playerObject == null)
-        {
-            return;
-        }
-
-        if (other.gameObject == playerObject)
-=======
         if (playerObject != null && other.gameObject == playerObject)
->>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
         {
             playerInsideZone = false;
         }
