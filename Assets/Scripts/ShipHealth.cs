@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class ShipHealth : MonoBehaviour
 {
+    [Header("Health")]
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private int currentHealth;
 
-    [Header("Drops")]
+    [Header("Resource Drops")]
     [SerializeField] private GameObject woodPickupPrefab;
     [SerializeField] private GameObject doubloonPickupPrefab;
-    [SerializeField] private int woodDropAmount = 1;
+    [SerializeField] private int woodDropAmount = 2;
     [SerializeField] private int doubloonDropAmount = 1;
+    [SerializeField] private float dropSpread = 0.75f;
 
-    public int CurrentHealth => currentHealth;
-    public int MaxHealth => maxHealth;
+    private bool isDead;
 
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class ShipHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (damage <= 0)
+        if (damage <= 0 || isDead)
         {
             return;
         }
@@ -30,31 +31,33 @@ public class ShipHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            SpawnDrops();
-            Destroy(gameObject);
+            Die();
         }
     }
 
-    private void SpawnDrops()
+    private void Die()
     {
-        Vector3 spawnPosition = transform.position;
+        isDead = true;
 
-        if (woodPickupPrefab != null && woodDropAmount > 0)
+        SpawnDrops(woodPickupPrefab, woodDropAmount);
+        SpawnDrops(doubloonPickupPrefab, doubloonDropAmount);
+
+        Destroy(gameObject);
+    }
+
+    private void SpawnDrops(GameObject pickupPrefab, int amount)
+    {
+        if (pickupPrefab == null || amount <= 0)
         {
-            for (int i = 0; i < woodDropAmount; i++)
-            {
-                Vector3 offset = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(-0.6f, 0.6f), 0f);
-                Instantiate(woodPickupPrefab, spawnPosition + offset, Quaternion.identity);
-            }
+            return;
         }
 
-        if (doubloonPickupPrefab != null && doubloonDropAmount > 0)
+        for (int i = 0; i < amount; i++)
         {
-            for (int i = 0; i < doubloonDropAmount; i++)
-            {
-                Vector3 offset = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(-0.6f, 0.6f), 0f);
-                Instantiate(doubloonPickupPrefab, spawnPosition + offset, Quaternion.identity);
-            }
+            Vector2 randomOffset = Random.insideUnitCircle * dropSpread;
+            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0f);
+
+            Instantiate(pickupPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }
