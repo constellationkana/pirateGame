@@ -24,6 +24,7 @@ public class Cannonball : MonoBehaviour
     public void Initialize(Vector2 direction, float speed, GameObject ownerObject)
     {
         owner = ownerObject;
+<<<<<<< HEAD
 
         Vector2 normalizedDirection = direction.normalized;
         rb.linearVelocity = normalizedDirection * speed;
@@ -31,6 +32,9 @@ public class Cannonball : MonoBehaviour
         // Rotate sprite to face its travel direction (assuming sprite forward is +X).
         float angle = Mathf.Atan2(normalizedDirection.y, normalizedDirection.x) * Mathf.Rad2Deg;
         rb.MoveRotation(angle);
+=======
+        rb.linearVelocity = direction.normalized * speed;
+>>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
     }
 
     private void OnTriggerEnter2D(Collider2D other)

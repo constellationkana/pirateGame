@@ -9,6 +9,10 @@ public class CannonShooter : MonoBehaviour
 
     [Header("Shooting")]
     [SerializeField] private float shootCooldown = 0.4f;
+<<<<<<< HEAD
+=======
+    [SerializeField] private Vector2 shootDirection = Vector2.up;
+>>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
     [SerializeField] private float cannonballSpeed = 12f;
 
     private ShipController2D shipController;
@@ -53,6 +57,7 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
+<<<<<<< HEAD
         Camera currentCamera = Camera.main;
         if (currentCamera == null)
         {
@@ -71,6 +76,8 @@ public class CannonShooter : MonoBehaviour
             direction = (Vector2)transform.up;
         }
 
+=======
+>>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
         GameObject cannonballObject = Instantiate(cannonballPrefab, cannonPoint.position, Quaternion.identity);
         Cannonball cannonball = cannonballObject.GetComponent<Cannonball>();
 
@@ -81,6 +88,22 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
+<<<<<<< HEAD
         cannonball.Initialize(direction.normalized, cannonballSpeed, gameObject);
+=======
+        Vector2 direction = shipController.LastMoveDirection;
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            direction = shootDirection;
+        }
+
+        direction = direction.normalized;
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            direction = Vector2.up;
+        }
+
+        cannonball.Initialize(direction, cannonballSpeed, gameObject);
+>>>>>>> origin/codex/create-development-plan-for-pirate-game-prototype-xnzu53
     }
 }
