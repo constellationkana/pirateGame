@@ -36,7 +36,7 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current == null)
+        if (Keyboard.current == null || !Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             return;
         }
@@ -46,32 +46,11 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
-        {
-            TryFireDirectional(Vector2.up, cannonPointUp);
-            return;
-        }
-
-        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
-        {
-            TryFireDirectional(Vector2.down, cannonPointDown);
-            return;
-        }
-
-        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-        {
-            TryFireDirectional(Vector2.left, cannonPointLeft);
-            return;
-        }
-
-        if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-        {
-            TryFireDirectional(Vector2.right, cannonPointRight);
-            return;
-        }
+        FireCannon();
+        nextShootTime = Time.time + shootCooldown;
     }
 
-    private void TryFireDirectional(Vector2 direction, Transform directionalPoint)
+    private void FireCannon()
     {
         if (cannonballPrefab == null)
         {
@@ -79,7 +58,9 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        Transform spawnPoint = directionalPoint != null ? directionalPoint : cannonPoint;
+        Vector2 direction = GetCardinalDirection(shipController.LastMoveDirection);
+        Transform selectedPoint = GetDirectionalCannonPoint(direction);
+        Transform spawnPoint = selectedPoint != null ? selectedPoint : cannonPoint;
 
         if (spawnPoint == null)
         {
@@ -98,6 +79,34 @@ public class CannonShooter : MonoBehaviour
         }
 
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
-        nextShootTime = Time.time + shootCooldown;
+    }
+
+    private Vector2 GetCardinalDirection(Vector2 moveDirection)
+    {
+        if (moveDirection.sqrMagnitude < 0.001f)
+        {
+            moveDirection = shootDirection;
+        }
+
+        if (moveDirection.sqrMagnitude < 0.001f)
+        {
+            return Vector2.up;
+        }
+
+        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
+        {
+            return moveDirection.x >= 0f ? Vector2.right : Vector2.left;
+        }
+
+        return moveDirection.y >= 0f ? Vector2.up : Vector2.down;
+    }
+
+    private Transform GetDirectionalCannonPoint(Vector2 direction)
+    {
+        if (direction == Vector2.up) return cannonPointUp;
+        if (direction == Vector2.down) return cannonPointDown;
+        if (direction == Vector2.left) return cannonPointLeft;
+        if (direction == Vector2.right) return cannonPointRight;
+        return cannonPointUp;
     }
 }
