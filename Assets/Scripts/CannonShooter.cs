@@ -36,7 +36,7 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current == null || !Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current == null)
         {
             return;
         }
@@ -46,11 +46,38 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        FireCannon();
-        nextShootTime = Time.time + shootCooldown;
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+        {
+            TryFireDirectional(Vector2.up, cannonPointUp);
+            return;
+        }
+
+        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+        {
+            TryFireDirectional(Vector2.down, cannonPointDown);
+            return;
+        }
+
+        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+        {
+            TryFireDirectional(Vector2.left, cannonPointLeft);
+            return;
+        }
+
+        if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+        {
+            TryFireDirectional(Vector2.right, cannonPointRight);
+            return;
+        }
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            TryFireTowardMouse();
+            return;
+        }
     }
 
-    private void FireCannon()
+    private void TryFireDirectional(Vector2 direction, Transform directionalPoint)
     {
         if (cannonballPrefab == null)
         {
@@ -58,9 +85,7 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        Vector2 direction = GetCardinalDirection(shipController.LastMoveDirection);
-        Transform selectedPoint = GetDirectionalCannonPoint(direction);
-        Transform spawnPoint = selectedPoint != null ? selectedPoint : cannonPoint;
+        Transform spawnPoint = directionalPoint != null ? directionalPoint : cannonPoint;
 
         if (spawnPoint == null)
         {
@@ -79,34 +104,43 @@ public class CannonShooter : MonoBehaviour
         }
 
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
+        nextShootTime = Time.time + shootCooldown;
     }
 
-    private Vector2 GetCardinalDirection(Vector2 moveDirection)
+    private void TryFireTowardMouse()
     {
-        if (moveDirection.sqrMagnitude < 0.001f)
+        if (Mouse.current == null)
         {
-            moveDirection = shootDirection;
+            return;
         }
 
-        if (moveDirection.sqrMagnitude < 0.001f)
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null)
         {
-            return Vector2.up;
+            Debug.LogWarning("CannonShooter: Main Camera not found for mouse aiming.", this);
+            return;
         }
 
-        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
+        Vector3 mouseScreen = Mouse.current.position.ReadValue();
+        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(mouseScreen);
+        Vector2 direction = mouseWorld - transform.position;
+
+        if (direction.sqrMagnitude < 0.001f)
         {
-            return moveDirection.x >= 0f ? Vector2.right : Vector2.left;
+            direction = shootDirection.sqrMagnitude > 0.001f ? shootDirection : Vector2.up;
         }
 
-        return moveDirection.y >= 0f ? Vector2.up : Vector2.down;
+        Transform spawnPoint = GetSpawnPointForDirection(direction);
+        TryFireDirectional(direction.normalized, spawnPoint);
     }
 
-    private Transform GetDirectionalCannonPoint(Vector2 direction)
+    private Transform GetSpawnPointForDirection(Vector2 direction)
     {
-        if (direction == Vector2.up) return cannonPointUp;
-        if (direction == Vector2.down) return cannonPointDown;
-        if (direction == Vector2.left) return cannonPointLeft;
-        if (direction == Vector2.right) return cannonPointRight;
-        return cannonPointUp;
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            return direction.x >= 0f ? cannonPointRight : cannonPointLeft;
+        }
+
+        return direction.y >= 0f ? cannonPointUp : cannonPointDown;
     }
 }

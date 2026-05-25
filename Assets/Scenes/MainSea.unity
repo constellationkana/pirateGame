@@ -522,6 +522,7 @@ GameObject:
   - component: {fileID: 616550482}
   - component: {fileID: 616550481}
   - component: {fileID: 616550486}
+  - component: {fileID: 616550487}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: EnemyShip
@@ -712,6 +713,24 @@ MonoBehaviour:
   moveSpeed: 2
   stoppingDistance: 3
   rotationSpeed: 360
+--- !u!114 &616550487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616550480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e2d99267c74a788d39a5623383a762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyShipAttack
+  targetShipHealth: {fileID: 1331628600}
+  targetShip: {fileID: 1331628595}
+  playerShipController: {fileID: 1331628591}
+  attackRange: 2.5
+  attackCooldown: 1.5
+  damage: 1
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,6 +952,7 @@ GameObject:
   - component: {fileID: 1331628596}
   - component: {fileID: 1331628598}
   - component: {fileID: 1331628599}
+  - component: {fileID: 1331628600}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Untagged
@@ -1143,6 +1163,25 @@ MonoBehaviour:
   shootCooldown: 0.4
   shootDirection: {x: 0, y: 1}
   cannonballSpeed: 12
+--- !u!114 &1331628600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac39022e4aa941f995a85bcbc228e255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
+  maxHealth: 10
+  currentHealth: 0
+  woodPickupPrefab: {fileID: 0}
+  doubloonPickupPrefab: {fileID: 0}
+  woodDropAmount: 2
+  doubloonDropAmount: 1
+  dropSpread: 0.75
 --- !u!1 &1358974480
 GameObject:
   m_ObjectHideFlags: 0
