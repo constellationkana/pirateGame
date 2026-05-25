@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ShipHealth : MonoBehaviour
@@ -6,18 +7,24 @@ public class ShipHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private int currentHealth;
 
-    [Header("Resource Drops")]
-    [SerializeField] private GameObject woodPickupPrefab;
-    [SerializeField] private GameObject doubloonPickupPrefab;
-    [SerializeField] private int woodDropAmount = 2;
-    [SerializeField] private int doubloonDropAmount = 1;
-    [SerializeField] private float dropSpread = 0.75f;
-
     private bool isDead;
+
+    public int MaxHealth => maxHealth;
+    public int CurrentHealth => currentHealth;
+    public float HealthPercent => maxHealth <= 0 ? 0f : (float)currentHealth / maxHealth;
+
+    public event Action<ShipHealth> OnHealthChanged;
+    public event Action<ShipHealth> OnDeath;
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        maxHealth = Mathf.Max(1, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth <= 0 ? maxHealth : currentHealth, 0, maxHealth);
+    }
+
+    private void Start()
+    {
+        NotifyHealthChanged();
     }
 
     public void TakeDamage(int damage)
@@ -27,7 +34,8 @@ public class ShipHealth : MonoBehaviour
             return;
         }
 
-        currentHealth -= damage;
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        NotifyHealthChanged();
 
         if (currentHealth <= 0)
         {
@@ -35,29 +43,31 @@ public class ShipHealth : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Heal(int amount)
     {
-        isDead = true;
-
-        SpawnDrops(woodPickupPrefab, woodDropAmount);
-        SpawnDrops(doubloonPickupPrefab, doubloonDropAmount);
-
-        Destroy(gameObject);
-    }
-
-    private void SpawnDrops(GameObject pickupPrefab, int amount)
-    {
-        if (pickupPrefab == null || amount <= 0)
+        if (amount <= 0 || isDead || currentHealth >= maxHealth)
         {
             return;
         }
 
-        for (int i = 0; i < amount; i++)
-        {
-            Vector2 randomOffset = Random.insideUnitCircle * dropSpread;
-            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0f);
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        NotifyHealthChanged();
+    }
 
-            Instantiate(pickupPrefab, spawnPosition, Quaternion.identity);
+    private void Die()
+    {
+        if (isDead)
+        {
+            return;
         }
+
+        isDead = true;
+        OnDeath?.Invoke(this);
+        Destroy(gameObject);
+    }
+
+    private void NotifyHealthChanged()
+    {
+        OnHealthChanged?.Invoke(this);
     }
 }
