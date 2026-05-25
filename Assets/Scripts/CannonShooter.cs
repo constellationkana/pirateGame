@@ -5,15 +5,10 @@ public class CannonShooter : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform cannonPoint;
-    [SerializeField] private Transform cannonPointUp;
-    [SerializeField] private Transform cannonPointDown;
-    [SerializeField] private Transform cannonPointLeft;
-    [SerializeField] private Transform cannonPointRight;
     [SerializeField] private GameObject cannonballPrefab;
 
     [Header("Shooting")]
     [SerializeField] private float shootCooldown = 0.4f;
-    [SerializeField] private Vector2 shootDirection = Vector2.up;
     [SerializeField] private float cannonballSpeed = 12f;
 
     private ShipController2D shipController;
@@ -52,23 +47,31 @@ public class CannonShooter : MonoBehaviour
 
     private void FireCannon()
     {
-        if (cannonballPrefab == null)
+        if (cannonPoint == null || cannonballPrefab == null)
         {
-            Debug.LogWarning("CannonShooter: CannonballPrefab is missing.", this);
+            Debug.LogWarning("CannonShooter: CannonPoint or CannonballPrefab is missing.", this);
             return;
         }
 
-        Vector2 direction = GetCardinalDirection(shipController.LastMoveDirection);
-        Transform selectedPoint = GetDirectionalCannonPoint(direction);
-        Transform spawnPoint = selectedPoint != null ? selectedPoint : cannonPoint;
-
-        if (spawnPoint == null)
+        Camera currentCamera = Camera.main;
+        if (currentCamera == null)
         {
-            Debug.LogWarning("CannonShooter: No valid cannon spawn point assigned.", this);
+            Debug.LogWarning("CannonShooter: No Camera tagged MainCamera found.", this);
             return;
         }
 
-        GameObject cannonballObject = Instantiate(cannonballPrefab, spawnPoint.position, Quaternion.identity);
+        Vector3 mouseScreen = Input.mousePosition;
+        Vector3 mouseWorld = currentCamera.ScreenToWorldPoint(mouseScreen);
+        mouseWorld.z = cannonPoint.position.z;
+
+        // Direction from cannon muzzle to mouse position.
+        Vector2 direction = (mouseWorld - cannonPoint.position);
+        if (direction.sqrMagnitude < 0.0001f)
+        {
+            direction = (Vector2)transform.up;
+        }
+
+        GameObject cannonballObject = Instantiate(cannonballPrefab, cannonPoint.position, Quaternion.identity);
         Cannonball cannonball = cannonballObject.GetComponent<Cannonball>();
 
         if (cannonball == null)
@@ -78,51 +81,6 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        cannonball.Initialize(direction, cannonballSpeed, gameObject);
-    }
-
-    private Vector2 GetCardinalDirection(Vector2 moveDirection)
-    {
-        if (moveDirection.sqrMagnitude < 0.001f)
-        {
-            moveDirection = shootDirection;
-        }
-
-        if (moveDirection.sqrMagnitude < 0.001f)
-        {
-            return Vector2.up;
-        }
-
-        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
-        {
-            return moveDirection.x >= 0f ? Vector2.right : Vector2.left;
-        }
-
-        return moveDirection.y >= 0f ? Vector2.up : Vector2.down;
-    }
-
-    private Transform GetDirectionalCannonPoint(Vector2 direction)
-    {
-        if (direction == Vector2.up)
-        {
-            return cannonPointUp;
-        }
-
-        if (direction == Vector2.down)
-        {
-            return cannonPointDown;
-        }
-
-        if (direction == Vector2.left)
-        {
-            return cannonPointLeft;
-        }
-
-        if (direction == Vector2.right)
-        {
-            return cannonPointRight;
-        }
-
-        return cannonPointUp;
+        cannonball.Initialize(direction.normalized, cannonballSpeed, gameObject);
     }
 }

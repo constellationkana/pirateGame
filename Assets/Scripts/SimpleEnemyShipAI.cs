@@ -10,7 +10,6 @@ public class SimpleEnemyShipAI : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float stoppingDistance = 3f;
-    [SerializeField] private float rotationSpeed = 360f;
 
     private Rigidbody2D rb;
 
@@ -18,7 +17,7 @@ public class SimpleEnemyShipAI : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
-        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         if (targetShip == null)
         {
@@ -50,8 +49,6 @@ public class SimpleEnemyShipAI : MonoBehaviour
         Vector2 toTarget = targetShip.position - transform.position;
         float distance = toTarget.magnitude;
 
-        RotateTowardsTarget(toTarget);
-
         if (distance <= stoppingDistance)
         {
             rb.linearVelocity = Vector2.zero;
@@ -62,17 +59,5 @@ public class SimpleEnemyShipAI : MonoBehaviour
         Vector2 moveDirection = toTarget.normalized;
         rb.linearVelocity = moveDirection * moveSpeed;
         rb.angularVelocity = 0f;
-    }
-
-    private void RotateTowardsTarget(Vector2 toTarget)
-    {
-        if (toTarget.sqrMagnitude < 0.001f)
-        {
-            return;
-        }
-
-        float targetAngle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg - 90f;
-        float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime);
-        rb.MoveRotation(newAngle);
     }
 }
