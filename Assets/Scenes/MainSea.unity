@@ -1281,9 +1281,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipDeathDropper
   shipHealth: {fileID: 616550481}
   woodPickupPrefab: {fileID: 8356349813143677296, guid: a5f75296d4531af4b81a6561748f354b, type: 3}
-  minDrops: 1
-  maxDrops: 3
+  minWoodDrops: 1
+  maxWoodDrops: 3
+  doubloonPickupPrefab: {fileID: 6201677647806777943, guid: 1024b82832b8c5d49a158a59422883d7, type: 3}
+  minDoubloonDrops: 1
+  maxDoubloonDrops: 4
   dropScatterRadius: 0.75
+  logDrops: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
