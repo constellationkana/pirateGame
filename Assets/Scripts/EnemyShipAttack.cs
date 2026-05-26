@@ -33,69 +33,26 @@ public class EnemyShipAttack : MonoBehaviour
 
     private void Awake()
     {
-        ConfigureTargeting(targetShip, playerShipController);
+        if (targetShip == null) Debug.LogWarning("EnemyShipAttack: TargetShip reference is missing.", this);
+        if (playerShipController == null) Debug.LogWarning("EnemyShipAttack: PlayerShipController reference is missing.", this);
     }
 
-    public void ConfigureTargeting(Transform runtimeTargetShip, ShipController2D runtimePlayerShipController)
+    private void Update()
     {
-        targetShip = runtimeTargetShip;
-
-        if (runtimePlayerShipController != null)
+        if (targetShip == null || playerShipController == null)
         {
-            playerShipController = runtimePlayerShipController;
-        }
-        else if (targetShip != null)
-        {
-            playerShipController = targetShip.GetComponent<ShipController2D>();
+            return;
         }
 
         if (!playerShipController.PlayerOnBoard)
         {
-            Debug.LogWarning("EnemyShipAttack: TargetShip reference is missing. Enemy cannot fire at player.", this);
-        }
-
-        Vector2 toTarget = targetShip.position - transform.position;
-        if (toTarget.magnitude > attackRange)
-        {
-            Debug.LogWarning("EnemyShipAttack: PlayerShipController reference is missing. Enemy attacks disabled until assigned.", this);
-        }
-
-        if (useCannonAttack && Time.time >= nextCannonTime)
-        {
-            FireProjectile(cannonballPrefab, GetFirePoint(cannonFirePoints, cannonFirePoint), cannonballSpeed, cannonDamage, "cannonball");
-            nextCannonTime = Time.time + Mathf.Max(0.1f, cannonShootInterval);
-        }
-
-        if (useFruitAttack && Time.time >= nextFruitTime)
-        {
-            FireProjectile(fruitProjectilePrefab, GetFirePoint(fruitFirePoints, fruitFirePoint), fruitSpeed, fruitDamage, "fruit");
-            nextFruitTime = Time.time + Mathf.Max(0.1f, fruitThrowInterval);
-        }
-    }
-
-    private void FireProjectile(GameObject projectilePrefab, Transform firePoint, float speed, int fallbackDamage, string attackName)
-    {
-        if (targetShip == null || playerShipController == null)
-        {
-            if (logAttacks) Debug.LogWarning($"EnemyShipAttack: {attackName} prefab not assigned.", this);
-            return;
-        }
-
-        Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;
-        GameObject projectileObject = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-
-        Cannonball projectile = projectileObject.GetComponent<Cannonball>();
-        if (projectile == null)
-        {
-            Debug.LogWarning($"EnemyShipAttack: {attackName} prefab is missing Cannonball component.", this);
-            Destroy(projectileObject);
             return;
         }
 
         Vector2 toTarget = targetShip.position - transform.position;
         if (toTarget.magnitude > attackRange)
         {
-            direction = transform.up;
+            return;
         }
 
         if (useCannonAttack && Time.time >= nextCannonTime)
@@ -118,7 +75,6 @@ public class EnemyShipAttack : MonoBehaviour
             if (logAttacks) Debug.LogWarning($"EnemyShipAttack: {attackName} prefab not assigned.", this);
             return;
         }
-    }
 
         Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;
         GameObject projectileObject = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);

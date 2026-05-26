@@ -23,12 +23,7 @@ public class EnemyShipSpawner : MonoBehaviour
     {
         if (enemyShipPrefab == null) Debug.LogWarning("EnemyShipSpawner: Enemy ship prefab is missing.", this);
         if (playerShip == null) Debug.LogWarning("EnemyShipSpawner: PlayerShip reference is missing.", this);
-
-        TryResolvePlayerShipController();
-        if (playerShipController == null)
-        {
-            Debug.LogWarning("EnemyShipSpawner: PlayerShipController reference is missing and could not be auto-found from PlayerShip.", this);
-        }
+        if (playerShipController == null) Debug.LogWarning("EnemyShipSpawner: PlayerShipController reference is missing.", this);
     }
 
     private void Update()
@@ -40,14 +35,17 @@ public class EnemyShipSpawner : MonoBehaviour
             return;
         }
 
-        TryResolvePlayerShipController();
-
         if (spawnOnlyWhenPlayerOnBoard && (playerShipController == null || !playerShipController.PlayerOnBoard))
         {
             return;
         }
 
-        if (aliveEnemies.Count >= maxEnemiesAlive || Time.time < nextSpawnTime)
+        if (aliveEnemies.Count >= maxEnemiesAlive)
+        {
+            return;
+        }
+
+        if (Time.time < nextSpawnTime)
         {
             return;
         }
@@ -58,66 +56,37 @@ public class EnemyShipSpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
+        // Pick a random direction around the player.
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        if (randomDirection.sqrMagnitude < 0.001f) randomDirection = Vector2.up;
+        if (randomDirection.sqrMagnitude < 0.001f)
+        {
+            randomDirection = Vector2.up;
+        }
 
+        // Pick a random distance between min/max values so we avoid spawning too close.
         float minDistance = Mathf.Max(0f, minSpawnDistanceFromPlayer);
         float maxDistance = Mathf.Max(minDistance, maxSpawnDistanceFromPlayer);
         float spawnDistance = Random.Range(minDistance, maxDistance);
 
         Vector3 spawnPosition = playerShip.position + (Vector3)(randomDirection * spawnDistance);
-        GameObject spawnedEnemy = Instantiate(enemyShipPrefab, spawnPosition, Quaternion.identity);
 
-        AssignEnemyRuntimeReferences(spawnedEnemy);
+        GameObject spawnedEnemy = Instantiate(enemyShipPrefab, spawnPosition, Quaternion.identity);
         aliveEnemies.Add(spawnedEnemy);
 
-        if (logSpawns) Debug.Log($"EnemyShipSpawner: Spawned enemy at {spawnPosition}. Alive: {aliveEnemies.Count}", this);
-    }
-
-    private void AssignEnemyRuntimeReferences(GameObject spawnedEnemy)
-    {
-        if (spawnedEnemy == null) return;
-
-        SimpleEnemyShipAI enemyAI = spawnedEnemy.GetComponent<SimpleEnemyShipAI>();
-        if (enemyAI == null)
+        if (logSpawns)
         {
-            enemyAI = spawnedEnemy.GetComponentInChildren<SimpleEnemyShipAI>();
+            Debug.Log($"EnemyShipSpawner: Spawned enemy at {spawnPosition}. Alive: {aliveEnemies.Count}", this);
         }
-        if (enemyAI != null)
-        {
-            enemyAI.ConfigureTargeting(playerShip, playerShipController);
-        }
-        else if (logSpawns)
-        {
-            Debug.LogWarning("EnemyShipSpawner: Spawned enemy is missing SimpleEnemyShipAI.", spawnedEnemy);
-        }
-
-        EnemyShipAttack enemyAttack = spawnedEnemy.GetComponent<EnemyShipAttack>();
-        if (enemyAttack == null)
-        {
-            enemyAttack = spawnedEnemy.GetComponentInChildren<EnemyShipAttack>();
-        }
-        if (enemyAttack != null)
-        {
-            enemyAttack.ConfigureTargeting(playerShip, playerShipController);
-        }
-        else if (logSpawns)
-        {
-            Debug.LogWarning("EnemyShipSpawner: Spawned enemy is missing EnemyShipAttack.", spawnedEnemy);
-        }
-    }
-
-    private void TryResolvePlayerShipController()
-    {
-        if (playerShipController != null || playerShip == null) return;
-        playerShipController = playerShip.GetComponent<ShipController2D>();
     }
 
     private void CleanupDestroyedEnemies()
     {
         for (int i = aliveEnemies.Count - 1; i >= 0; i--)
         {
-            if (aliveEnemies[i] == null) aliveEnemies.RemoveAt(i);
+            if (aliveEnemies[i] == null)
+            {
+                aliveEnemies.RemoveAt(i);
+            }
         }
     }
 }
