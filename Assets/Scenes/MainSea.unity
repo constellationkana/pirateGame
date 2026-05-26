@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.990566, g: 0.06074228, b: 0.06074228, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9607843, g: 0.0627451, b: 0.0588235, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1084,6 +1084,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
   maxHealth: 5
   currentHealth: 0
+  destroyOnDeath: 1
+  disableOnDeath: 0
 --- !u!61 &616550482
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1824,7 +1826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.972549, g: 0.12162868, b: 0.04313727, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2301,7 +2303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6c9c176c34437ab5ee2b5871a39612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  wood: 0
+  wood: 5
   doubloons: 0
 --- !u!114 &1331628599
 MonoBehaviour:
@@ -2337,7 +2339,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
   maxHealth: 10
-  currentHealth: 0
+  currentHealth: 10
+  destroyOnDeath: 0
+  disableOnDeath: 0
 --- !u!114 &1331628601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2353,7 +2357,7 @@ MonoBehaviour:
   shipHealth: {fileID: 1331628600}
   playerInventory: {fileID: 1331628598}
   woodCostPerRepair: 1
-  repairAmount: 1
+  repairAmount: 2
   repairCooldown: 0.5
 --- !u!1 &1358974480
 GameObject:
@@ -2664,13 +2668,13 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0, g: 0.9716981, b: 0.09748747, a: 1}
+    m_HighlightedColor: {r: 0.18135189, g: 0.990566, b: 0.042052314, a: 1}
+    m_PressedColor: {r: 0.19306515, g: 0.9716981, b: 0.041251317, a: 1}
+    m_SelectedColor: {r: 0.13792542, g: 0.990566, b: 0.042052314, a: 1}
+    m_DisabledColor: {r: 0.17219767, g: 0.9811321, b: 0.06941971, a: 0.5019608}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
+    m_FadeDuration: 2.45
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
