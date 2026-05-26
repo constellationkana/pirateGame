@@ -27,6 +27,11 @@ public class Cannonball : MonoBehaviour
         rb.linearVelocity = direction.normalized * speed;
     }
 
+    public void SetDamage(int newDamage)
+    {
+        damage = Mathf.Max(0, newDamage);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (owner != null && (other.gameObject == owner || other.transform.IsChildOf(owner.transform)))
