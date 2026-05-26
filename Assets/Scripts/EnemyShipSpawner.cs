@@ -79,15 +79,31 @@ public class EnemyShipSpawner : MonoBehaviour
         if (spawnedEnemy == null) return;
 
         SimpleEnemyShipAI enemyAI = spawnedEnemy.GetComponent<SimpleEnemyShipAI>();
+        if (enemyAI == null)
+        {
+            enemyAI = spawnedEnemy.GetComponentInChildren<SimpleEnemyShipAI>();
+        }
         if (enemyAI != null)
         {
             enemyAI.ConfigureTargeting(playerShip, playerShipController);
         }
+        else if (logSpawns)
+        {
+            Debug.LogWarning("EnemyShipSpawner: Spawned enemy is missing SimpleEnemyShipAI.", spawnedEnemy);
+        }
 
         EnemyShipAttack enemyAttack = spawnedEnemy.GetComponent<EnemyShipAttack>();
+        if (enemyAttack == null)
+        {
+            enemyAttack = spawnedEnemy.GetComponentInChildren<EnemyShipAttack>();
+        }
         if (enemyAttack != null)
         {
             enemyAttack.ConfigureTargeting(playerShip, playerShipController);
+        }
+        else if (logSpawns)
+        {
+            Debug.LogWarning("EnemyShipSpawner: Spawned enemy is missing EnemyShipAttack.", spawnedEnemy);
         }
     }
 
