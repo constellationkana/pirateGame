@@ -29,6 +29,32 @@ public class SimpleEnemyShipAI : MonoBehaviour
         {
             Debug.LogWarning("SimpleEnemyShipAI: Player Ship Controller reference is missing.", this);
         }
+
+        ConfigureTargeting(targetShip, playerShipController);
+    }
+
+    public void ConfigureTargeting(Transform runtimeTargetShip, ShipController2D runtimePlayerShipController)
+    {
+        targetShip = runtimeTargetShip;
+
+        if (runtimePlayerShipController != null)
+        {
+            playerShipController = runtimePlayerShipController;
+        }
+        else if (targetShip != null)
+        {
+            playerShipController = targetShip.GetComponent<ShipController2D>();
+        }
+
+        if (targetShip == null)
+        {
+            Debug.LogWarning("SimpleEnemyShipAI: Target Ship reference is missing. Enemy cannot chase target.", this);
+        }
+
+        if (playerShipController == null)
+        {
+            Debug.LogWarning("SimpleEnemyShipAI: Player Ship Controller reference is missing. Enemy cannot chase while waiting for player boarded state.", this);
+        }
     }
 
     private void FixedUpdate()
