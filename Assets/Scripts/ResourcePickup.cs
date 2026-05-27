@@ -15,6 +15,7 @@ public class ResourcePickup : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerInventory inventory = other.GetComponent<PlayerInventory>();
+
         if (inventory == null)
         {
             inventory = other.GetComponentInParent<PlayerInventory>();

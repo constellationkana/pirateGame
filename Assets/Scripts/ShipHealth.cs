@@ -1,60 +1,91 @@
+using System;
 using UnityEngine;
 
 public class ShipHealth : MonoBehaviour
 {
+    [Header("Health")]
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private int currentHealth;
 
-    [Header("Drops")]
-    [SerializeField] private GameObject woodPickupPrefab;
-    [SerializeField] private GameObject doubloonPickupPrefab;
-    [SerializeField] private int woodDropAmount = 1;
-    [SerializeField] private int doubloonDropAmount = 1;
+    [Header("Death Behavior")]
+    [SerializeField] private bool destroyOnDeath = true;
+    [SerializeField] private bool disableOnDeath;
 
-    public int CurrentHealth => currentHealth;
+    private bool isDead;
+
     public int MaxHealth => maxHealth;
+    public int CurrentHealth => currentHealth;
+    public float HealthPercent => maxHealth <= 0 ? 0f : (float)currentHealth / maxHealth;
+    public bool IsDead => isDead;
+
+    public event Action<ShipHealth> OnHealthChanged;
+    public event Action<ShipHealth> OnDeath;
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        maxHealth = Mathf.Max(1, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth <= 0 ? maxHealth : currentHealth, 0, maxHealth);
+    }
+
+    private void Start()
+    {
+        NotifyHealthChanged();
     }
 
     public void TakeDamage(int damage)
     {
-        if (damage <= 0)
+        if (damage <= 0 || isDead)
         {
             return;
         }
 
-        currentHealth -= damage;
+        currentHealth = Mathf.Max(0, currentHealth - damage);
 
         if (currentHealth <= 0)
         {
-            SpawnDrops();
+            Die();
+            return;
+        }
+
+        NotifyHealthChanged();
+    }
+
+    public void Heal(int amount)
+    {
+        if (amount <= 0 || isDead || currentHealth >= maxHealth)
+        {
+            return;
+        }
+
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        NotifyHealthChanged();
+    }
+
+    private void Die()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+        currentHealth = 0;
+
+        NotifyHealthChanged();
+        OnDeath?.Invoke(this);
+
+        if (destroyOnDeath)
+        {
             Destroy(gameObject);
+        }
+        else if (disableOnDeath)
+        {
+            gameObject.SetActive(false);
         }
     }
 
-    private void SpawnDrops()
+    private void NotifyHealthChanged()
     {
-        Vector3 spawnPosition = transform.position;
-
-        if (woodPickupPrefab != null && woodDropAmount > 0)
-        {
-            for (int i = 0; i < woodDropAmount; i++)
-            {
-                Vector3 offset = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(-0.6f, 0.6f), 0f);
-                Instantiate(woodPickupPrefab, spawnPosition + offset, Quaternion.identity);
-            }
-        }
-
-        if (doubloonPickupPrefab != null && doubloonDropAmount > 0)
-        {
-            for (int i = 0; i < doubloonDropAmount; i++)
-            {
-                Vector3 offset = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(-0.6f, 0.6f), 0f);
-                Instantiate(doubloonPickupPrefab, spawnPosition + offset, Quaternion.identity);
-            }
-        }
+        OnHealthChanged?.Invoke(this);
     }
 }
