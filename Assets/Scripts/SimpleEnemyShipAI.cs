@@ -19,12 +19,16 @@ public class SimpleEnemyShipAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.constraints = RigidbodyConstraints2D.None;
-        ResolveReferences();
-    }
 
-    private void Start()
-    {
-        ResolveReferences();
+        if (targetShip == null)
+        {
+            Debug.LogWarning("SimpleEnemyShipAI: Target Ship reference is missing.", this);
+        }
+
+        if (playerShipController == null)
+        {
+            Debug.LogWarning("SimpleEnemyShipAI: Player Ship Controller reference is missing.", this);
+        }
     }
 
     private void FixedUpdate()
@@ -70,40 +74,5 @@ public class SimpleEnemyShipAI : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
-    }
-
-    private void ResolveReferences()
-    {
-        if (targetShip == null)
-        {
-            GameObject taggedShip = GameObject.FindWithTag("PlayerShip");
-            if (taggedShip != null)
-            {
-                targetShip = taggedShip.transform;
-            }
-            else
-            {
-                GameObject namedShip = GameObject.Find("PlayerShip");
-                if (namedShip != null)
-                {
-                    targetShip = namedShip.transform;
-                }
-            }
-        }
-
-        if (playerShipController == null && targetShip != null)
-        {
-            playerShipController = targetShip.GetComponent<ShipController2D>();
-        }
-
-        if (targetShip == null)
-        {
-            Debug.LogWarning("SimpleEnemyShipAI: Could not find PlayerShip target. Assign Target Ship or tag PlayerShip.", this);
-        }
-
-        if (playerShipController == null)
-        {
-            Debug.LogWarning("SimpleEnemyShipAI: Could not find ShipController2D on PlayerShip.", this);
-        }
     }
 }

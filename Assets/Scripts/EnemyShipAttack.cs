@@ -2,28 +2,44 @@ using UnityEngine;
 
 public class EnemyShipAttack : MonoBehaviour
 {
-    [SerializeField] private ShipHealth targetShipHealth;
+    [Header("References")]
     [SerializeField] private Transform targetShip;
     [SerializeField] private ShipController2D playerShipController;
-    [SerializeField] private float attackRange = 2.5f;
-    [SerializeField] private float attackCooldown = 1.5f;
-    [SerializeField] private int damage = 1;
 
-    private float nextAttackTime;
+    [Header("Attack Rules")]
+    [SerializeField] private float attackRange = 10f;
+    [SerializeField] private bool useCannonAttack = true;
+    [SerializeField] private bool useFruitAttack = true;
+    [SerializeField] private bool logAttacks = false;
+
+    [Header("Cannon Attack")]
+    [SerializeField] private GameObject cannonballPrefab;
+    [SerializeField] private Transform cannonFirePoint;
+    [SerializeField] private Transform[] cannonFirePoints;
+    [SerializeField] private int cannonDamage = 2;
+    [SerializeField] private float cannonballSpeed = 10f;
+    [SerializeField] private float cannonShootInterval = 3f;
+
+    [Header("Fruit Attack")]
+    [SerializeField] private GameObject fruitProjectilePrefab;
+    [SerializeField] private Transform fruitFirePoint;
+    [SerializeField] private Transform[] fruitFirePoints;
+    [SerializeField] private int fruitDamage = 1;
+    [SerializeField] private float fruitSpeed = 7f;
+    [SerializeField] private float fruitThrowInterval = 1f;
+
+    private float nextCannonTime;
+    private float nextFruitTime;
 
     private void Awake()
     {
-        ResolveReferences();
-    }
-
-    private void Start()
-    {
-        ResolveReferences();
+        if (targetShip == null) Debug.LogWarning("EnemyShipAttack: TargetShip reference is missing.", this);
+        if (playerShipController == null) Debug.LogWarning("EnemyShipAttack: PlayerShipController reference is missing.", this);
     }
 
     private void Update()
     {
-        if (targetShipHealth == null || targetShip == null || playerShipController == null)
+        if (targetShip == null || playerShipController == null)
         {
             return;
         }
@@ -33,63 +49,68 @@ public class EnemyShipAttack : MonoBehaviour
             return;
         }
 
-        if (Time.time < nextAttackTime)
+        Vector2 toTarget = targetShip.position - transform.position;
+        if (toTarget.magnitude > attackRange)
         {
             return;
         }
 
-        float distanceToTarget = Vector2.Distance(transform.position, targetShip.position);
-        if (distanceToTarget > attackRange)
+        if (useCannonAttack && Time.time >= nextCannonTime)
         {
-            return;
+            FireProjectile(cannonballPrefab, GetFirePoint(cannonFirePoints, cannonFirePoint), cannonballSpeed, cannonDamage, "cannonball");
+            nextCannonTime = Time.time + Mathf.Max(0.1f, cannonShootInterval);
         }
 
-        targetShipHealth.TakeDamage(damage);
-        nextAttackTime = Time.time + attackCooldown;
+        if (useFruitAttack && Time.time >= nextFruitTime)
+        {
+            FireProjectile(fruitProjectilePrefab, GetFirePoint(fruitFirePoints, fruitFirePoint), fruitSpeed, fruitDamage, "fruit");
+            nextFruitTime = Time.time + Mathf.Max(0.1f, fruitThrowInterval);
+        }
     }
 
-    private void ResolveReferences()
+    private void FireProjectile(GameObject projectilePrefab, Transform firePoint, float speed, int fallbackDamage, string attackName)
     {
-        if (targetShip == null)
+        if (projectilePrefab == null)
         {
-            GameObject taggedShip = GameObject.FindWithTag("PlayerShip");
-            if (taggedShip != null)
-            {
-                targetShip = taggedShip.transform;
-            }
-            else
-            {
-                GameObject namedShip = GameObject.Find("PlayerShip");
-                if (namedShip != null)
-                {
-                    targetShip = namedShip.transform;
-                }
-            }
+            if (logAttacks) Debug.LogWarning($"EnemyShipAttack: {attackName} prefab not assigned.", this);
+            return;
         }
 
-        if (playerShipController == null && targetShip != null)
+        Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position;
+        GameObject projectileObject = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+
+        Cannonball projectile = projectileObject.GetComponent<Cannonball>();
+        if (projectile == null)
         {
-            playerShipController = targetShip.GetComponent<ShipController2D>();
+            Debug.LogWarning($"EnemyShipAttack: {attackName} prefab is missing Cannonball component.", this);
+            Destroy(projectileObject);
+            return;
         }
 
-        if (targetShipHealth == null && targetShip != null)
+        projectile.SetDamage(fallbackDamage);
+
+        Vector2 direction = (targetShip.position - spawnPos);
+        if (direction.sqrMagnitude < 0.001f)
         {
-            targetShipHealth = targetShip.GetComponent<ShipHealth>();
+            direction = transform.up;
         }
 
-        if (targetShip == null)
+        projectile.Initialize(direction.normalized, speed, gameObject);
+
+        if (logAttacks)
         {
-            Debug.LogWarning("EnemyShipAttack: Could not find PlayerShip target. Assign Target Ship or tag PlayerShip.", this);
+            Debug.Log($"EnemyShipAttack: Fired {attackName} toward player.", this);
+        }
+    }
+
+    private Transform GetFirePoint(Transform[] firePoints, Transform singleFirePoint)
+    {
+        if (firePoints != null && firePoints.Length > 0)
+        {
+            int index = Random.Range(0, firePoints.Length);
+            return firePoints[index];
         }
 
-        if (playerShipController == null)
-        {
-            Debug.LogWarning("EnemyShipAttack: Could not find ShipController2D on PlayerShip.", this);
-        }
-
-        if (targetShipHealth == null)
-        {
-            Debug.LogWarning("EnemyShipAttack: Could not find ShipHealth on PlayerShip.", this);
-        }
+        return singleFirePoint;
     }
 }
