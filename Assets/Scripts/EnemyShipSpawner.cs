@@ -38,15 +38,22 @@ public class EnemyShipSpawner : MonoBehaviour
         if (enemyShipPrefab == null || playerShipTransform == null)
         {
             return;
+        }
 
         if (spawnOnlyWhenPlayerOnBoard && (playerShipController == null || !playerShipController.PlayerOnBoard))
+        {
             return;
+        }
 
         if (aliveEnemies.Count >= maxEnemiesAlive)
+        {
             return;
+        }
 
         if (Time.time < nextSpawnTime)
+        {
             return;
+        }
 
         SpawnEnemy();
         nextSpawnTime = Time.time + Mathf.Max(0.1f, spawnInterval);
@@ -96,8 +103,7 @@ public class EnemyShipSpawner : MonoBehaviour
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         if (randomDirection.sqrMagnitude < 0.001f)
         {
-            GameObject tagged = GameObject.FindWithTag("PlayerShip");
-            if (tagged != null) playerShipTransform = tagged.transform;
+            randomDirection = Vector2.up;
         }
 
         float minDistance = Mathf.Max(0f, minSpawnDistanceFromPlayer);
@@ -153,7 +159,9 @@ public class EnemyShipSpawner : MonoBehaviour
         for (int i = aliveEnemies.Count - 1; i >= 0; i--)
         {
             if (aliveEnemies[i] == null)
+            {
                 aliveEnemies.RemoveAt(i);
+            }
         }
     }
 }
