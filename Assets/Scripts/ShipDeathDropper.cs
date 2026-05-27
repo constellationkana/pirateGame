@@ -15,6 +15,12 @@ public class ShipDeathDropper : MonoBehaviour
     [SerializeField] private int minDoubloonDrops = 1;
     [SerializeField] private int maxDoubloonDrops = 4;
 
+    [Header("XP Drops")]
+    [SerializeField] private GameObject xpPickupPrefab;
+    [SerializeField] private int minXPDrops = 1;
+    [SerializeField] private int maxXPDrops = 3;
+    [SerializeField] private int xpAmountPerPickup = 1;
+
     [Header("Drop Scatter")]
     [SerializeField] private float dropScatterRadius = 0.75f;
     [SerializeField] private bool logDrops;
@@ -47,14 +53,15 @@ public class ShipDeathDropper : MonoBehaviour
     {
         int woodDropCount = SpawnDrops(woodPickupPrefab, minWoodDrops, maxWoodDrops);
         int doubloonDropCount = SpawnDrops(doubloonPickupPrefab, minDoubloonDrops, maxDoubloonDrops);
+        int xpDropCount = SpawnDrops(xpPickupPrefab, minXPDrops, maxXPDrops, true);
 
         if (logDrops)
         {
-            Debug.Log($"Dropped {woodDropCount} wood and {doubloonDropCount} doubloons from {gameObject.name}.", this);
+            Debug.Log($"Dropped {woodDropCount} wood, {doubloonDropCount} doubloons, and {xpDropCount} XP pickups from {gameObject.name}.", this);
         }
     }
 
-    private int SpawnDrops(GameObject pickupPrefab, int minDrops, int maxDrops)
+    private int SpawnDrops(GameObject pickupPrefab, int minDrops, int maxDrops, bool assignXPAmount = false)
     {
         if (pickupPrefab == null)
         {
@@ -69,7 +76,15 @@ public class ShipDeathDropper : MonoBehaviour
         {
             Vector2 randomOffset = Random.insideUnitCircle * dropScatterRadius;
             Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0f);
-            Instantiate(pickupPrefab, spawnPosition, Quaternion.identity);
+            GameObject pickup = Instantiate(pickupPrefab, spawnPosition, Quaternion.identity);
+            if (assignXPAmount)
+            {
+                ResourcePickup resourcePickup = pickup.GetComponent<ResourcePickup>();
+                if (resourcePickup != null)
+                {
+                    resourcePickup.SetAmount(xpAmountPerPickup);
+                }
+            }
         }
 
         return dropCount;

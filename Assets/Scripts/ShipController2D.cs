@@ -66,6 +66,12 @@ public class ShipController2D : MonoBehaviour
         rb.angularVelocity = 0f;
     }
 
+
+    public void AddMoveSpeed(float amount)
+    {
+        moveSpeed = Mathf.Max(0f, moveSpeed + amount);
+    }
+
     public void SetPlayerOnBoard(bool value)
     {
         playerOnBoard = value;

@@ -15,6 +15,7 @@ public class CannonShooter : MonoBehaviour
     [SerializeField] private float shootCooldown = 0.4f;
     [SerializeField] private Vector2 shootDirection = Vector2.up;
     [SerializeField] private float cannonballSpeed = 12f;
+    [SerializeField] private int cannonballDamage = 1;
 
     private ShipController2D shipController;
     private float nextShootTime;
@@ -103,6 +104,7 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
+        cannonball.SetDamage(cannonballDamage);
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
         nextShootTime = Time.time + shootCooldown;
     }
@@ -132,6 +134,11 @@ public class CannonShooter : MonoBehaviour
 
         Transform spawnPoint = GetSpawnPointForDirection(direction);
         TryFireDirectional(direction.normalized, spawnPoint);
+    }
+
+    public void AddCannonballDamage(int amount)
+    {
+        cannonballDamage = Mathf.Max(0, cannonballDamage + amount);
     }
 
     private Transform GetSpawnPointForDirection(Vector2 direction)
