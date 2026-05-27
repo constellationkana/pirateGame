@@ -18,6 +18,22 @@ public class PlayerInventory : MonoBehaviour
         wood += amount;
     }
 
+    public bool TrySpendWood(int amount)
+    {
+        if (amount <= 0)
+        {
+            return true;
+        }
+
+        if (wood < amount)
+        {
+            return false;
+        }
+
+        wood -= amount;
+        return true;
+    }
+
     public void AddDoubloons(int amount)
     {
         if (amount <= 0)
