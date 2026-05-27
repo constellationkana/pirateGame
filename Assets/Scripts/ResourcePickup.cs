@@ -6,11 +6,17 @@ public class ResourcePickup : MonoBehaviour
     public enum ResourceType
     {
         Wood,
-        Doubloon
+        Doubloon,
+        XP
     }
 
     [SerializeField] private ResourceType resourceType = ResourceType.Wood;
     [SerializeField] private int amount = 1;
+
+    public void SetAmount(int newAmount)
+    {
+        amount = Mathf.Max(1, newAmount);
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,20 +26,34 @@ public class ResourcePickup : MonoBehaviour
             inventory = other.GetComponentInParent<PlayerInventory>();
         }
 
-        if (inventory == null)
+        if (resourceType != ResourceType.XP && inventory == null)
         {
             return;
         }
 
-        if (resourceType == ResourceType.Wood)
+        switch (resourceType)
         {
-            inventory.AddWood(amount);
-        }
-        else
-        {
-            inventory.AddDoubloons(amount);
-        }
+            case ResourceType.Wood:
+                inventory.AddWood(amount);
+                Destroy(gameObject);
+                break;
+            case ResourceType.Doubloon:
+                inventory.AddDoubloons(amount);
+                Destroy(gameObject);
+                break;
+            case ResourceType.XP:
+                PlayerLevelSystem levelSystem = other.GetComponent<PlayerLevelSystem>();
+                if (levelSystem == null)
+                {
+                    levelSystem = other.GetComponentInParent<PlayerLevelSystem>();
+                }
 
-        Destroy(gameObject);
+                if (levelSystem != null)
+                {
+                    levelSystem.AddXP(amount);
+                    Destroy(gameObject);
+                }
+                break;
+        }
     }
 }
