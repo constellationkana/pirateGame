@@ -40,6 +40,11 @@ public class Cannonball : MonoBehaviour
         }
 
         ShipHealth health = other.GetComponent<ShipHealth>();
+        if (health == null)
+        {
+            health = other.GetComponentInParent<ShipHealth>();
+        }
+
         if (health != null)
         {
             health.TakeDamage(damage);
