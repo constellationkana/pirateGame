@@ -13,26 +13,28 @@ public class SimpleEnemyShipAI : MonoBehaviour
     [SerializeField] private float rotationSpeed = 360f;
 
     private Rigidbody2D rb;
-    private bool hasLoggedMissingRefs;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.constraints = RigidbodyConstraints2D.None;
-        ResolveReferences(true);
-    }
 
-    private void Start()
-    {
-        ResolveReferences(true);
+        if (targetShip == null)
+        {
+            Debug.LogWarning("SimpleEnemyShipAI: Target Ship reference is missing.", this);
+        }
+
+        if (playerShipController == null)
+        {
+            Debug.LogWarning("SimpleEnemyShipAI: Player Ship Controller reference is missing.", this);
+        }
     }
 
     private void FixedUpdate()
     {
         if (targetShip == null || playerShipController == null)
         {
-            ResolveReferences(false);
             StopMovement();
             return;
         }
@@ -72,59 +74,5 @@ public class SimpleEnemyShipAI : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
-    }
-
-    private void ResolveReferences(bool logWarnings)
-    {
-        if (targetShip == null)
-        {
-            GameObject taggedShip = GameObject.FindWithTag("PlayerShip");
-            if (taggedShip != null)
-            {
-                targetShip = taggedShip.transform;
-            }
-            else
-            {
-                GameObject namedShip = GameObject.Find("PlayerShip");
-                if (namedShip != null)
-                {
-                    targetShip = namedShip.transform;
-                }
-            }
-        }
-
-        if (playerShipController == null && targetShip != null)
-        {
-            playerShipController = targetShip.GetComponent<ShipController2D>();
-        }
-
-        if (!logWarnings)
-        {
-            return;
-        }
-
-        bool missing = targetShip == null || playerShipController == null;
-        if (!missing)
-        {
-            hasLoggedMissingRefs = false;
-            return;
-        }
-
-        if (hasLoggedMissingRefs)
-        {
-            return;
-        }
-
-        if (targetShip == null)
-        {
-            Debug.LogWarning("SimpleEnemyShipAI: Could not find PlayerShip target. Assign Target Ship or tag PlayerShip.", this);
-        }
-
-        if (playerShipController == null)
-        {
-            Debug.LogWarning("SimpleEnemyShipAI: Could not find ShipController2D on PlayerShip.", this);
-        }
-
-        hasLoggedMissingRefs = true;
     }
 }
