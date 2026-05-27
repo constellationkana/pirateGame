@@ -7,11 +7,16 @@ public class ShipHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private int currentHealth;
 
+    [Header("Death Behavior")]
+    [SerializeField] private bool destroyOnDeath = true;
+    [SerializeField] private bool disableOnDeath;
+
     private bool isDead;
 
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
     public float HealthPercent => maxHealth <= 0 ? 0f : (float)currentHealth / maxHealth;
+    public bool IsDead => isDead;
 
     public event Action<ShipHealth> OnHealthChanged;
     public event Action<ShipHealth> OnDeath;
@@ -35,12 +40,14 @@ public class ShipHealth : MonoBehaviour
         }
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
-        NotifyHealthChanged();
 
         if (currentHealth <= 0)
         {
             Die();
+            return;
         }
+
+        NotifyHealthChanged();
     }
 
     public void Heal(int amount)
@@ -62,8 +69,19 @@ public class ShipHealth : MonoBehaviour
         }
 
         isDead = true;
+        currentHealth = 0;
+
+        NotifyHealthChanged();
         OnDeath?.Invoke(this);
-        Destroy(gameObject);
+
+        if (destroyOnDeath)
+        {
+            Destroy(gameObject);
+        }
+        else if (disableOnDeath)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void NotifyHealthChanged()
