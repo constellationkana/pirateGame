@@ -357,6 +357,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1880149635302712205}
+  - {fileID: 5925488098560481139}
+  - {fileID: 1785004718316856830}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4223825932741082270
@@ -538,21 +540,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShipAttack
   targetShip: {fileID: 0}
   playerShipController: {fileID: 0}
-  attackRange: 2.5
+  attackRange: 15
   useCannonAttack: 1
   useFruitAttack: 1
-  logAttacks: 0
+  logAttacks: 1
   cannonballPrefab: {fileID: 5583544770070118670, guid: 3405451b100907845a1bfdf285d96ea7, type: 3}
-  cannonFirePoint: {fileID: 0}
+  cannonFirePoint: {fileID: 5925488098560481139}
   cannonFirePoints: []
   cannonDamage: 2
-  cannonballSpeed: 10
+  cannonballSpeed: 7
   cannonShootInterval: 3
   fruitProjectilePrefab: {fileID: 6844348078964051180, guid: 8b62b02fc13105e48910b0a7cb3f422a, type: 3}
-  fruitFirePoint: {fileID: 0}
+  fruitFirePoint: {fileID: 1785004718316856830}
   fruitFirePoints: []
   fruitDamage: 1
-  fruitSpeed: 7
+  fruitSpeed: 10
   fruitThrowInterval: 1
 --- !u!114 &7173086663069711293
 MonoBehaviour:
@@ -686,6 +688,68 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &6902477971925448532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1785004718316856830}
+  m_Layer: 0
+  m_Name: EnemyFruitPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1785004718316856830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6902477971925448532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3401331274077950250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6908978963888352711
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5925488098560481139}
+  m_Layer: 0
+  m_Name: EnemyCannonPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5925488098560481139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6908978963888352711}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3401331274077950250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8044677078325140831
 GameObject:
   m_ObjectHideFlags: 0
