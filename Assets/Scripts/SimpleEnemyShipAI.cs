@@ -31,6 +31,12 @@ public class SimpleEnemyShipAI : MonoBehaviour
         }
     }
 
+    public void Initialize(Transform newTargetShip, ShipController2D newPlayerShipController)
+    {
+        targetShip = newTargetShip;
+        playerShipController = newPlayerShipController;
+    }
+
     private void FixedUpdate()
     {
         if (targetShip == null || playerShipController == null)
