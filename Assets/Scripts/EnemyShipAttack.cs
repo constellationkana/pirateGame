@@ -5,6 +5,7 @@ public class EnemyShipAttack : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform targetShip;
     [SerializeField] private ShipController2D playerShipController;
+    [SerializeField] private ShipHealth targetShipHealth;
 
     [Header("Attack Rules")]
     [SerializeField] private float attackRange = 10f;
@@ -35,6 +36,13 @@ public class EnemyShipAttack : MonoBehaviour
     {
         if (targetShip == null) Debug.LogWarning("EnemyShipAttack: TargetShip reference is missing.", this);
         if (playerShipController == null) Debug.LogWarning("EnemyShipAttack: PlayerShipController reference is missing.", this);
+    }
+
+    public void Initialize(Transform newTargetShip, ShipController2D newPlayerShipController, ShipHealth newTargetShipHealth)
+    {
+        targetShip = newTargetShip;
+        playerShipController = newPlayerShipController;
+        targetShipHealth = newTargetShipHealth;
     }
 
     private void Update()
