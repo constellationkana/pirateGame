@@ -3027,6 +3027,8 @@ MonoBehaviour:
   dashCooldownReductionAmount: 0.2
   forceFieldRadiusUpgradeAmount: 0.5
   forceFieldDamageUpgradeAmount: 1
+  allowDashWithoutShopUnlock: 0
+  allowForceFieldWithoutShopUnlock: 0
   magnetRadius: 1
 --- !u!114 &1331628605
 MonoBehaviour:
@@ -4460,7 +4462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3320967956516739574, guid: 5359ba5bdce4afd4ba20bce8c60fd1a1, type: 3}
       propertyPath: maxHealth
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3644413260986965765, guid: 5359ba5bdce4afd4ba20bce8c60fd1a1, type: 3}
       propertyPath: m_Layer
@@ -4573,7 +4575,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1651053312815103476, guid: dfca77aa3a0275f438c95cead65ead42, type: 3}
       propertyPath: maxHealth
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2544107834585527237, guid: dfca77aa3a0275f438c95cead65ead42, type: 3}
       propertyPath: m_Layer
