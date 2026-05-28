@@ -18,16 +18,23 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private CannonShooter cannonShooter;
     [SerializeField] private UpgradeChoiceUI upgradeChoiceUI;
     [SerializeField] private PickupMagnetController pickupMagnetController;
+    [SerializeField] private ShipDashController dashController;
+    [SerializeField] private ForceFieldController forceFieldController;
 
     [Header("Upgrade Values")]
     [SerializeField] private float speedIncreasePerUpgrade = 0.5f;
     [SerializeField] private float magnetRadiusUpgradeAmount = 1f;
     [SerializeField] private int cannonDamageIncreasePerUpgrade = 1;
+    [SerializeField] private float dashSpeedUpgradeAmount = 2f;
+    [SerializeField] private float dashCooldownReductionAmount = 0.2f;
+    [SerializeField] private float forceFieldRadiusUpgradeAmount = 0.5f;
+    [SerializeField] private int forceFieldDamageUpgradeAmount = 1;
 
     [Header("Runtime Stats")]
     [SerializeField] private float magnetRadius;
 
     private readonly List<UpgradeOption> phaseOneOptions = new();
+    private readonly List<UpgradeOption> currentChoices = new();
 
     public float MagnetRadius => magnetRadius;
 
@@ -51,6 +58,16 @@ public class UpgradeManager : MonoBehaviour
         if (pickupMagnetController == null)
         {
             pickupMagnetController = GetComponent<PickupMagnetController>();
+        }
+
+        if (dashController == null)
+        {
+            dashController = GetComponent<ShipDashController>();
+        }
+
+        if (forceFieldController == null)
+        {
+            forceFieldController = GetComponent<ForceFieldController>();
         }
 
         phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Speed Upgrade", description = "Increase ship movement speed." });
@@ -83,7 +100,64 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
-        upgradeChoiceUI.ShowChoices(phaseOneOptions, ApplyUpgrade);
+        BuildUpgradeChoices();
+
+        if (currentChoices.Count == 0)
+        {
+            Debug.LogWarning("UpgradeManager: No valid upgrade choices available.", this);
+            playerLevelSystem.NotifyLevelUpChoiceCompleted();
+            return;
+        }
+
+        upgradeChoiceUI.ShowChoices(currentChoices, ApplyUpgrade);
+    }
+
+    private void BuildUpgradeChoices()
+    {
+        currentChoices.Clear();
+
+        List<UpgradeOption> pool = new();
+        pool.AddRange(phaseOneOptions);
+
+        if (dashController != null)
+        {
+            if (!dashController.DashUnlocked)
+            {
+                pool.Add(new UpgradeOption { id = "dash_unlock", displayName = "Unlock Dash", description = "Press Left Shift to burst forward." });
+            }
+            else
+            {
+                pool.Add(new UpgradeOption { id = "dash_boost", displayName = "Dash Boost", description = "Dash farther and/or cooldown is reduced." });
+            }
+        }
+        else
+        {
+            Debug.LogWarning("UpgradeManager: ShipDashController is missing. Dash upgrades disabled.", this);
+        }
+
+        if (forceFieldController != null)
+        {
+            if (!forceFieldController.ForceFieldUnlocked)
+            {
+                pool.Add(new UpgradeOption { id = "force_field_unlock", displayName = "Unlock Force Field", description = "Damages nearby enemy ships over time." });
+            }
+            else
+            {
+                pool.Add(new UpgradeOption { id = "force_field_boost", displayName = "Force Field Boost", description = "Increase aura radius or damage." });
+            }
+        }
+        else
+        {
+            Debug.LogWarning("UpgradeManager: ForceFieldController is missing. Force Field upgrades disabled.", this);
+        }
+
+        int count = Mathf.Min(3, pool.Count);
+        for (int i = 0; i < count; i++)
+        {
+            int index = UnityEngine.Random.Range(i, pool.Count);
+            (pool[i], pool[index]) = (pool[index], pool[i]);
+            currentChoices.Add(pool[i]);
+        }
     }
 
     private void ApplyUpgrade(UpgradeOption chosenOption)
@@ -121,6 +195,32 @@ public class UpgradeManager : MonoBehaviour
                 if (cannonShooter != null)
                 {
                     cannonShooter.AddCannonballDamage(cannonDamageIncreasePerUpgrade);
+                }
+                break;
+            case "dash_unlock":
+                if (dashController != null)
+                {
+                    dashController.UnlockDash();
+                }
+                break;
+            case "dash_boost":
+                if (dashController != null)
+                {
+                    dashController.AddDashSpeed(dashSpeedUpgradeAmount);
+                    dashController.ReduceDashCooldown(dashCooldownReductionAmount);
+                }
+                break;
+            case "force_field_unlock":
+                if (forceFieldController != null)
+                {
+                    forceFieldController.UnlockForceField();
+                }
+                break;
+            case "force_field_boost":
+                if (forceFieldController != null)
+                {
+                    forceFieldController.AddRadius(forceFieldRadiusUpgradeAmount);
+                    forceFieldController.AddDamage(forceFieldDamageUpgradeAmount);
                 }
                 break;
         }
