@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3910fef4d510c524396cc46e2191f1b0
+guid: 6574b6505d0c5ff46a7281743bcb382b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2395384080353955386
-    second: ChatGPT Image May 25, 2026, 02_02_38 PM_0
+      213: 3657242803964514395
+    second: pirate_ship_transparent_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,18 +40,18 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ChatGPT Image May 25, 2026, 02_02_38 PM_0
+      name: pirate_ship_transparent_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1254
-        height: 1254
+        width: 702
+        height: 700
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6c170e5ced2e1ced0800000000000000
-      internalID: -2395384080353955386
+      spriteID: b5098ab04f221c230800000000000000
+      internalID: 3657242803964514395
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ChatGPT Image May 25, 2026, 02_02_38 PM_0: -2395384080353955386
+      pirate_ship_transparent_0: 3657242803964514395
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
