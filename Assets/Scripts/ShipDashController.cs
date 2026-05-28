@@ -13,13 +13,16 @@ public class ShipDashController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private bool logDash = false;
 
-    private bool dashUnlocked;
-    private bool isDashing;
+    [Header("Runtime Debug")]
+    [SerializeField] private bool dashUnlocked;
+    [SerializeField] private bool isDashing;
+    [SerializeField] private float cooldownRemaining;
+
     private float dashTimeRemaining;
-    private float cooldownRemaining;
     private Vector2 dashDirection = Vector2.up;
 
     public bool DashUnlocked => dashUnlocked;
+    public bool IsDashing => isDashing;
 
     private void Awake()
     {
@@ -31,20 +34,20 @@ public class ShipDashController : MonoBehaviour
     {
         if (cooldownRemaining > 0f)
         {
-            cooldownRemaining -= Time.deltaTime;
+            cooldownRemaining = Mathf.Max(0f, cooldownRemaining - Time.deltaTime);
         }
 
-        if (!dashUnlocked || isDashing || !Input.GetKeyDown(dashKey) || cooldownRemaining > 0f)
+        if (!Input.GetKeyDown(dashKey))
         {
             return;
         }
 
-        if (requirePlayerOnBoard && shipController != null && !shipController.PlayerOnBoard)
+        if (logDash)
         {
-            return;
+            Debug.Log("ShipDashController: Dash key pressed.", this);
         }
 
-        StartDash();
+        TryStartDash();
     }
 
     private void FixedUpdate()
@@ -60,7 +63,45 @@ public class ShipDashController : MonoBehaviour
         if (dashTimeRemaining <= 0f)
         {
             isDashing = false;
+
+            if (logDash)
+            {
+                Debug.Log("ShipDashController: Dash ended.", this);
+            }
         }
+    }
+
+    private void TryStartDash()
+    {
+        if (Time.timeScale <= 0f)
+        {
+            return;
+        }
+
+        if (!dashUnlocked)
+        {
+            if (logDash) Debug.Log("ShipDashController: Dash blocked (locked).", this);
+            return;
+        }
+
+        if (isDashing)
+        {
+            return;
+        }
+
+        if (cooldownRemaining > 0f)
+        {
+            if (logDash) Debug.Log($"ShipDashController: Dash blocked (cooldown {cooldownRemaining:F2}s).", this);
+            return;
+        }
+
+        if (requirePlayerOnBoard && shipController != null && !shipController.PlayerOnBoard)
+        {
+            if (logDash) Debug.Log("ShipDashController: Dash blocked (player not on board).", this);
+            return;
+        }
+
+        StartDash();
     }
 
     private void StartDash()

@@ -40,26 +40,26 @@ public class PickupMagnetController : MonoBehaviour
                 continue;
             }
 
-            Transform pickupTransform = resourcePickup.transform;
-            Vector2 currentPosition = pickupTransform.position;
-            Vector2 targetPosition = transform.position;
-            float step = magnetPullSpeed * Time.fixedDeltaTime;
-
             Rigidbody2D pickupRigidbody = resourcePickup.GetComponent<Rigidbody2D>();
             if (pickupRigidbody == null)
             {
                 pickupRigidbody = resourcePickup.GetComponentInParent<Rigidbody2D>();
             }
 
-            Vector2 nextPosition = Vector2.MoveTowards(currentPosition, targetPosition, step);
-            if (pickupRigidbody != null && !pickupRigidbody.isKinematic)
+            if (pickupRigidbody != null)
             {
-                pickupRigidbody.MovePosition(nextPosition);
+                pickupRigidbody.bodyType = RigidbodyType2D.Kinematic;
+                pickupRigidbody.gravityScale = 0f;
+                pickupRigidbody.linearVelocity = Vector2.zero;
+                pickupRigidbody.angularVelocity = 0f;
             }
-            else
-            {
-                pickupTransform.position = nextPosition;
-            }
+
+            Transform pickupTransform = resourcePickup.transform;
+            Vector2 currentPosition = pickupTransform.position;
+            Vector2 targetPosition = transform.position;
+            float step = magnetPullSpeed * Time.fixedDeltaTime;
+
+            pickupTransform.position = Vector2.MoveTowards(currentPosition, targetPosition, step);
         }
     }
 

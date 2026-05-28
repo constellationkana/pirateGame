@@ -12,6 +12,7 @@ public class ShipController2D : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 movementInput;
+    private ShipDashController dashController;
 
     public bool PlayerOnBoard => playerOnBoard;
     public Vector2 LastMoveDirection { get; private set; } = Vector2.up;
@@ -21,6 +22,7 @@ public class ShipController2D : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        dashController = GetComponent<ShipDashController>();
     }
 
     private void Update()
@@ -58,6 +60,12 @@ public class ShipController2D : MonoBehaviour
         if (!playerOnBoard)
         {
             rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            return;
+        }
+
+        if (dashController != null && dashController.IsDashing)
+        {
             rb.angularVelocity = 0f;
             return;
         }
