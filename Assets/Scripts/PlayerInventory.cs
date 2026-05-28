@@ -42,5 +42,6 @@ public class PlayerInventory : MonoBehaviour
         }
 
         doubloons += amount;
+        PlayerProgression.Instance.AddDoubloons(amount);
     }
 }
