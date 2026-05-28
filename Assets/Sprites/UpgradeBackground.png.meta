@@ -1,0 +1,5356 @@
+fileFormatVersion: 2
+guid: c87606f54b4f73c48b5321d3f9a4d3d8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7984503698088597490
+    second: UpgradeBackground_0
+  - first:
+      213: -4874429823439039158
+    second: UpgradeBackground_1
+  - first:
+      213: 9073857435657186875
+    second: UpgradeBackground_2
+  - first:
+      213: 149552666481582510
+    second: UpgradeBackground_3
+  - first:
+      213: -7016587561698264115
+    second: UpgradeBackground_4
+  - first:
+      213: -6829841896271236957
+    second: UpgradeBackground_5
+  - first:
+      213: -1673972415090967297
+    second: UpgradeBackground_6
+  - first:
+      213: 5624043605291800622
+    second: UpgradeBackground_7
+  - first:
+      213: -7296152217103849370
+    second: UpgradeBackground_8
+  - first:
+      213: 876074214017098195
+    second: UpgradeBackground_9
+  - first:
+      213: -5005320459044462770
+    second: UpgradeBackground_10
+  - first:
+      213: 3839102389955353991
+    second: UpgradeBackground_11
+  - first:
+      213: 5973698338687738034
+    second: UpgradeBackground_12
+  - first:
+      213: -6832905270122071364
+    second: UpgradeBackground_13
+  - first:
+      213: -5012555840329485111
+    second: UpgradeBackground_14
+  - first:
+      213: 6879910983346594071
+    second: UpgradeBackground_15
+  - first:
+      213: 521687662873116062
+    second: UpgradeBackground_16
+  - first:
+      213: -6627625399925885015
+    second: UpgradeBackground_17
+  - first:
+      213: -3976266426978003007
+    second: UpgradeBackground_18
+  - first:
+      213: -8245184995488162825
+    second: UpgradeBackground_19
+  - first:
+      213: 8337773889954211733
+    second: UpgradeBackground_20
+  - first:
+      213: 1322240209946020789
+    second: UpgradeBackground_21
+  - first:
+      213: 151582774613944220
+    second: UpgradeBackground_22
+  - first:
+      213: -7237705603231151518
+    second: UpgradeBackground_23
+  - first:
+      213: -1688276195733913466
+    second: UpgradeBackground_24
+  - first:
+      213: 4019954306779857526
+    second: UpgradeBackground_25
+  - first:
+      213: -8364061868406672804
+    second: UpgradeBackground_26
+  - first:
+      213: -4613117315401655056
+    second: UpgradeBackground_27
+  - first:
+      213: 8502123113265493749
+    second: UpgradeBackground_28
+  - first:
+      213: 8933294713199785451
+    second: UpgradeBackground_29
+  - first:
+      213: -787395591340898875
+    second: UpgradeBackground_30
+  - first:
+      213: 8796808875509428388
+    second: UpgradeBackground_31
+  - first:
+      213: -6818461404153715353
+    second: UpgradeBackground_32
+  - first:
+      213: 5682990931846007497
+    second: UpgradeBackground_33
+  - first:
+      213: -5312103648067434512
+    second: UpgradeBackground_34
+  - first:
+      213: 7374870564882048310
+    second: UpgradeBackground_35
+  - first:
+      213: -7392772270810849041
+    second: UpgradeBackground_36
+  - first:
+      213: 6274471390212320814
+    second: UpgradeBackground_37
+  - first:
+      213: 3323630335496783294
+    second: UpgradeBackground_38
+  - first:
+      213: -2739631611649282346
+    second: UpgradeBackground_39
+  - first:
+      213: 3170857193604577028
+    second: UpgradeBackground_40
+  - first:
+      213: 7114406562432520044
+    second: UpgradeBackground_41
+  - first:
+      213: -612175227917970003
+    second: UpgradeBackground_42
+  - first:
+      213: -1162227900208731244
+    second: UpgradeBackground_43
+  - first:
+      213: 8559984509392852057
+    second: UpgradeBackground_44
+  - first:
+      213: -4522308909757106607
+    second: UpgradeBackground_45
+  - first:
+      213: 2153616155117067236
+    second: UpgradeBackground_46
+  - first:
+      213: -2121628755949837726
+    second: UpgradeBackground_47
+  - first:
+      213: 2618617350523977655
+    second: UpgradeBackground_48
+  - first:
+      213: -2211263795270410136
+    second: UpgradeBackground_49
+  - first:
+      213: -4189012354178153392
+    second: UpgradeBackground_50
+  - first:
+      213: 4226532616736888686
+    second: UpgradeBackground_51
+  - first:
+      213: 2799595298542904455
+    second: UpgradeBackground_52
+  - first:
+      213: 8860441690647007688
+    second: UpgradeBackground_53
+  - first:
+      213: -7810763227770452614
+    second: UpgradeBackground_54
+  - first:
+      213: -7002151114149808820
+    second: UpgradeBackground_55
+  - first:
+      213: 9121822937981060559
+    second: UpgradeBackground_56
+  - first:
+      213: -7991445308104318036
+    second: UpgradeBackground_57
+  - first:
+      213: 854377921861058230
+    second: UpgradeBackground_58
+  - first:
+      213: 2597767150757128079
+    second: UpgradeBackground_59
+  - first:
+      213: 2384723191721658293
+    second: UpgradeBackground_60
+  - first:
+      213: 1726221315212619833
+    second: UpgradeBackground_61
+  - first:
+      213: -6979502479121082249
+    second: UpgradeBackground_62
+  - first:
+      213: 7339831853880524240
+    second: UpgradeBackground_63
+  - first:
+      213: 4212601903258972298
+    second: UpgradeBackground_64
+  - first:
+      213: -2844515904248654086
+    second: UpgradeBackground_65
+  - first:
+      213: -5107199306483238411
+    second: UpgradeBackground_66
+  - first:
+      213: -2103789946474984671
+    second: UpgradeBackground_67
+  - first:
+      213: 7324753475968561489
+    second: UpgradeBackground_68
+  - first:
+      213: 5591933536777027693
+    second: UpgradeBackground_69
+  - first:
+      213: -7342927156375473271
+    second: UpgradeBackground_70
+  - first:
+      213: -6689151583519818157
+    second: UpgradeBackground_71
+  - first:
+      213: 5021567995540402392
+    second: UpgradeBackground_72
+  - first:
+      213: 8865487145343578277
+    second: UpgradeBackground_73
+  - first:
+      213: 5178193709978837614
+    second: UpgradeBackground_74
+  - first:
+      213: -1536703967678650263
+    second: UpgradeBackground_75
+  - first:
+      213: 6778143611010273258
+    second: UpgradeBackground_76
+  - first:
+      213: -3870150775221683201
+    second: UpgradeBackground_77
+  - first:
+      213: -6318757929979678962
+    second: UpgradeBackground_78
+  - first:
+      213: 806746154525242332
+    second: UpgradeBackground_79
+  - first:
+      213: -1265063026358135532
+    second: UpgradeBackground_80
+  - first:
+      213: 8076977317598270318
+    second: UpgradeBackground_81
+  - first:
+      213: -7634136895469414900
+    second: UpgradeBackground_82
+  - first:
+      213: 334648493834333444
+    second: UpgradeBackground_83
+  - first:
+      213: -2519486755428396767
+    second: UpgradeBackground_84
+  - first:
+      213: 2958289946913819014
+    second: UpgradeBackground_85
+  - first:
+      213: -3540641647165123279
+    second: UpgradeBackground_86
+  - first:
+      213: 4352863571757120475
+    second: UpgradeBackground_87
+  - first:
+      213: -6644484227025138057
+    second: UpgradeBackground_88
+  - first:
+      213: -6812636146018215098
+    second: UpgradeBackground_89
+  - first:
+      213: 2336182115281514563
+    second: UpgradeBackground_90
+  - first:
+      213: -8670801942023546501
+    second: UpgradeBackground_91
+  - first:
+      213: 783442095507390500
+    second: UpgradeBackground_92
+  - first:
+      213: -694620826326260598
+    second: UpgradeBackground_93
+  - first:
+      213: 5532805154874337673
+    second: UpgradeBackground_94
+  - first:
+      213: -7283161675215644615
+    second: UpgradeBackground_95
+  - first:
+      213: -1679159321858946819
+    second: UpgradeBackground_96
+  - first:
+      213: 3186107629644348589
+    second: UpgradeBackground_97
+  - first:
+      213: -6228572572606512889
+    second: UpgradeBackground_98
+  - first:
+      213: -2459349933480227865
+    second: UpgradeBackground_99
+  - first:
+      213: -8489919505138487578
+    second: UpgradeBackground_100
+  - first:
+      213: 2095914868711464023
+    second: UpgradeBackground_101
+  - first:
+      213: 707038023813863718
+    second: UpgradeBackground_102
+  - first:
+      213: 3416408656189023132
+    second: UpgradeBackground_103
+  - first:
+      213: 7941866908080390892
+    second: UpgradeBackground_104
+  - first:
+      213: -8021912407852301236
+    second: UpgradeBackground_105
+  - first:
+      213: 4386985909267233355
+    second: UpgradeBackground_106
+  - first:
+      213: 7896230777659571631
+    second: UpgradeBackground_107
+  - first:
+      213: -4780944005924230804
+    second: UpgradeBackground_108
+  - first:
+      213: -6177455998382304510
+    second: UpgradeBackground_109
+  - first:
+      213: 1542773501200632566
+    second: UpgradeBackground_110
+  - first:
+      213: -6527327644883618569
+    second: UpgradeBackground_111
+  - first:
+      213: -5126945603651488011
+    second: UpgradeBackground_112
+  - first:
+      213: -7943906348800600451
+    second: UpgradeBackground_113
+  - first:
+      213: -3243100199123780125
+    second: UpgradeBackground_114
+  - first:
+      213: 1850486050334861431
+    second: UpgradeBackground_115
+  - first:
+      213: -8992346297687663772
+    second: UpgradeBackground_116
+  - first:
+      213: 4632559208470448863
+    second: UpgradeBackground_117
+  - first:
+      213: -2370903045708728948
+    second: UpgradeBackground_118
+  - first:
+      213: 1044511446963149196
+    second: UpgradeBackground_119
+  - first:
+      213: -1543771844054385043
+    second: UpgradeBackground_120
+  - first:
+      213: -3117361978227082147
+    second: UpgradeBackground_121
+  - first:
+      213: -4710529112649364468
+    second: UpgradeBackground_122
+  - first:
+      213: 1488143677965770845
+    second: UpgradeBackground_123
+  - first:
+      213: -2071722841477220069
+    second: UpgradeBackground_124
+  - first:
+      213: -2481278519155808819
+    second: UpgradeBackground_125
+  - first:
+      213: -4099114163966551236
+    second: UpgradeBackground_126
+  - first:
+      213: 7615400827550152117
+    second: UpgradeBackground_127
+  - first:
+      213: 9211489664840956562
+    second: UpgradeBackground_128
+  - first:
+      213: 7656153456674774652
+    second: UpgradeBackground_129
+  - first:
+      213: -7172302663123778200
+    second: UpgradeBackground_130
+  - first:
+      213: -7822378511553115100
+    second: UpgradeBackground_131
+  - first:
+      213: -6964355688073983606
+    second: UpgradeBackground_132
+  - first:
+      213: -6059836659686767794
+    second: UpgradeBackground_133
+  - first:
+      213: -5939197102885498981
+    second: UpgradeBackground_134
+  - first:
+      213: -8829110371020055600
+    second: UpgradeBackground_135
+  - first:
+      213: 1122773120189264341
+    second: UpgradeBackground_136
+  - first:
+      213: -1081173947205351769
+    second: UpgradeBackground_137
+  - first:
+      213: 6635713839332211936
+    second: UpgradeBackground_138
+  - first:
+      213: -5399988168438289248
+    second: UpgradeBackground_139
+  - first:
+      213: -8881074850163981472
+    second: UpgradeBackground_140
+  - first:
+      213: 2013518270923561582
+    second: UpgradeBackground_141
+  - first:
+      213: 7240014391913975493
+    second: UpgradeBackground_142
+  - first:
+      213: 4148847667429878479
+    second: UpgradeBackground_143
+  - first:
+      213: 4143098276513781737
+    second: UpgradeBackground_144
+  - first:
+      213: 640788147801957465
+    second: UpgradeBackground_145
+  - first:
+      213: 5625993416879383096
+    second: UpgradeBackground_146
+  - first:
+      213: -6561744255664260011
+    second: UpgradeBackground_147
+  - first:
+      213: 7116739209904976032
+    second: UpgradeBackground_148
+  - first:
+      213: -1066996768286428074
+    second: UpgradeBackground_149
+  - first:
+      213: 7506854605159136352
+    second: UpgradeBackground_150
+  - first:
+      213: -2397304575504622407
+    second: UpgradeBackground_151
+  - first:
+      213: 9075206244489558951
+    second: UpgradeBackground_152
+  - first:
+      213: -2617434183945684417
+    second: UpgradeBackground_153
+  - first:
+      213: -7125513263160929656
+    second: UpgradeBackground_154
+  - first:
+      213: 7314673067930000065
+    second: UpgradeBackground_155
+  - first:
+      213: 366929261323220755
+    second: UpgradeBackground_156
+  - first:
+      213: -225922427329648605
+    second: UpgradeBackground_157
+  - first:
+      213: 1759813746060098421
+    second: UpgradeBackground_158
+  - first:
+      213: -5657304434529511271
+    second: UpgradeBackground_159
+  - first:
+      213: -7355734047823827081
+    second: UpgradeBackground_160
+  - first:
+      213: 6726868402423366043
+    second: UpgradeBackground_161
+  - first:
+      213: 3467832238287853148
+    second: UpgradeBackground_162
+  - first:
+      213: -3856243242112478247
+    second: UpgradeBackground_163
+  - first:
+      213: 1811565001258906465
+    second: UpgradeBackground_164
+  - first:
+      213: -4384403745459417886
+    second: UpgradeBackground_165
+  - first:
+      213: 4124220276464707477
+    second: UpgradeBackground_166
+  - first:
+      213: -4430362273348538419
+    second: UpgradeBackground_167
+  - first:
+      213: -4911061626510239629
+    second: UpgradeBackground_168
+  - first:
+      213: 297847331693527422
+    second: UpgradeBackground_169
+  - first:
+      213: 6101326746217838473
+    second: UpgradeBackground_170
+  - first:
+      213: 838893785584911499
+    second: UpgradeBackground_171
+  - first:
+      213: -3761113732699792673
+    second: UpgradeBackground_172
+  - first:
+      213: 2684684777604127004
+    second: UpgradeBackground_173
+  - first:
+      213: -3769809581955463554
+    second: UpgradeBackground_174
+  - first:
+      213: -8738521793528371874
+    second: UpgradeBackground_175
+  - first:
+      213: -7420982892793613382
+    second: UpgradeBackground_176
+  - first:
+      213: -8137200301945199161
+    second: UpgradeBackground_177
+  - first:
+      213: 7371500911164712249
+    second: UpgradeBackground_178
+  - first:
+      213: -8490124996427870172
+    second: UpgradeBackground_179
+  - first:
+      213: 967353683023118836
+    second: UpgradeBackground_180
+  - first:
+      213: -8768384945303531850
+    second: UpgradeBackground_181
+  - first:
+      213: 6266964491389441696
+    second: UpgradeBackground_182
+  - first:
+      213: 2941434793748361329
+    second: UpgradeBackground_183
+  - first:
+      213: -900156216830471072
+    second: UpgradeBackground_184
+  - first:
+      213: -2802629696185706642
+    second: UpgradeBackground_185
+  - first:
+      213: 8001277978314929806
+    second: UpgradeBackground_186
+  - first:
+      213: -6274811002953539296
+    second: UpgradeBackground_187
+  - first:
+      213: -8700271627291145085
+    second: UpgradeBackground_188
+  - first:
+      213: -504229670635145427
+    second: UpgradeBackground_189
+  - first:
+      213: 7087397668165155164
+    second: UpgradeBackground_190
+  - first:
+      213: 1903509042549347240
+    second: UpgradeBackground_191
+  - first:
+      213: 7913022959641277152
+    second: UpgradeBackground_192
+  - first:
+      213: 1390576610672903718
+    second: UpgradeBackground_193
+  - first:
+      213: -515054039833598682
+    second: UpgradeBackground_194
+  - first:
+      213: -7208268296285429603
+    second: UpgradeBackground_195
+  - first:
+      213: -3376618334998531380
+    second: UpgradeBackground_196
+  - first:
+      213: -4696205579621795313
+    second: UpgradeBackground_197
+  - first:
+      213: 913265107888820608
+    second: UpgradeBackground_198
+  - first:
+      213: -1361968717078916973
+    second: UpgradeBackground_199
+  - first:
+      213: -906362978802185006
+    second: UpgradeBackground_200
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: UpgradeBackground_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 113
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e08e2a7b038513190800000000000000
+      internalID: -7984503698088597490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_1
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 0
+        width: 1418
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a459853c6eb8a5cb0800000000000000
+      internalID: -4874429823439039158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_2
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 1016
+        width: 189
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3e22ea2341dced70800000000000000
+      internalID: 9073857435657186875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_3
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 1008
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea1e8d89b51531200800000000000000
+      internalID: 149552666481582510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_4
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 1016
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcbfc81c9c210ae90800000000000000
+      internalID: -7016587561698264115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_5
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 994
+        width: 102
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a03cac3bf68731a0800000000000000
+      internalID: -6829841896271236957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_6
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 971
+        width: 10
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffc33b225fad4c8e0800000000000000
+      internalID: -1673972415090967297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_7
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 1000
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2899be8cdd9c0e40800000000000000
+      internalID: 5624043605291800622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_8
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 1008
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 668a858173cdeba90800000000000000
+      internalID: -7296152217103849370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_9
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 999
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d16e532bd0782c00800000000000000
+      internalID: 876074214017098195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_10
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 993
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4fd8a3df87898ab0800000000000000
+      internalID: -5005320459044462770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_11
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 991
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78d54a1884b374530800000000000000
+      internalID: 3839102389955353991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_12
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 986
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b0e2d03df6d6e250800000000000000
+      internalID: 5973698338687738034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_13
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 976
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbaba7eebd4ac21a0800000000000000
+      internalID: -6832905270122071364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_14
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 975
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c4f9585503df6ab0800000000000000
+      internalID: -5012555840329485111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_15
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 978
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 711aea8869a5a7f50800000000000000
+      internalID: 6879910983346594071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_16
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 963
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9d71455a286d3700800000000000000
+      internalID: 521687662873116062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_17
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 968
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a7bf0d30d1f504a0800000000000000
+      internalID: -6627625399925885015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_18
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 960
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c71aa770c671d8c0800000000000000
+      internalID: -3976266426978003007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_19
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 969
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fb1c847ee7339d80800000000000000
+      internalID: -8245184995488162825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_20
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 942
+        width: 9
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5976f307d29b5b370800000000000000
+      internalID: 8337773889954211733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_21
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 959
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bb0295277a895210800000000000000
+      internalID: 1322240209946020789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_22
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 962
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c97aeeafab78a1200800000000000000
+      internalID: 151582774613944220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_23
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 952
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26a8d82d9118e8b90800000000000000
+      internalID: -7237705603231151518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_24
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 944
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 680488eaeb90298e0800000000000000
+      internalID: -1688276195733913466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_25
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 952
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6724ae4b42fb9c730800000000000000
+      internalID: 4019954306779857526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_26
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 934
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c52fa3e9b02eceb80800000000000000
+      internalID: -8364061868406672804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_27
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 937
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fcd7443e3aeaffb0800000000000000
+      internalID: -4613117315401655056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_28
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 943
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f6f3d2eceb9df570800000000000000
+      internalID: 8502123113265493749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_29
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 928
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be5f526063079fb70800000000000000
+      internalID: 8933294713199785451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_30
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 936
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c5ca68a1eb9215f0800000000000000
+      internalID: -787395591340898875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_31
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 927
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a03eb5901b841a70800000000000000
+      internalID: 8796808875509428388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_32
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 919
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 765e4ba8a75ff51a0800000000000000
+      internalID: -6818461404153715353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_33
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 915
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ca827a842a0ede40800000000000000
+      internalID: 5682990931846007497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_34
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 920
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f742e670ed9746b0800000000000000
+      internalID: -5312103648067434512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_35
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 912
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 635674c74bdc85660800000000000000
+      internalID: 7374870564882048310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_36
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 891
+        width: 9
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe026fcc9c8976990800000000000000
+      internalID: -7392772270810849041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_37
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 906
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2ee4fe5c76631750800000000000000
+      internalID: 6274471390212320814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_38
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 904
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb58ff74e28ef1e20800000000000000
+      internalID: 3323630335496783294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_39
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 862
+        width: 8
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dea63c709fdaf9d0800000000000000
+      internalID: -2739631611649282346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_40
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 854
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 407fa4251d5210c20800000000000000
+      internalID: 3170857193604577028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_41
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 614
+        width: 12
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6f8f7523137bb260800000000000000
+      internalID: 7114406562432520044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_42
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 819
+        width: 10
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da5d7a7afdd1187f0800000000000000
+      internalID: -612175227917970003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_43
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 808
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49ba20ce1efeedfe0800000000000000
+      internalID: -1162227900208731244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_44
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 794
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 954153dfe8c2bc670800000000000000
+      internalID: 8559984509392852057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_45
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 767
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 156f75db1088d31c0800000000000000
+      internalID: -4522308909757106607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_46
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 776
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4eb9b449b7e23ed10800000000000000
+      internalID: 2153616155117067236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_47
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 763
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2622b5823e57e82e0800000000000000
+      internalID: -2121628755949837726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_48
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 733
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bff7a43b92375420800000000000000
+      internalID: 2618617350523977655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_49
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 723
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 860a9324b430051e0800000000000000
+      internalID: -2211263795270410136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_50
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 688
+        width: 21
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0540d7d4573add5c0800000000000000
+      internalID: -4189012354178153392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_51
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 717
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6754349509a7aa30800000000000000
+      internalID: 4226532616736888686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_52
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 722
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 784e08457192ad620800000000000000
+      internalID: 2799595298542904455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_53
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 713
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c19314e5cc96fa70800000000000000
+      internalID: 8860441690647007688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_54
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 693
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a750f004a389a9390800000000000000
+      internalID: -7810763227770452614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_55
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 685
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c45be7129ac53de90800000000000000
+      internalID: -7002151114149808820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_56
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 680
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc50f52f1a9379e70800000000000000
+      internalID: 9121822937981060559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_57
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 677
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca3ea7035dea81190800000000000000
+      internalID: -7991445308104318036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_58
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 671
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bef678713c5bdb00800000000000000
+      internalID: 854377921861058230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_59
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 663
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f87ae06c57f1d0420800000000000000
+      internalID: 2597767150757128079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_60
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 664
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b7843aab1d381120800000000000000
+      internalID: 2384723191721658293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_61
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 669
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 930b4f8e325c4f710800000000000000
+      internalID: 1726221315212619833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_62
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 656
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77897076973d32f90800000000000000
+      internalID: -6979502479121082249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_63
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 651
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dd35a9de225cd560800000000000000
+      internalID: 7339831853880524240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_64
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 640
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a80b2e79c1b267a30800000000000000
+      internalID: 4212601903258972298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_65
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 606
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af65f412bdf3688d0800000000000000
+      internalID: -2844515904248654086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_66
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 611
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f9f1f33a459f19b0800000000000000
+      internalID: -5107199306483238411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_67
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 592
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12b0256a036ddc2e0800000000000000
+      internalID: -2103789946474984671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_68
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 600
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 151f96a6a70c6a560800000000000000
+      internalID: 7324753475968561489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_69
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 602
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d604033ace98a9d40800000000000000
+      internalID: 5591933536777027693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_70
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 566
+        width: 8
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 983bba0e7aea81a90800000000000000
+      internalID: -7342927156375473271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_71
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 592
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35e3f8f431c5b23a0800000000000000
+      internalID: -6689151583519818157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_72
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 526
+        width: 8
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d0f7ad8c7130b540800000000000000
+      internalID: 5021567995540402392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_73
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 510
+        width: 8
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a0fefa5699880b70800000000000000
+      internalID: 8865487145343578277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_74
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 499
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6263757eb3acd740800000000000000
+      internalID: 5178193709978837614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_75
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 494
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 968a49912e78caae0800000000000000
+      internalID: -1536703967678650263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_76
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 470
+        width: 8
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aefc9dab3bdc01e50800000000000000
+      internalID: 6778143611010273258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_77
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 445
+        width: 8
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffb75b7ff567a4ac0800000000000000
+      internalID: -3870150775221683201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_78
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 422
+        width: 8
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0fe0e114234f48a0800000000000000
+      internalID: -6318757929979678962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_79
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 448
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd3b36c6a53223b00800000000000000
+      internalID: 806746154525242332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_80
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 424
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 415517f41e7917ee0800000000000000
+      internalID: -1265063026358135532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_81
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 427
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e631552a310371070800000000000000
+      internalID: 8076977317598270318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_82
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 350
+        width: 12
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0697d2e0f81e0690800000000000000
+      internalID: -7634136895469414900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_83
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 415
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40d6d973809e4a400800000000000000
+      internalID: 334648493834333444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_84
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 407
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 121936e052cf80dd0800000000000000
+      internalID: -2519486755428396767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_85
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 399
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68948647805fd0920800000000000000
+      internalID: 2958289946913819014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_86
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 392
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 135d4c75e2d1ddec0800000000000000
+      internalID: -3540641647165123279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_87
+      rect:
+        serializedVersion: 2
+        x: 1359
+        y: 387
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdb32562b5a786c30800000000000000
+      internalID: 4352863571757120475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_88
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 362
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e0b7caccc0ac3a0800000000000000
+      internalID: -6644484227025138057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_89
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 357
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64b19942587a471a0800000000000000
+      internalID: -6812636146018215098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_90
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 352
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 340b9f79149cb6020800000000000000
+      internalID: 2336182115281514563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_91
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 367
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b795be7d29f1ba780800000000000000
+      internalID: -8670801942023546501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_92
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 370
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4204ecc5f685fda00800000000000000
+      internalID: 783442095507390500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_93
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 363
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a842c39e9063c56f0800000000000000
+      internalID: -694620826326260598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_94
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 302
+        width: 10
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9892cbb69f878cc40800000000000000
+      internalID: 5532805154874337673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_95
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 308
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93858035b030dea90800000000000000
+      internalID: -7283161675215644615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_96
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 296
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df8cf4b4e7d62b8e0800000000000000
+      internalID: -1679159321858946819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_97
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 286
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dacfc192204573c20800000000000000
+      internalID: 3186107629644348589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_98
+      rect:
+        serializedVersion: 2
+        x: 1504
+        y: 295
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7014c00ee3aaf89a0800000000000000
+      internalID: -6228572572606512889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_99
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 278
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ebc7840442aeddd0800000000000000
+      internalID: -2459349933480227865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_100
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 264
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ee6f8c013fbd2a80800000000000000
+      internalID: -8489919505138487578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_101
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 267
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75c910de77f261d10800000000000000
+      internalID: 2095914868711464023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_102
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 251
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6299e1c2657efc900800000000000000
+      internalID: 707038023813863718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_103
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 259
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9367b76295896f20800000000000000
+      internalID: 3416408656189023132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_104
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 227
+        width: 8
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce2cf8500ed273e60800000000000000
+      internalID: 7941866908080390892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_105
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 248
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c444aaeba217ca090800000000000000
+      internalID: -8021912407852301236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_106
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 240
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4a7484f074b1ec30800000000000000
+      internalID: 4386985909267233355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_107
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 220
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fadb7e66e0c059d60800000000000000
+      internalID: 7896230777659571631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_108
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 216
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c696ad3d1cca6adb0800000000000000
+      internalID: -4780944005924230804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_109
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 222
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20311d0cf74454aa0800000000000000
+      internalID: -6177455998382304510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_110
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 216
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fa03fb4358096510800000000000000
+      internalID: 1542773501200632566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_111
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 218
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f4ff1a17164a65a0800000000000000
+      internalID: -6527327644883618569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_112
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 208
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f63a9f132e69d8b0800000000000000
+      internalID: -5126945603651488011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_113
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 176
+        width: 14
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7615cea34391c190800000000000000
+      internalID: -7943906348800600451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_114
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 190
+        width: 8
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ed7a343d813ef2d0800000000000000
+      internalID: -3243100199123780125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_115
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 210
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 778660c224f3ea910800000000000000
+      internalID: 1850486050334861431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_116
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 198
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46b170d8fa4c43380800000000000000
+      internalID: -8992346297687663772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_117
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 193
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fda88d54e082a4040800000000000000
+      internalID: 4632559208470448863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_118
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 200
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c85b3a3dd3cd81fd0800000000000000
+      internalID: -2370903045708728948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_119
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 192
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c89511080a9de7e00800000000000000
+      internalID: 1044511446963149196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_120
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 190
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6e73e4efab639ae0800000000000000
+      internalID: -1543771844054385043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_121
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 181
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5c377b1cc7ecb4d0800000000000000
+      internalID: -3117361978227082147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_122
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 184
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0c0660cab6d0aeb0800000000000000
+      internalID: -4710529112649364468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_123
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 187
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d50a4e36ac2f6a410800000000000000
+      internalID: 1488143677965770845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_124
+      rect:
+        serializedVersion: 2
+        x: 971
+        y: 187
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b19ffa85d03cf33e0800000000000000
+      internalID: -2071722841477220069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_125
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 181
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc529ec455ab09dd0800000000000000
+      internalID: -2481278519155808819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_126
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 186
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3b500bc2650d17c0800000000000000
+      internalID: -4099114163966551236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_127
+      rect:
+        serializedVersion: 2
+        x: 827
+        y: 176
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b5b75c54b65fa960800000000000000
+      internalID: 7615400827550152117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_128
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 179
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29af60dab09c5df70800000000000000
+      internalID: 9211489664840956562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_129
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 181
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7e9afa310f104a60800000000000000
+      internalID: 7656153456674774652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_130
+      rect:
+        serializedVersion: 2
+        x: 1038
+        y: 158
+        width: 11
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8654be67abcd67c90800000000000000
+      internalID: -7172302663123778200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_131
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 178
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42c4a304034517390800000000000000
+      internalID: -7822378511553115100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_132
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 176
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8901e28663a95f90800000000000000
+      internalID: -6964355688073983606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_133
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 160
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e430b761aa227eba0800000000000000
+      internalID: -6059836659686767794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_134
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 160
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9f0b7fb3bbb39da0800000000000000
+      internalID: -5939197102885498981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_135
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 171
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dbd1ac65e2b87580800000000000000
+      internalID: -8829110371020055600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_136
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 168
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d1fc304434e49f00800000000000000
+      internalID: 1122773120189264341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_137
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 168
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a60b68f506eef0f0800000000000000
+      internalID: -1081173947205351769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_138
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 171
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ec3a80549ac61c50800000000000000
+      internalID: 6635713839332211936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_139
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 168
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ac6ce40f536f05b0800000000000000
+      internalID: -5399988168438289248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_140
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 160
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 063025c4a7510c480800000000000000
+      internalID: -8881074850163981472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_141
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 160
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a5827033471fb10800000000000000
+      internalID: 2013518270923561582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_142
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 163
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ce8fbeeab2b97460800000000000000
+      internalID: 7240014391913975493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_143
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 162
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcaad54d8faa39930800000000000000
+      internalID: 4148847667429878479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_144
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 138
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e713217eed3f7930800000000000000
+      internalID: 4143098276513781737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_145
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 152
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9542406ec6984e800800000000000000
+      internalID: 640788147801957465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_146
+      rect:
+        serializedVersion: 2
+        x: 971
+        y: 144
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83228c1743b831e40800000000000000
+      internalID: 5625993416879383096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_147
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 143
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55cfb267d5000f4a0800000000000000
+      internalID: -6561744255664260011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_148
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 152
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a0fa75fa9cb3c260800000000000000
+      internalID: 7116739209904976032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_149
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 142
+        width: 8
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6543cc9a7144131f0800000000000000
+      internalID: -1066996768286428074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_150
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 154
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06cf3098d74bd2860800000000000000
+      internalID: 7506854605159136352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_151
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 153
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bcd0a6a0301bbed0800000000000000
+      internalID: -2397304575504622407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_152
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 145
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7abf4323ffb91fd70800000000000000
+      internalID: 9075206244489558951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_153
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 126
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3af3fa3a710dabd0800000000000000
+      internalID: -2617434183945684417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_154
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 136
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88255f290771d1d90800000000000000
+      internalID: -7125513263160929656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_155
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 136
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ca95168660f28560800000000000000
+      internalID: 7314673067930000065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_156
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 135
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 317fdd61838971500800000000000000
+      internalID: 366929261323220755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_157
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 138
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 328e834dfbc5ddcf0800000000000000
+      internalID: -225922427329648605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_158
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 128
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57bf2c4374d1c6810800000000000000
+      internalID: 1759813746060098421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_159
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 120
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99850a927973d71b0800000000000000
+      internalID: -5657304434529511271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_160
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 117
+        width: 8
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77fe6391bde2be990800000000000000
+      internalID: -7355734047823827081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_161
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 104
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b918e39eb23aa5d50800000000000000
+      internalID: 6726868402423366043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_162
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 112
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c569bcf1c07302030800000000000000
+      internalID: 3467832238287853148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_163
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 103
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d3926ad33fdb7ac0800000000000000
+      internalID: -3856243242112478247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_164
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 110
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 163319345c8f32910800000000000000
+      internalID: 1811565001258906465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_165
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 102
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eccff7e5087723c0800000000000000
+      internalID: -4384403745459417886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_166
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 86
+        width: 8
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 597642a8d7c2c3930800000000000000
+      internalID: 4124220276464707477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_167
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 96
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcfa4c64cf03482c0800000000000000
+      internalID: -4430362273348538419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_168
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 96
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3781ec9787768dbb0800000000000000
+      internalID: -4911061626510239629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_169
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 99
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7104e2f19a222400800000000000000
+      internalID: 297847331693527422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_170
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 94
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98777e679544ca450800000000000000
+      internalID: 6101326746217838473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_171
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 93
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b84421e047954ab00800000000000000
+      internalID: 838893785584911499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_172
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 98
+        width: 11
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdad592ccf6ddcbc0800000000000000
+      internalID: -3761113732699792673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_173
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 88
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c191ef6c49ae14520800000000000000
+      internalID: 2684684777604127004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_174
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 80
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e764ea49822feabc0800000000000000
+      internalID: -3769809581955463554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_175
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 70
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e556bba3ab88ab680800000000000000
+      internalID: -8738521793528371874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_176
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 59
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab339c6806f530990800000000000000
+      internalID: -7420982892793613382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_177
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 72
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c5ea58207bd21f80800000000000000
+      internalID: -8137200301945199161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_178
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 64
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 935e077d505dc4660800000000000000
+      internalID: 7371500911164712249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_179
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 71
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42090416c440d2a80800000000000000
+      internalID: -8490124996427870172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_180
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 53
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f142c8ac0bbc6d00800000000000000
+      internalID: 967353683023118836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_181
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 48
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6becc416950705680800000000000000
+      internalID: -8768384945303531850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_182
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 46
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a61149400bb8f650800000000000000
+      internalID: 6266964491389441696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_183
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 50
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 170785b4c5312d820800000000000000
+      internalID: 2941434793748361329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_184
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 22
+        width: 8
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 064d575a0b00283f0800000000000000
+      internalID: -900156216830471072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_185
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 35
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e67d3e9e32f0b19d0800000000000000
+      internalID: -2802629696185706642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_186
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 41
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e86fd9ebdef3a0f60800000000000000
+      internalID: 8001277978314929806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_187
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 39
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 021ed3063a46be8a0800000000000000
+      internalID: -6274811002953539296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_188
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 43
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38cc6ed0d0d624780800000000000000
+      internalID: -8700271627291145085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_189
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 23
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d27749c39cd9009f0800000000000000
+      internalID: -504229670635145427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_190
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 30
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c597ae8e0ae7b5260800000000000000
+      internalID: 7087397668165155164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_191
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 26
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a3d5e3936f9a6a10800000000000000
+      internalID: 1903509042549347240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_192
+      rect:
+        serializedVersion: 2
+        x: 1089
+        y: 33
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e2bde0f474b0dd60800000000000000
+      internalID: 7913022959641277152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_193
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 11
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62600205f025c4310800000000000000
+      internalID: 1390576610672903718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_194
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 16
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 625a69364192ad8f0800000000000000
+      internalID: -515054039833598682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_195
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 23
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d906232fc2617fb90800000000000000
+      internalID: -7208268296285429603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_196
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 6
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc27750b387d321d0800000000000000
+      internalID: -3376618334998531380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_197
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 8
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0a7f6a28e9b3deb0800000000000000
+      internalID: -4696205579621795313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_198
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 10
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 081d875e6c19cac00800000000000000
+      internalID: 913265107888820608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_199
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 0
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3901157faa0591de0800000000000000
+      internalID: -1361968717078916973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpgradeBackground_200
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 0
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dc4ee24ca3fb63f0800000000000000
+      internalID: -906362978802185006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      UpgradeBackground_0: -7984503698088597490
+      UpgradeBackground_1: -4874429823439039158
+      UpgradeBackground_10: -5005320459044462770
+      UpgradeBackground_100: -8489919505138487578
+      UpgradeBackground_101: 2095914868711464023
+      UpgradeBackground_102: 707038023813863718
+      UpgradeBackground_103: 3416408656189023132
+      UpgradeBackground_104: 7941866908080390892
+      UpgradeBackground_105: -8021912407852301236
+      UpgradeBackground_106: 4386985909267233355
+      UpgradeBackground_107: 7896230777659571631
+      UpgradeBackground_108: -4780944005924230804
+      UpgradeBackground_109: -6177455998382304510
+      UpgradeBackground_11: 3839102389955353991
+      UpgradeBackground_110: 1542773501200632566
+      UpgradeBackground_111: -6527327644883618569
+      UpgradeBackground_112: -5126945603651488011
+      UpgradeBackground_113: -7943906348800600451
+      UpgradeBackground_114: -3243100199123780125
+      UpgradeBackground_115: 1850486050334861431
+      UpgradeBackground_116: -8992346297687663772
+      UpgradeBackground_117: 4632559208470448863
+      UpgradeBackground_118: -2370903045708728948
+      UpgradeBackground_119: 1044511446963149196
+      UpgradeBackground_12: 5973698338687738034
+      UpgradeBackground_120: -1543771844054385043
+      UpgradeBackground_121: -3117361978227082147
+      UpgradeBackground_122: -4710529112649364468
+      UpgradeBackground_123: 1488143677965770845
+      UpgradeBackground_124: -2071722841477220069
+      UpgradeBackground_125: -2481278519155808819
+      UpgradeBackground_126: -4099114163966551236
+      UpgradeBackground_127: 7615400827550152117
+      UpgradeBackground_128: 9211489664840956562
+      UpgradeBackground_129: 7656153456674774652
+      UpgradeBackground_13: -6832905270122071364
+      UpgradeBackground_130: -7172302663123778200
+      UpgradeBackground_131: -7822378511553115100
+      UpgradeBackground_132: -6964355688073983606
+      UpgradeBackground_133: -6059836659686767794
+      UpgradeBackground_134: -5939197102885498981
+      UpgradeBackground_135: -8829110371020055600
+      UpgradeBackground_136: 1122773120189264341
+      UpgradeBackground_137: -1081173947205351769
+      UpgradeBackground_138: 6635713839332211936
+      UpgradeBackground_139: -5399988168438289248
+      UpgradeBackground_14: -5012555840329485111
+      UpgradeBackground_140: -8881074850163981472
+      UpgradeBackground_141: 2013518270923561582
+      UpgradeBackground_142: 7240014391913975493
+      UpgradeBackground_143: 4148847667429878479
+      UpgradeBackground_144: 4143098276513781737
+      UpgradeBackground_145: 640788147801957465
+      UpgradeBackground_146: 5625993416879383096
+      UpgradeBackground_147: -6561744255664260011
+      UpgradeBackground_148: 7116739209904976032
+      UpgradeBackground_149: -1066996768286428074
+      UpgradeBackground_15: 6879910983346594071
+      UpgradeBackground_150: 7506854605159136352
+      UpgradeBackground_151: -2397304575504622407
+      UpgradeBackground_152: 9075206244489558951
+      UpgradeBackground_153: -2617434183945684417
+      UpgradeBackground_154: -7125513263160929656
+      UpgradeBackground_155: 7314673067930000065
+      UpgradeBackground_156: 366929261323220755
+      UpgradeBackground_157: -225922427329648605
+      UpgradeBackground_158: 1759813746060098421
+      UpgradeBackground_159: -5657304434529511271
+      UpgradeBackground_16: 521687662873116062
+      UpgradeBackground_160: -7355734047823827081
+      UpgradeBackground_161: 6726868402423366043
+      UpgradeBackground_162: 3467832238287853148
+      UpgradeBackground_163: -3856243242112478247
+      UpgradeBackground_164: 1811565001258906465
+      UpgradeBackground_165: -4384403745459417886
+      UpgradeBackground_166: 4124220276464707477
+      UpgradeBackground_167: -4430362273348538419
+      UpgradeBackground_168: -4911061626510239629
+      UpgradeBackground_169: 297847331693527422
+      UpgradeBackground_17: -6627625399925885015
+      UpgradeBackground_170: 6101326746217838473
+      UpgradeBackground_171: 838893785584911499
+      UpgradeBackground_172: -3761113732699792673
+      UpgradeBackground_173: 2684684777604127004
+      UpgradeBackground_174: -3769809581955463554
+      UpgradeBackground_175: -8738521793528371874
+      UpgradeBackground_176: -7420982892793613382
+      UpgradeBackground_177: -8137200301945199161
+      UpgradeBackground_178: 7371500911164712249
+      UpgradeBackground_179: -8490124996427870172
+      UpgradeBackground_18: -3976266426978003007
+      UpgradeBackground_180: 967353683023118836
+      UpgradeBackground_181: -8768384945303531850
+      UpgradeBackground_182: 6266964491389441696
+      UpgradeBackground_183: 2941434793748361329
+      UpgradeBackground_184: -900156216830471072
+      UpgradeBackground_185: -2802629696185706642
+      UpgradeBackground_186: 8001277978314929806
+      UpgradeBackground_187: -6274811002953539296
+      UpgradeBackground_188: -8700271627291145085
+      UpgradeBackground_189: -504229670635145427
+      UpgradeBackground_19: -8245184995488162825
+      UpgradeBackground_190: 7087397668165155164
+      UpgradeBackground_191: 1903509042549347240
+      UpgradeBackground_192: 7913022959641277152
+      UpgradeBackground_193: 1390576610672903718
+      UpgradeBackground_194: -515054039833598682
+      UpgradeBackground_195: -7208268296285429603
+      UpgradeBackground_196: -3376618334998531380
+      UpgradeBackground_197: -4696205579621795313
+      UpgradeBackground_198: 913265107888820608
+      UpgradeBackground_199: -1361968717078916973
+      UpgradeBackground_2: 9073857435657186875
+      UpgradeBackground_20: 8337773889954211733
+      UpgradeBackground_200: -906362978802185006
+      UpgradeBackground_21: 1322240209946020789
+      UpgradeBackground_22: 151582774613944220
+      UpgradeBackground_23: -7237705603231151518
+      UpgradeBackground_24: -1688276195733913466
+      UpgradeBackground_25: 4019954306779857526
+      UpgradeBackground_26: -8364061868406672804
+      UpgradeBackground_27: -4613117315401655056
+      UpgradeBackground_28: 8502123113265493749
+      UpgradeBackground_29: 8933294713199785451
+      UpgradeBackground_3: 149552666481582510
+      UpgradeBackground_30: -787395591340898875
+      UpgradeBackground_31: 8796808875509428388
+      UpgradeBackground_32: -6818461404153715353
+      UpgradeBackground_33: 5682990931846007497
+      UpgradeBackground_34: -5312103648067434512
+      UpgradeBackground_35: 7374870564882048310
+      UpgradeBackground_36: -7392772270810849041
+      UpgradeBackground_37: 6274471390212320814
+      UpgradeBackground_38: 3323630335496783294
+      UpgradeBackground_39: -2739631611649282346
+      UpgradeBackground_4: -7016587561698264115
+      UpgradeBackground_40: 3170857193604577028
+      UpgradeBackground_41: 7114406562432520044
+      UpgradeBackground_42: -612175227917970003
+      UpgradeBackground_43: -1162227900208731244
+      UpgradeBackground_44: 8559984509392852057
+      UpgradeBackground_45: -4522308909757106607
+      UpgradeBackground_46: 2153616155117067236
+      UpgradeBackground_47: -2121628755949837726
+      UpgradeBackground_48: 2618617350523977655
+      UpgradeBackground_49: -2211263795270410136
+      UpgradeBackground_5: -6829841896271236957
+      UpgradeBackground_50: -4189012354178153392
+      UpgradeBackground_51: 4226532616736888686
+      UpgradeBackground_52: 2799595298542904455
+      UpgradeBackground_53: 8860441690647007688
+      UpgradeBackground_54: -7810763227770452614
+      UpgradeBackground_55: -7002151114149808820
+      UpgradeBackground_56: 9121822937981060559
+      UpgradeBackground_57: -7991445308104318036
+      UpgradeBackground_58: 854377921861058230
+      UpgradeBackground_59: 2597767150757128079
+      UpgradeBackground_6: -1673972415090967297
+      UpgradeBackground_60: 2384723191721658293
+      UpgradeBackground_61: 1726221315212619833
+      UpgradeBackground_62: -6979502479121082249
+      UpgradeBackground_63: 7339831853880524240
+      UpgradeBackground_64: 4212601903258972298
+      UpgradeBackground_65: -2844515904248654086
+      UpgradeBackground_66: -5107199306483238411
+      UpgradeBackground_67: -2103789946474984671
+      UpgradeBackground_68: 7324753475968561489
+      UpgradeBackground_69: 5591933536777027693
+      UpgradeBackground_7: 5624043605291800622
+      UpgradeBackground_70: -7342927156375473271
+      UpgradeBackground_71: -6689151583519818157
+      UpgradeBackground_72: 5021567995540402392
+      UpgradeBackground_73: 8865487145343578277
+      UpgradeBackground_74: 5178193709978837614
+      UpgradeBackground_75: -1536703967678650263
+      UpgradeBackground_76: 6778143611010273258
+      UpgradeBackground_77: -3870150775221683201
+      UpgradeBackground_78: -6318757929979678962
+      UpgradeBackground_79: 806746154525242332
+      UpgradeBackground_8: -7296152217103849370
+      UpgradeBackground_80: -1265063026358135532
+      UpgradeBackground_81: 8076977317598270318
+      UpgradeBackground_82: -7634136895469414900
+      UpgradeBackground_83: 334648493834333444
+      UpgradeBackground_84: -2519486755428396767
+      UpgradeBackground_85: 2958289946913819014
+      UpgradeBackground_86: -3540641647165123279
+      UpgradeBackground_87: 4352863571757120475
+      UpgradeBackground_88: -6644484227025138057
+      UpgradeBackground_89: -6812636146018215098
+      UpgradeBackground_9: 876074214017098195
+      UpgradeBackground_90: 2336182115281514563
+      UpgradeBackground_91: -8670801942023546501
+      UpgradeBackground_92: 783442095507390500
+      UpgradeBackground_93: -694620826326260598
+      UpgradeBackground_94: 5532805154874337673
+      UpgradeBackground_95: -7283161675215644615
+      UpgradeBackground_96: -1679159321858946819
+      UpgradeBackground_97: 3186107629644348589
+      UpgradeBackground_98: -6228572572606512889
+      UpgradeBackground_99: -2459349933480227865
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -678,7 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac39022e4aa941f995a85bcbc228e255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  maxHealth: 5
+  maxHealth: 1
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
@@ -749,6 +749,10 @@ MonoBehaviour:
   doubloonPickupPrefab: {fileID: 6201677647806777943, guid: 1024b82832b8c5d49a158a59422883d7, type: 3}
   minDoubloonDrops: 1
   maxDoubloonDrops: 4
+  xpPickupPrefab: {fileID: 0}
+  minXPDrops: 1
+  maxXPDrops: 3
+  xpAmountPerPickup: 1
   dropScatterRadius: 0.75
   logDrops: 0
 --- !u!1 &8678523923253002099
