@@ -13,6 +13,10 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private TMP_Text promptText;
     [SerializeField] private float messageDuration = 2f;
 
+    [Header("Scene Flow")]
+    [SerializeField] private string mainSeaSceneName = "MainSea";
+    [SerializeField] private bool logSceneTransitions = true;
+
     [Header("Stat Upgrade Text")]
     [SerializeField] private TMP_Text healthUpgradeText;
     [SerializeField] private TMP_Text speedUpgradeText;
@@ -44,6 +48,13 @@ public class ShipShopController : MonoBehaviour
     private void Start()
     {
         progression = PlayerProgression.Instance;
+
+        if (progression == null)
+        {
+            Debug.LogWarning("ShipShopController: PlayerProgression singleton could not be created.", this);
+            return;
+        }
+
         RefreshUI();
     }
 
@@ -54,6 +65,11 @@ public class ShipShopController : MonoBehaviour
 
     public void UnlockDash()
     {
+        if (!HasProgression())
+        {
+            return;
+        }
+
         if (progression.IsDashUnlocked())
         {
             SetMessage("Already unlocked.");
@@ -75,6 +91,11 @@ public class ShipShopController : MonoBehaviour
 
     public void UnlockForceField()
     {
+        if (!HasProgression())
+        {
+            return;
+        }
+
         if (progression.IsForceFieldUnlocked())
         {
             SetMessage("Already unlocked.");
@@ -94,12 +115,16 @@ public class ShipShopController : MonoBehaviour
         RefreshUI();
     }
 
-    // Keep legacy button methods functional.
     public void BuyDashUnlock() => UnlockDash();
     public void BuyForceFieldUnlock() => UnlockForceField();
 
     public void BuyOrSelectCosmetic(int index)
     {
+        if (!HasProgression())
+        {
+            return;
+        }
+
         if (index < 0 || index >= cosmeticIds.Length)
         {
             return;
@@ -144,8 +169,20 @@ public class ShipShopController : MonoBehaviour
 
     public void StartRun()
     {
+        if (logSceneTransitions)
+        {
+            Debug.Log($"Starting run, loading {mainSeaSceneName}", this);
+        }
+
         SetMessage("Setting sail...");
-        SceneManager.LoadScene("MainSea");
+
+        if (string.IsNullOrWhiteSpace(mainSeaSceneName))
+        {
+            Debug.LogWarning("ShipShopController: mainSeaSceneName is empty.", this);
+            return;
+        }
+
+        SceneManager.LoadScene(mainSeaSceneName);
     }
 
     private int GetHealthUpgradeCost() => healthBaseCost * (progression.GetPermanentHealthLevel() + 1);
@@ -155,6 +192,11 @@ public class ShipShopController : MonoBehaviour
 
     private void TryBuyUpgrade(int cost, System.Func<int, bool> buyAction, string successMessage)
     {
+        if (!HasProgression())
+        {
+            return;
+        }
+
         if (!buyAction(cost))
         {
             SetMessage("Not enough doubloons.");
@@ -164,6 +206,23 @@ public class ShipShopController : MonoBehaviour
 
         SetMessage(successMessage);
         RefreshUI();
+    }
+
+    private bool HasProgression()
+    {
+        if (progression != null)
+        {
+            return true;
+        }
+
+        progression = PlayerProgression.Instance;
+        if (progression == null)
+        {
+            Debug.LogWarning("ShipShopController: PlayerProgression is unavailable.", this);
+            return false;
+        }
+
+        return true;
     }
 
     private void SetMessage(string message)
@@ -199,6 +258,11 @@ public class ShipShopController : MonoBehaviour
 
     private void RefreshUI()
     {
+        if (!HasProgression())
+        {
+            return;
+        }
+
         if (doubloonsText != null)
         {
             doubloonsText.text = $"Doubloons: {progression.GetDoubloons()}";
