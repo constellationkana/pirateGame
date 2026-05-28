@@ -10,7 +10,10 @@ public class RunTimerDirector : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float secondSpawnerTime = 60f;
     [SerializeField] private float bossSpawnTime = 300f;
+    [SerializeField] private bool timerEnabled = true;
     [SerializeField] private bool startTimerOnAwake = true;
+    [SerializeField] private bool countOnlyWhenPlayerBoarded = true;
+    [SerializeField] private bool logTimerDebug;
 
     [Header("Spawners")]
     [SerializeField] private MonoBehaviour[] normalSpawners;
@@ -32,12 +35,14 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private bool bossSpawned;
     [SerializeField] private GameObject spawnedBoss;
 
+    private ShipController2D playerShipController;
     private bool timerRunning;
+    private float nextDebugLogTime;
 
     private void Awake()
     {
-        ResolvePlayerShipReference();
         timerRunning = startTimerOnAwake;
+        ResolvePlayerReferences();
         RefreshTimerText();
 
         if (eventMessageText != null)
@@ -48,12 +53,33 @@ public class RunTimerDirector : MonoBehaviour
 
     private void Update()
     {
-        if (!timerRunning)
+        ResolvePlayerReferencesIfNeeded();
+
+        if (logTimerDebug && Time.unscaledTime >= nextDebugLogTime)
         {
-            return;
+            nextDebugLogTime = Time.unscaledTime + 1f;
+            Debug.Log(
+                $"RunTimerDirector debug | timerEnabled={timerEnabled} timerRunning={timerRunning} countOnlyWhenPlayerBoarded={countOnlyWhenPlayerBoarded} " +
+                $"shipControllerFound={(playerShipController != null)} playerOnBoard={(playerShipController != null && playerShipController.PlayerOnBoard)} " +
+                $"timeScale={Time.timeScale:F2} deltaTime={Time.deltaTime:F3} elapsed={elapsedTime:F2}",
+                this);
         }
 
-        elapsedTime += Time.deltaTime;
+        bool shouldCount = timerEnabled && timerRunning;
+
+        if (shouldCount && countOnlyWhenPlayerBoarded)
+        {
+            if (playerShipController == null || !playerShipController.PlayerOnBoard)
+            {
+                shouldCount = false;
+            }
+        }
+
+        if (shouldCount)
+        {
+            elapsedTime += Time.deltaTime;
+        }
+
         RefreshTimerText();
 
         if (!secondSpawnerActivated && elapsedTime >= secondSpawnerTime)
@@ -67,15 +93,8 @@ public class RunTimerDirector : MonoBehaviour
         }
     }
 
-    public void StartTimer()
-    {
-        timerRunning = true;
-    }
-
-    public void StopTimer()
-    {
-        timerRunning = false;
-    }
+    public void StartTimer() => timerRunning = true;
+    public void StopTimer() => timerRunning = false;
 
     private void RefreshTimerText()
     {
@@ -87,7 +106,6 @@ public class RunTimerDirector : MonoBehaviour
         int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(elapsedTime));
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
-
         timerText.text = $"{minutes:00}:{seconds:00}";
     }
 
@@ -137,46 +155,35 @@ public class RunTimerDirector : MonoBehaviour
             return;
         }
 
-        ResolvePlayerShipReference();
+        ResolvePlayerReferences();
         Vector3 spawnPosition = GetBossSpawnPosition();
-
         spawnedBoss = Instantiate(bossShipPrefab, spawnPosition, Quaternion.identity);
 
-        ShipController2D playerController = playerShip != null
-            ? playerShip.GetComponent<ShipController2D>()
-            : FindFirstObjectByType<ShipController2D>();
-
-        ShipHealth playerHealth = playerShip != null
-            ? playerShip.GetComponent<ShipHealth>()
-            : (playerController != null ? playerController.GetComponent<ShipHealth>() : null);
-
-        if (playerHealth == null && playerController != null)
+        ShipHealth playerHealth = null;
+        if (playerShip != null)
         {
-            playerHealth = playerController.GetComponentInParent<ShipHealth>();
+            playerHealth = playerShip.GetComponent<ShipHealth>() ?? playerShip.GetComponentInParent<ShipHealth>();
         }
 
-        SimpleEnemyShipAI ai = spawnedBoss.GetComponent<SimpleEnemyShipAI>();
-        if (ai == null)
+        if (playerHealth == null && playerShipController != null)
         {
-            ai = spawnedBoss.GetComponentInChildren<SimpleEnemyShipAI>(true);
+            playerHealth = playerShipController.GetComponent<ShipHealth>() ?? playerShipController.GetComponentInParent<ShipHealth>();
         }
 
+        SimpleEnemyShipAI ai = spawnedBoss.GetComponent<SimpleEnemyShipAI>()
+                               ?? spawnedBoss.GetComponentInChildren<SimpleEnemyShipAI>(true);
         if (ai != null)
         {
             ai.enabled = true;
-            ai.Initialize(playerShip, playerController);
+            ai.Initialize(playerShip, playerShipController);
         }
 
-        EnemyShipAttack attack = spawnedBoss.GetComponent<EnemyShipAttack>();
-        if (attack == null)
-        {
-            attack = spawnedBoss.GetComponentInChildren<EnemyShipAttack>(true);
-        }
-
+        EnemyShipAttack attack = spawnedBoss.GetComponent<EnemyShipAttack>()
+                                ?? spawnedBoss.GetComponentInChildren<EnemyShipAttack>(true);
         if (attack != null)
         {
             attack.enabled = true;
-            attack.Initialize(playerShip, playerController, playerHealth);
+            attack.Initialize(playerShip, playerShipController, playerHealth);
         }
 
         BossDefeatHandler bossDefeatHandler = spawnedBoss.GetComponent<BossDefeatHandler>();
@@ -212,31 +219,50 @@ public class RunTimerDirector : MonoBehaviour
         }
     }
 
-    private void ResolvePlayerShipReference()
+    private void ResolvePlayerReferencesIfNeeded()
     {
-        if (playerShip != null)
+        if (playerShip == null || playerShipController == null)
         {
-            return;
+            ResolvePlayerReferences();
+        }
+    }
+
+    private void ResolvePlayerReferences()
+    {
+        if (playerShip == null)
+        {
+            GameObject taggedShip = GameObject.FindWithTag("PlayerShip");
+            if (taggedShip != null)
+            {
+                playerShip = taggedShip.transform;
+            }
         }
 
-        GameObject taggedShip = GameObject.FindWithTag("PlayerShip");
-        if (taggedShip != null)
+        if (playerShip == null)
         {
-            playerShip = taggedShip.transform;
-            return;
+            GameObject namedShip = GameObject.Find("PlayerShip");
+            if (namedShip != null)
+            {
+                playerShip = namedShip.transform;
+            }
         }
 
-        GameObject namedShip = GameObject.Find("PlayerShip");
-        if (namedShip != null)
+        if (playerShipController == null && playerShip != null)
         {
-            playerShip = namedShip.transform;
-            return;
+            playerShipController = playerShip.GetComponent<ShipController2D>();
+            if (playerShipController == null)
+            {
+                playerShipController = playerShip.GetComponentInParent<ShipController2D>();
+            }
         }
 
-        ShipController2D controller = FindFirstObjectByType<ShipController2D>();
-        if (controller != null)
+        if (playerShipController == null)
         {
-            playerShip = controller.transform;
+            playerShipController = FindFirstObjectByType<ShipController2D>();
+            if (playerShip == null && playerShipController != null)
+            {
+                playerShip = playerShipController.transform;
+            }
         }
     }
 }
