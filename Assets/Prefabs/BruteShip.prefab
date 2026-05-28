@@ -523,7 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SimpleEnemyShipAI
   targetShip: {fileID: 0}
   playerShipController: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 8
   stoppingDistance: 0.3
   rotationSpeed: 360
 --- !u!114 &7173086663069711293
