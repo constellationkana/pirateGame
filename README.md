@@ -1,3 +1,4 @@
+This project used ChatGPT and Codex Integration into Unity.  
 # PirateGame
 
 A Unity 6 2D pirate prototype focused on a small playable vertical slice: board a ship, sail around an ocean scene, fight enemy ships, collect resources, and spend progression in a ship shop.
