@@ -552,13 +552,13 @@ MonoBehaviour:
   cannonFirePoints: []
   cannonDamage: 2
   cannonballSpeed: 7
-  cannonShootInterval: 3
+  cannonShootInterval: 1
   fruitProjectilePrefab: {fileID: 6844348078964051180, guid: 8b62b02fc13105e48910b0a7cb3f422a, type: 3}
   fruitFirePoint: {fileID: 1785004718316856830}
   fruitFirePoints: []
   fruitDamage: 1
   fruitSpeed: 15
-  fruitThrowInterval: 1
+  fruitThrowInterval: 0.2
 --- !u!114 &7173086663069711293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,7 +604,7 @@ MonoBehaviour:
   - {fileID: 0}
   playerShip: {fileID: 0}
   summonInterval: 8
-  minionsPerWave: 2
+  minionsPerWave: 4
   maxAliveMinions: 5
   summonRadius: 5
   summonOnlyWhenPlayerBoarded: 1
