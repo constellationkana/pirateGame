@@ -61,6 +61,28 @@ public class ShipHealth : MonoBehaviour
         NotifyHealthChanged();
     }
 
+
+    public void AddMaxHealth(int amount, bool healToFull)
+    {
+        if (amount <= 0 || isDead)
+        {
+            return;
+        }
+
+        maxHealth = Mathf.Max(1, maxHealth + amount);
+
+        if (healToFull)
+        {
+            currentHealth = maxHealth;
+        }
+        else
+        {
+            currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        }
+
+        NotifyHealthChanged();
+    }
+
     private void Die()
     {
         if (isDead)

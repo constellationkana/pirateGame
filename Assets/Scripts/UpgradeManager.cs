@@ -30,6 +30,10 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private float forceFieldRadiusUpgradeAmount = 0.5f;
     [SerializeField] private int forceFieldDamageUpgradeAmount = 1;
 
+    [Header("Shop Gating")]
+    [SerializeField] private bool allowDashWithoutShopUnlock = false;
+    [SerializeField] private bool allowForceFieldWithoutShopUnlock = false;
+
     [Header("Runtime Stats")]
     [SerializeField] private float magnetRadius;
 
@@ -119,7 +123,8 @@ public class UpgradeManager : MonoBehaviour
         List<UpgradeOption> pool = new();
         pool.AddRange(phaseOneOptions);
 
-        if (dashController != null)
+        bool dashShopUnlocked = PlayerProgression.Instance.IsDashUnlocked() || allowDashWithoutShopUnlock;
+        if (dashController != null && dashShopUnlocked)
         {
             if (!dashController.DashUnlocked)
             {
@@ -135,7 +140,8 @@ public class UpgradeManager : MonoBehaviour
             Debug.LogWarning("UpgradeManager: ShipDashController is missing. Dash upgrades disabled.", this);
         }
 
-        if (forceFieldController != null)
+        bool forceFieldShopUnlocked = PlayerProgression.Instance.IsForceFieldUnlocked() || allowForceFieldWithoutShopUnlock;
+        if (forceFieldController != null && forceFieldShopUnlocked)
         {
             if (!forceFieldController.ForceFieldUnlocked)
             {
