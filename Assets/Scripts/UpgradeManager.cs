@@ -17,10 +17,11 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private ShipController2D shipController;
     [SerializeField] private CannonShooter cannonShooter;
     [SerializeField] private UpgradeChoiceUI upgradeChoiceUI;
+    [SerializeField] private PickupMagnetController pickupMagnetController;
 
     [Header("Upgrade Values")]
     [SerializeField] private float speedIncreasePerUpgrade = 0.5f;
-    [SerializeField] private float magnetRadiusIncreasePerUpgrade = 0.75f;
+    [SerializeField] private float magnetRadiusUpgradeAmount = 1f;
     [SerializeField] private int cannonDamageIncreasePerUpgrade = 1;
 
     [Header("Runtime Stats")]
@@ -47,8 +48,13 @@ public class UpgradeManager : MonoBehaviour
             cannonShooter = GetComponent<CannonShooter>();
         }
 
+        if (pickupMagnetController == null)
+        {
+            pickupMagnetController = GetComponent<PickupMagnetController>();
+        }
+
         phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Speed Upgrade", description = "Increase ship movement speed." });
-        phaseOneOptions.Add(new UpgradeOption { id = "magnet", displayName = "Magnet Radius Upgrade", description = "Increase pickup magnet radius for future systems." });
+        phaseOneOptions.Add(new UpgradeOption { id = "magnet", displayName = "Magnet Radius Upgrade", description = "Increase pickup magnet radius." });
         phaseOneOptions.Add(new UpgradeOption { id = "cannon_damage", displayName = "Cannonball Damage Upgrade", description = "Increase cannonball damage." });
     }
 
@@ -96,7 +102,20 @@ public class UpgradeManager : MonoBehaviour
                 }
                 break;
             case "magnet":
-                magnetRadius += magnetRadiusIncreasePerUpgrade;
+                if (pickupMagnetController == null)
+                {
+                    pickupMagnetController = GetComponent<PickupMagnetController>();
+                }
+
+                if (pickupMagnetController != null)
+                {
+                    pickupMagnetController.AddMagnetRadius(magnetRadiusUpgradeAmount);
+                    magnetRadius = pickupMagnetController.MagnetRadius;
+                }
+                else
+                {
+                    magnetRadius += magnetRadiusUpgradeAmount;
+                }
                 break;
             case "cannon_damage":
                 if (cannonShooter != null)

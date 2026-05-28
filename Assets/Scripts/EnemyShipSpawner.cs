@@ -18,12 +18,27 @@ public class EnemyShipSpawner : MonoBehaviour
     [SerializeField] private bool logSpawns = false;
     [SerializeField] private bool logSpawnedEnemySetup = false;
 
+    [Header("Difficulty Scaling")]
+    [SerializeField] private bool scaleDifficultyOverTime = true;
+    [SerializeField] private float elapsedRunTime;
+    [SerializeField] private float baseSpawnInterval = 8f;
+    [SerializeField] private float minSpawnInterval = 1.5f;
+    [SerializeField] private float spawnIntervalDecreasePerMinute = 0.5f;
+    [SerializeField] private int baseMaxEnemiesAlive = 3;
+    [SerializeField] private int maxEnemiesAliveIncreasePerMinute = 1;
+    [SerializeField] private int absoluteMaxEnemiesAlive = 25;
+
+    [Header("Runtime (Read-Only)")]
+    [SerializeField] private float currentSpawnInterval;
+    [SerializeField] private int currentMaxEnemiesAlive;
+
     private readonly List<GameObject> aliveEnemies = new List<GameObject>();
     private float nextSpawnTime;
 
     private void Awake()
     {
         ResolveReferences();
+        ApplyDifficultyValues(true);
 
         if (enemyShipPrefab == null) Debug.LogWarning("EnemyShipSpawner: Enemy ship prefab is missing.", this);
         if (playerShipTransform == null) Debug.LogWarning("EnemyShipSpawner: PlayerShip reference is missing.", this);
@@ -34,6 +49,8 @@ public class EnemyShipSpawner : MonoBehaviour
     {
         CleanupDestroyedEnemies();
         ResolveReferences();
+        UpdateDifficultyTimer();
+        ApplyDifficultyValues(false);
 
         if (enemyShipPrefab == null || playerShipTransform == null)
         {
@@ -45,7 +62,7 @@ public class EnemyShipSpawner : MonoBehaviour
             return;
         }
 
-        if (aliveEnemies.Count >= maxEnemiesAlive)
+        if (aliveEnemies.Count >= currentMaxEnemiesAlive)
         {
             return;
         }
@@ -56,7 +73,44 @@ public class EnemyShipSpawner : MonoBehaviour
         }
 
         SpawnEnemy();
-        nextSpawnTime = Time.time + Mathf.Max(0.1f, spawnInterval);
+        nextSpawnTime = Time.time + Mathf.Max(0.1f, currentSpawnInterval);
+    }
+
+    private void UpdateDifficultyTimer()
+    {
+        if (!scaleDifficultyOverTime)
+        {
+            return;
+        }
+
+        elapsedRunTime += Time.deltaTime;
+    }
+
+    private void ApplyDifficultyValues(bool force)
+    {
+        if (!scaleDifficultyOverTime)
+        {
+            if (force)
+            {
+                currentSpawnInterval = spawnInterval;
+                currentMaxEnemiesAlive = maxEnemiesAlive;
+            }
+
+            return;
+        }
+
+        float elapsedMinutes = elapsedRunTime / 60f;
+
+        float targetSpawnInterval = Mathf.Max(
+            minSpawnInterval,
+            baseSpawnInterval - (spawnIntervalDecreasePerMinute * elapsedMinutes));
+
+        int targetMaxEnemies = Mathf.Min(
+            absoluteMaxEnemiesAlive,
+            baseMaxEnemiesAlive + Mathf.FloorToInt(maxEnemiesAliveIncreasePerMinute * elapsedMinutes));
+
+        currentSpawnInterval = targetSpawnInterval;
+        currentMaxEnemiesAlive = targetMaxEnemies;
     }
 
     private void ResolveReferences()
@@ -150,7 +204,7 @@ public class EnemyShipSpawner : MonoBehaviour
 
         if (logSpawns)
         {
-            Debug.Log($"EnemyShipSpawner: Spawned enemy at {spawnPosition}. Alive: {aliveEnemies.Count}", this);
+            Debug.Log($"EnemyShipSpawner: Spawned enemy at {spawnPosition}. Alive: {aliveEnemies.Count}, interval={currentSpawnInterval:F2}, maxAlive={currentMaxEnemiesAlive}", this);
         }
     }
 
