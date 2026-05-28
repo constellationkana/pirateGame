@@ -9,7 +9,7 @@ public class BossDefeatHandler : MonoBehaviour
     [SerializeField] private TMP_Text victoryMessageText;
 
     [Header("Victory")]
-    [SerializeField] private string victoryMessage = "Victory! You defeated the Dread Summoner!";
+    [SerializeField] private string victoryMessage = "Boss defeated! Vertical slice complete!";
     [SerializeField] private bool pauseGameOnVictory;
     [SerializeField] private bool logVictory = true;
 

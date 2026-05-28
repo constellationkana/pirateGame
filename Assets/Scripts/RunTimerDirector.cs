@@ -193,18 +193,6 @@ public class RunTimerDirector : MonoBehaviour
         }
 
         bossDefeatHandler.SetVictoryMessageText(eventMessageText);
-
-        BossMinionSummoner summoner = spawnedBoss.GetComponent<BossMinionSummoner>();
-        if (summoner == null)
-        {
-            summoner = spawnedBoss.GetComponentInChildren<BossMinionSummoner>(true);
-        }
-
-        if (summoner != null)
-        {
-            summoner.enabled = true;
-            summoner.Initialize(playerShip, playerShipController, playerHealth);
-        }
     }
 
     private Vector3 GetBossSpawnPosition()
