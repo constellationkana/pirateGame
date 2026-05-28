@@ -1361,6 +1361,16 @@ MonoBehaviour:
   spawnOnlyWhenPlayerOnBoard: 0
   logSpawns: 1
   logSpawnedEnemySetup: 0
+  scaleDifficultyOverTime: 1
+  elapsedRunTime: 0
+  baseSpawnInterval: 8
+  minSpawnInterval: 1.5
+  spawnIntervalDecreasePerMinute: 0.5
+  baseMaxEnemiesAlive: 3
+  maxEnemiesAliveIncreasePerMinute: 1
+  absoluteMaxEnemiesAlive: 25
+  currentSpawnInterval: 0
+  currentMaxEnemiesAlive: 0
 --- !u!4 &742778665
 Transform:
   m_ObjectHideFlags: 0
@@ -2271,13 +2281,23 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 15
+  spawnInterval: 8
   maxEnemiesAlive: 2
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
   spawnOnlyWhenPlayerOnBoard: 0
   logSpawns: 1
   logSpawnedEnemySetup: 0
+  scaleDifficultyOverTime: 1
+  elapsedRunTime: 0
+  baseSpawnInterval: 15
+  minSpawnInterval: 1.5
+  spawnIntervalDecreasePerMinute: 0.5
+  baseMaxEnemiesAlive: 3
+  maxEnemiesAliveIncreasePerMinute: 1
+  absoluteMaxEnemiesAlive: 25
+  currentSpawnInterval: 0
+  currentMaxEnemiesAlive: 0
 --- !u!4 &1002901038
 Transform:
   m_ObjectHideFlags: 0
@@ -2702,6 +2722,7 @@ GameObject:
   - component: {fileID: 1331628602}
   - component: {fileID: 1331628603}
   - component: {fileID: 1331628604}
+  - component: {fileID: 1331628605}
   m_Layer: 6
   m_Name: PlayerShip
   m_TagString: Untagged
@@ -2994,10 +3015,29 @@ MonoBehaviour:
   shipController: {fileID: 1331628591}
   cannonShooter: {fileID: 1331628599}
   upgradeChoiceUI: {fileID: 954064577}
+  pickupMagnetController: {fileID: 1331628605}
   speedIncreasePerUpgrade: 0.5
-  magnetRadiusIncreasePerUpgrade: 0.75
+  magnetRadiusUpgradeAmount: 1
   cannonDamageIncreasePerUpgrade: 1
-  magnetRadius: 0
+  magnetRadius: 1
+--- !u!114 &1331628605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7858f358b4642baabfdeb012e4a7970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupMagnetController
+  magnetRadius: 3
+  magnetPullSpeed: 6
+  pickupLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  showDebugRadius: 1
 --- !u!1 &1358974480
 GameObject:
   m_ObjectHideFlags: 0

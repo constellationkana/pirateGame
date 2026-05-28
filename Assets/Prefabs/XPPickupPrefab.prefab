@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5539622604458315236}
   - component: {fileID: 2388489535963609925}
   - component: {fileID: 5619262288130792561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XPPickupPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

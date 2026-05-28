@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4174974790783552104}
   - component: {fileID: 2672604010360091929}
   - component: {fileID: 5543321285470144681}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DoubloonPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
