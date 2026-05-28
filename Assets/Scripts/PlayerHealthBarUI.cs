@@ -1,10 +1,12 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealthBarUI : MonoBehaviour
 {
-    [SerializeField] private ShipHealth playerHealth;
+    [SerializeField] private ShipHealth shipHealth;
     [SerializeField] private Slider healthSlider;
+    [SerializeField] private TMP_Text healthText;
 
     private void Awake()
     {
@@ -14,23 +16,51 @@ public class PlayerHealthBarUI : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (shipHealth != null)
+        {
+            shipHealth.OnHealthChanged += HandleHealthChanged;
+        }
+
+        Refresh();
+    }
+
     private void Start()
     {
-        UpdateHealthBar();
+        Refresh();
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        UpdateHealthBar();
+        if (shipHealth != null)
+        {
+            shipHealth.OnHealthChanged -= HandleHealthChanged;
+        }
     }
 
-    private void UpdateHealthBar()
+    private void HandleHealthChanged(ShipHealth _)
     {
-        if (playerHealth == null || healthSlider == null)
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        if (shipHealth == null)
         {
             return;
         }
 
-        healthSlider.value = playerHealth.CurrentHealth / playerHealth.MaxHealth;
+        if (healthSlider != null)
+        {
+            healthSlider.minValue = 0f;
+            healthSlider.maxValue = shipHealth.MaxHealth;
+            healthSlider.value = shipHealth.CurrentHealth;
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = $"{shipHealth.CurrentHealth}/{shipHealth.MaxHealth}";
+        }
     }
 }
