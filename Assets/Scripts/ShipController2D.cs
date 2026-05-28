@@ -66,6 +66,16 @@ public class ShipController2D : MonoBehaviour
         rb.angularVelocity = 0f;
     }
 
+    public Vector2 GetForwardDirection()
+    {
+        Vector2 fromMove = LastMoveDirection.sqrMagnitude > 0.001f ? LastMoveDirection : Vector2.zero;
+        if (fromMove != Vector2.zero)
+        {
+            return fromMove.normalized;
+        }
+
+        return ((Vector2)transform.up).normalized;
+    }
 
     public void AddMoveSpeed(float amount)
     {
