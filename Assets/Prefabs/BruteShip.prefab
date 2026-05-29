@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac39022e4aa941f995a85bcbc228e255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  maxHealth: 5
+  maxHealth: 10
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
@@ -523,7 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SimpleEnemyShipAI
   targetShip: {fileID: 0}
   playerShipController: {fileID: 0}
-  moveSpeed: 8
+  moveSpeed: 10
   stoppingDistance: 0.3
   rotationSpeed: 360
 --- !u!114 &7173086663069711293

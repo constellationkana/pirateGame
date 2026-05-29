@@ -611,6 +611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
   standType: 3
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0
@@ -849,6 +850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
   standType: 0
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0
@@ -1476,8 +1478,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e924d31b38d9b24e8aabce694f3ff57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
-  standType: 7
+  standType: 8
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0
@@ -2106,6 +2109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
   standType: 1
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0
@@ -2561,6 +2565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
   standType: 5
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0
@@ -3485,6 +3490,25 @@ MonoBehaviour:
   cannonBaseCost: 100
   dashUnlockCost: 250
   forceFieldUnlockCost: 400
+  healthIncreasePerLevel: 2
+  speedIncreasePerLevel: 0.25
+  magnetRadiusIncreasePerLevel: 0.5
+  cannonDamageIncreasePerLevel: 1
+  futureUnlockOffers:
+  - id: health_regen
+    cost: 150
+  - id: cannonball_size
+    cost: 150
+  - id: cannonball_speed
+    cost: 150
+  - id: cannonball_pierce
+    cost: 200
+  - id: cannonball_explosion
+    cost: 250
+  - id: barnacles
+    cost: 200
+  - id: cursed_doubloons
+    cost: 200
 --- !u!4 &1398161183
 Transform:
   m_ObjectHideFlags: 0
@@ -4513,6 +4537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
   standType: 2
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0
@@ -5218,6 +5243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopStandInteraction
   standType: 4
   shopController: {fileID: 1398161182}
+  genericUnlockId: 
   interactionPrompt: Press E
   interactKey: 101
   playerInRange: 0

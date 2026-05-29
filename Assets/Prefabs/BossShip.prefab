@@ -507,7 +507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac39022e4aa941f995a85bcbc228e255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  maxHealth: 100
+  maxHealth: 500
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
@@ -551,8 +551,8 @@ MonoBehaviour:
   cannonFirePoint: {fileID: 5925488098560481139}
   cannonFirePoints: []
   cannonDamage: 2
-  cannonballSpeed: 7
-  cannonShootInterval: 1
+  cannonballSpeed: 20
+  cannonShootInterval: 0.5
   fruitProjectilePrefab: {fileID: 6844348078964051180, guid: 8b62b02fc13105e48910b0a7cb3f422a, type: 3}
   fruitFirePoint: {fileID: 1785004718316856830}
   fruitFirePoints: []
@@ -624,8 +624,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossDefeatHandler
   bossHealth: {fileID: 1651053312815103476}
   victoryMessageText: {fileID: 0}
-  victoryMessage: Boss defeated! Vertical slice complete!
-  pauseGameOnVictory: 1
+  victoryMessage: 'Boss defeated! '
+  pauseGameOnVictory: 0
   logVictory: 1
 --- !u!1 &4999598627304264944
 GameObject:

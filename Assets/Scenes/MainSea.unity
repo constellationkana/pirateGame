@@ -3467,7 +3467,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 0
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 8
+  baseSpawnInterval: 6
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 5
@@ -4084,11 +4084,11 @@ MonoBehaviour:
   logSpawnedEnemySetup: 0
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 8
+  baseSpawnInterval: 6
   minSpawnInterval: 1.5
-  spawnIntervalDecreasePerMinute: 0.5
-  baseMaxEnemiesAlive: 3
-  maxEnemiesAliveIncreasePerMinute: 1
+  spawnIntervalDecreasePerMinute: 0.75
+  baseMaxEnemiesAlive: 5
+  maxEnemiesAliveIncreasePerMinute: 3
   absoluteMaxEnemiesAlive: 25
   currentSpawnInterval: 0
   currentMaxEnemiesAlive: 0
@@ -5447,10 +5447,10 @@ MonoBehaviour:
   logSpawnedEnemySetup: 1
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 10
+  baseSpawnInterval: 7
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
-  baseMaxEnemiesAlive: 3
+  baseMaxEnemiesAlive: 5
   maxEnemiesAliveIncreasePerMinute: 2
   absoluteMaxEnemiesAlive: 30
   currentSpawnInterval: 0
@@ -7140,11 +7140,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
   playerLevelSystem: {fileID: 1331628603}
   shipController: {fileID: 1331628591}
+  shipHealth: {fileID: 0}
   cannonShooter: {fileID: 1331628599}
   upgradeChoiceUI: {fileID: 954064577}
   pickupMagnetController: {fileID: 1331628605}
   dashController: {fileID: 0}
   forceFieldController: {fileID: 0}
+  healthIncreasePerUpgrade: 2
   speedIncreasePerUpgrade: 0.5
   magnetRadiusUpgradeAmount: 1
   cannonDamageIncreasePerUpgrade: 1
