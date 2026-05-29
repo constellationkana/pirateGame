@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ShipShopController : MonoBehaviour
 {
@@ -22,6 +23,13 @@ public class ShipShopController : MonoBehaviour
         public int cost = 100;
     }
 
+    [Serializable]
+    private class MenuButtonReferences
+    {
+        public TMP_Text labelText;
+        public Button button;
+    }
+
     [Header("Top Bar")]
     [SerializeField] private TMP_Text doubloonsText;
 
@@ -34,15 +42,44 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private string mainSeaSceneName = "MainSea";
     [SerializeField] private bool logSceneTransitions = true;
 
-    [Header("Health Stand Text")]
+    [Header("Category Menu Panels")]
+    [SerializeField] private GameObject healthMenuPanel;
+    [SerializeField] private GameObject speedMenuPanel;
+    [SerializeField] private GameObject arsenalMenuPanel;
+    [SerializeField] private GameObject abilitiesMenuPanel;
+    [SerializeField] private bool closeMenusOnStart = true;
+
+    [Header("Health Menu Buttons")]
+    [SerializeField] private MenuButtonReferences healthUpgrade = new();
+    [SerializeField] private MenuButtonReferences healthRegenUnlockButton = new();
+
+    [Header("Speed Menu Buttons")]
+    [SerializeField] private MenuButtonReferences speedUpgrade = new();
+    [SerializeField] private MenuButtonReferences dashUnlockButton = new();
+
+    [Header("Arsenal Menu Buttons")]
+    [SerializeField] private MenuButtonReferences cannonDamageUpgrade = new();
+    [SerializeField] private MenuButtonReferences cannonballSizeUnlockButton = new();
+    [SerializeField] private MenuButtonReferences cannonballSpeedUnlockButton = new();
+    [SerializeField] private MenuButtonReferences cannonballSpeedUpgrade = new();
+    [SerializeField] private MenuButtonReferences explodingCannonballsUnlockButton = new();
+    [SerializeField] private MenuButtonReferences explosionPowerUpgradeButton = new();
+    [SerializeField] private MenuButtonReferences barnaclesUnlockButton = new();
+    [SerializeField] private MenuButtonReferences barnaclePowerUpgradeButton = new();
+    [SerializeField] private MenuButtonReferences cannonballPierceUnlockButton = new();
+
+    [Header("Abilities Menu Buttons")]
+    [SerializeField] private MenuButtonReferences magnetUnlockButton = new();
+    [SerializeField] private MenuButtonReferences magnetUpgrade = new();
+    [SerializeField] private MenuButtonReferences forceFieldUnlockButton = new();
+    [SerializeField] private MenuButtonReferences cursedDoubloonsUnlockButton = new();
+
+    [Header("Legacy Text References")]
+    [Tooltip("Optional compatibility text for older scenes. Prefer wiring the Menu Button References above.")]
     [SerializeField] private TMP_Text healthUpgradeText;
     [SerializeField] private TMP_Text healthRegenUnlockText;
-
-    [Header("Speed Stand Text")]
     [SerializeField] private TMP_Text speedUpgradeText;
     [SerializeField] private TMP_Text dashUnlockText;
-
-    [Header("Arsenal Stand Text")]
     [SerializeField] private TMP_Text cannonUpgradeText;
     [SerializeField] private TMP_Text cannonballSizeUnlockText;
     [SerializeField] private TMP_Text cannonballSpeedUnlockText;
@@ -52,8 +89,6 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private TMP_Text barnaclesUnlockText;
     [SerializeField] private TMP_Text barnaclePowerUpgradeText;
     [SerializeField] private TMP_Text cannonballPierceUnlockText;
-
-    [Header("Abilities Stand Text")]
     [SerializeField] private TMP_Text magnetUnlockText;
     [SerializeField] private TMP_Text magnetUpgradeText;
     [SerializeField] private TMP_Text forceFieldUnlockText;
@@ -99,7 +134,25 @@ public class ShipShopController : MonoBehaviour
             return;
         }
 
+        if (closeMenusOnStart)
+        {
+            CloseAllMenus();
+        }
+
         RefreshUI();
+    }
+
+    public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
+    public void OpenSpeedMenu() => OpenOnlyMenu(speedMenuPanel, "Speed Menu");
+    public void OpenArsenalMenu() => OpenOnlyMenu(arsenalMenuPanel, "Arsenal Menu");
+    public void OpenAbilitiesMenu() => OpenOnlyMenu(abilitiesMenuPanel, "Abilities Menu");
+
+    public void CloseAllMenus()
+    {
+        SetMenuActive(healthMenuPanel, false);
+        SetMenuActive(speedMenuPanel, false);
+        SetMenuActive(arsenalMenuPanel, false);
+        SetMenuActive(abilitiesMenuPanel, false);
     }
 
     public void BuyHealthUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseHealthId, baseHealth, null, "Base health upgraded!");
@@ -186,6 +239,31 @@ public class ShipShopController : MonoBehaviour
         }
 
         SceneManager.LoadScene(mainSeaSceneName);
+    }
+
+    private void OpenOnlyMenu(GameObject menuPanel, string menuName)
+    {
+        if (!HasProgression()) return;
+
+        RefreshUI();
+        CloseAllMenus();
+
+        if (menuPanel == null)
+        {
+            SetMessage($"{menuName} is not assigned.");
+            return;
+        }
+
+        SetMenuActive(menuPanel, true);
+        SetMessage(menuName);
+    }
+
+    private static void SetMenuActive(GameObject panel, bool isActive)
+    {
+        if (panel != null)
+        {
+            panel.SetActive(isActive);
+        }
     }
 
     private void TryBuyUnlock(string unlockId, UnlockPurchaseConfig config, string successMessage)
@@ -328,23 +406,23 @@ public class ShipShopController : MonoBehaviour
             doubloonsText.text = $"Save: {PlayerProgression.GetActiveSaveName()} | Doubloons: {progression.GetDoubloons()}";
         }
 
-        SetUpgradeText(healthUpgradeText, "Base Health", PlayerProgression.UpgradeBaseHealthId, baseHealth);
-        SetUnlockText(healthRegenUnlockText, "Health Regeneration", PlayerProgression.UnlockHealthRegenId, healthRegenUnlock);
-        SetUpgradeText(speedUpgradeText, "Base Ship Speed", PlayerProgression.UpgradeBaseSpeedId, baseSpeed);
-        SetUnlockText(dashUnlockText, "Dash", PlayerProgression.UnlockDashId, dashUnlock);
-        SetUpgradeText(cannonUpgradeText, "Base Cannonball Damage", PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage);
-        SetUnlockText(cannonballSizeUnlockText, "Cannonball Size Upgrade", PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock);
-        SetUnlockText(cannonballSpeedUnlockText, "Cannonball Speed Upgrade", PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock);
-        SetUpgradeText(cannonballSpeedUpgradeText, "Base Cannonball Speed", PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId);
-        SetUnlockText(explodingCannonballsUnlockText, "Exploding Cannonballs", PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock);
-        SetUpgradeText(explosionPowerUpgradeText, "Explosion Power", PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId);
-        SetUnlockText(barnaclesUnlockText, "Barnacles", PlayerProgression.UnlockBarnaclesId, barnaclesUnlock);
-        SetUpgradeText(barnaclePowerUpgradeText, "Barnacles", PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId);
-        SetUnlockText(cannonballPierceUnlockText, "Cannonball Pierce", PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock);
-        SetUnlockText(magnetUnlockText, "Magnet Upgrades", PlayerProgression.UnlockMagnetId, magnetUnlock);
-        SetUpgradeText(magnetUpgradeText, "Base Magnet Radius", PlayerProgression.UpgradeBaseMagnetRadiusId, baseMagnetRadius, PlayerProgression.UnlockMagnetId);
-        SetUnlockText(forceFieldUnlockText, "Force Field", PlayerProgression.UnlockForceFieldId, forceFieldUnlock);
-        SetUnlockText(cursedDoubloonsUnlockText, "Cursed Doubloons", PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock);
+        SetUpgradeButton(healthUpgrade, healthUpgradeText, "Upgrade Base Health", PlayerProgression.UpgradeBaseHealthId, baseHealth);
+        SetUnlockButton(healthRegenUnlockButton, healthRegenUnlockText, "Unlock Health Regeneration", PlayerProgression.UnlockHealthRegenId, healthRegenUnlock);
+        SetUpgradeButton(speedUpgrade, speedUpgradeText, "Upgrade Base Speed", PlayerProgression.UpgradeBaseSpeedId, baseSpeed);
+        SetUnlockButton(dashUnlockButton, dashUnlockText, "Unlock Dash", PlayerProgression.UnlockDashId, dashUnlock);
+        SetUpgradeButton(cannonDamageUpgrade, cannonUpgradeText, "Upgrade Base Cannonball Damage", PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage);
+        SetUnlockButton(cannonballSizeUnlockButton, cannonballSizeUnlockText, "Unlock Cannonball Size", PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock);
+        SetUnlockButton(cannonballSpeedUnlockButton, cannonballSpeedUnlockText, "Unlock Cannonball Speed", PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock);
+        SetUpgradeButton(cannonballSpeedUpgrade, cannonballSpeedUpgradeText, "Upgrade Base Cannonball Speed", PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId);
+        SetUnlockButton(explodingCannonballsUnlockButton, explodingCannonballsUnlockText, "Unlock Cannonball Explosion", PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock);
+        SetUpgradeButton(explosionPowerUpgradeButton, explosionPowerUpgradeText, "Upgrade Explosion Power", PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId);
+        SetUnlockButton(barnaclesUnlockButton, barnaclesUnlockText, "Unlock Barnacles", PlayerProgression.UnlockBarnaclesId, barnaclesUnlock);
+        SetUpgradeButton(barnaclePowerUpgradeButton, barnaclePowerUpgradeText, "Upgrade Barnacle Power", PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId);
+        SetUnlockButton(cannonballPierceUnlockButton, cannonballPierceUnlockText, "Unlock Cannonball Pierce", PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock);
+        SetUnlockButton(magnetUnlockButton, magnetUnlockText, "Unlock Magnet Upgrades", PlayerProgression.UnlockMagnetId, magnetUnlock);
+        SetUpgradeButton(magnetUpgrade, magnetUpgradeText, "Upgrade Base Magnet Radius", PlayerProgression.UpgradeBaseMagnetRadiusId, baseMagnetRadius, PlayerProgression.UnlockMagnetId);
+        SetUnlockButton(forceFieldUnlockButton, forceFieldUnlockText, "Unlock Force Field", PlayerProgression.UnlockForceFieldId, forceFieldUnlock);
+        SetUnlockButton(cursedDoubloonsUnlockButton, cursedDoubloonsUnlockText, "Unlock Cursed Doubloons", PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock);
 
         if (cosmeticStatusText != null)
         {
@@ -354,20 +432,48 @@ public class ShipShopController : MonoBehaviour
         }
     }
 
-    private void SetUpgradeText(TMP_Text target, string label, string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId = null)
+    private void SetUpgradeButton(MenuButtonReferences references, TMP_Text legacyText, string label, string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId = null)
     {
-        if (target == null) return;
         config ??= new UpgradePurchaseConfig();
         int currentLevel = progression.GetUpgradeLevel(upgradeId);
         bool locked = !string.IsNullOrWhiteSpace(requiredUnlockId) && !progression.IsUnlocked(requiredUnlockId);
-        string status = locked ? "Locked" : IsAtMax(currentLevel, config.maxLevel) ? "Max" : $"Cost: {GetUpgradeCost(config, currentLevel)}";
+        bool maxed = IsAtMax(currentLevel, config.maxLevel);
+        string status = locked ? "Locked" : maxed ? "Maxed" : $"Price: {GetUpgradeCost(config, currentLevel)}";
         string maxText = config.maxLevel > 0 ? $"/{config.maxLevel}" : string.Empty;
-        target.text = $"{label} Lv {currentLevel}{maxText} (+{config.statIncreasePerLevel:0.##}) | {status}";
+        string text = $"{label}\nLevel: {currentLevel}{maxText}\nIncrease: +{config.statIncreasePerLevel:0.##}\n{status}";
+
+        SetText(references, legacyText, text);
+        SetButtonInteractable(references, !locked && !maxed);
     }
 
-    private void SetUnlockText(TMP_Text target, string label, string unlockId, UnlockPurchaseConfig config)
+    private void SetUnlockButton(MenuButtonReferences references, TMP_Text legacyText, string label, string unlockId, UnlockPurchaseConfig config)
     {
-        if (target == null) return;
-        target.text = progression.IsUnlocked(unlockId) ? $"{label}: Unlocked" : $"Unlock {label} ({Mathf.Max(0, config != null ? config.cost : 0)})";
+        bool unlocked = progression.IsUnlocked(unlockId);
+        int cost = Mathf.Max(0, config != null ? config.cost : 0);
+        string text = unlocked ? $"{label}\nStatus: Unlocked" : $"{label}\nPrice: {cost}\nStatus: Locked";
+
+        SetText(references, legacyText, text);
+        SetButtonInteractable(references, !unlocked);
+    }
+
+    private static void SetText(MenuButtonReferences references, TMP_Text legacyText, string text)
+    {
+        if (references != null && references.labelText != null)
+        {
+            references.labelText.text = text;
+        }
+
+        if (legacyText != null)
+        {
+            legacyText.text = text;
+        }
+    }
+
+    private static void SetButtonInteractable(MenuButtonReferences references, bool interactable)
+    {
+        if (references != null && references.button != null)
+        {
+            references.button.interactable = interactable;
+        }
     }
 }
