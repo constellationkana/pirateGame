@@ -5371,11 +5371,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8506fb84163340148dd3923970090e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  gameplaySceneName: ShipShop
+  shipShopSceneName: ShipShop
   mainButtonsPanel: {fileID: 1928682359}
   settingsPanel: {fileID: 1106547160}
   creditsPanel: {fileID: 788118872}
-  hasSaveFile: 0
+  continueButton: {fileID: 0}
   continueStatusText: {fileID: 306772623}
   noSaveFoundMessage: No Save Found
 --- !u!4 &2122298244
