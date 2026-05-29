@@ -15,6 +15,7 @@ public class UpgradeManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerLevelSystem playerLevelSystem;
     [SerializeField] private ShipController2D shipController;
+    [SerializeField] private ShipHealth shipHealth;
     [SerializeField] private CannonShooter cannonShooter;
     [SerializeField] private UpgradeChoiceUI upgradeChoiceUI;
     [SerializeField] private PickupMagnetController pickupMagnetController;
@@ -22,6 +23,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private ForceFieldController forceFieldController;
 
     [Header("Upgrade Values")]
+    [SerializeField] private int healthIncreasePerUpgrade = 2;
     [SerializeField] private float speedIncreasePerUpgrade = 0.5f;
     [SerializeField] private float magnetRadiusUpgradeAmount = 1f;
     [SerializeField] private int cannonDamageIncreasePerUpgrade = 1;
@@ -54,6 +56,11 @@ public class UpgradeManager : MonoBehaviour
             shipController = GetComponent<ShipController2D>();
         }
 
+        if (shipHealth == null)
+        {
+            shipHealth = GetComponent<ShipHealth>();
+        }
+
         if (cannonShooter == null)
         {
             cannonShooter = GetComponent<CannonShooter>();
@@ -74,9 +81,9 @@ public class UpgradeManager : MonoBehaviour
             forceFieldController = GetComponent<ForceFieldController>();
         }
 
-        phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Speed Upgrade", description = "Increase ship movement speed." });
-        phaseOneOptions.Add(new UpgradeOption { id = "magnet", displayName = "Magnet Radius Upgrade", description = "Increase pickup magnet radius." });
-        phaseOneOptions.Add(new UpgradeOption { id = "cannon_damage", displayName = "Cannonball Damage Upgrade", description = "Increase cannonball damage." });
+        phaseOneOptions.Add(new UpgradeOption { id = "health", displayName = "Health Upgrade", description = "Increase max health and heal to full." });
+        phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Ship Speed", description = "Increase ship movement speed." });
+        phaseOneOptions.Add(new UpgradeOption { id = "cannon_damage", displayName = "Cannonball Damage", description = "Increase cannonball damage." });
     }
 
     private void OnEnable()
@@ -123,38 +130,51 @@ public class UpgradeManager : MonoBehaviour
         List<UpgradeOption> pool = new();
         pool.AddRange(phaseOneOptions);
 
-        bool dashShopUnlocked = PlayerProgression.Instance.IsDashUnlocked() || allowDashWithoutShopUnlock;
-        if (dashController != null && dashShopUnlocked)
+        PlayerProgression progression = PlayerProgression.Instance;
+
+        if (progression.IsUnlocked(PlayerProgression.UnlockMagnetRadius))
         {
-            if (!dashController.DashUnlocked)
-            {
-                pool.Add(new UpgradeOption { id = "dash_unlock", displayName = "Unlock Dash", description = "Press Left Shift to burst forward." });
-            }
-            else
-            {
-                pool.Add(new UpgradeOption { id = "dash_boost", displayName = "Dash Boost", description = "Dash farther and/or cooldown is reduced." });
-            }
-        }
-        else
-        {
-            Debug.LogWarning("UpgradeManager: ShipDashController is missing. Dash upgrades disabled.", this);
+            pool.Add(new UpgradeOption { id = "magnet", displayName = "Magnet Radius Upgrade", description = "Increase pickup magnet radius." });
         }
 
-        bool forceFieldShopUnlocked = PlayerProgression.Instance.IsForceFieldUnlocked() || allowForceFieldWithoutShopUnlock;
-        if (forceFieldController != null && forceFieldShopUnlocked)
+        bool dashShopUnlocked = progression.IsUnlocked(PlayerProgression.UnlockDashId) || allowDashWithoutShopUnlock;
+        if (dashShopUnlocked)
         {
-            if (!forceFieldController.ForceFieldUnlocked)
+            if (dashController != null)
             {
-                pool.Add(new UpgradeOption { id = "force_field_unlock", displayName = "Unlock Force Field", description = "Damages nearby enemy ships over time." });
+                if (!dashController.DashUnlocked)
+                {
+                    pool.Add(new UpgradeOption { id = "dash_unlock", displayName = "Dash Upgrade", description = "Press Left Shift to burst forward." });
+                }
+                else
+                {
+                    pool.Add(new UpgradeOption { id = "dash_boost", displayName = "Dash Upgrade", description = "Dash farther and reduce the cooldown." });
+                }
             }
             else
             {
-                pool.Add(new UpgradeOption { id = "force_field_boost", displayName = "Force Field Boost", description = "Increase aura radius or damage." });
+                Debug.LogWarning("UpgradeManager: ShipDashController is missing. Dash upgrades disabled.", this);
             }
         }
-        else
+
+        bool forceFieldShopUnlocked = progression.IsUnlocked(PlayerProgression.UnlockForceFieldId) || allowForceFieldWithoutShopUnlock;
+        if (forceFieldShopUnlocked)
         {
-            Debug.LogWarning("UpgradeManager: ForceFieldController is missing. Force Field upgrades disabled.", this);
+            if (forceFieldController != null)
+            {
+                if (!forceFieldController.ForceFieldUnlocked)
+                {
+                    pool.Add(new UpgradeOption { id = "force_field_unlock", displayName = "Force Field Upgrade", description = "Damages nearby enemy ships over time." });
+                }
+                else
+                {
+                    pool.Add(new UpgradeOption { id = "force_field_boost", displayName = "Force Field Upgrade", description = "Increase aura radius and damage." });
+                }
+            }
+            else
+            {
+                Debug.LogWarning("UpgradeManager: ForceFieldController is missing. Force Field upgrades disabled.", this);
+            }
         }
 
         int count = Mathf.Min(3, pool.Count);
@@ -175,6 +195,12 @@ public class UpgradeManager : MonoBehaviour
 
         switch (chosenOption.id)
         {
+            case "health":
+                if (shipHealth != null)
+                {
+                    shipHealth.AddMaxHealth(healthIncreasePerUpgrade, true);
+                }
+                break;
             case "speed":
                 if (shipController != null)
                 {
