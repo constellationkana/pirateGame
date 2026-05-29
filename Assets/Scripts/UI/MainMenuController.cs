@@ -1,6 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// Attach to a dedicated MainMenu scene object (for example: Canvas/MainMenuController).
@@ -9,7 +10,7 @@ using TMPro;
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene Loading")]
-    [SerializeField] private string gameplaySceneName = "MainSea";
+    [SerializeField] private string shipShopSceneName = "ShipShop";
 
     [Header("Panels")]
     [SerializeField] private GameObject mainButtonsPanel;
@@ -17,13 +18,14 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject creditsPanel;
 
     [Header("Continue State")]
-    [SerializeField] private bool hasSaveFile;
+    [SerializeField] private Button continueButton;
     [SerializeField] private TMP_Text continueStatusText;
     [SerializeField] private string noSaveFoundMessage = "No Save Found";
 
     private void Start()
     {
         ShowMainButtons();
+        RefreshContinueState();
 
         if (continueStatusText != null)
         {
@@ -31,17 +33,25 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        RefreshContinueState();
+    }
+
     public void OnPlayPressed()
     {
-        SceneManager.LoadScene(gameplaySceneName);
+        PlayerProgression.ResetAllProgression();
+        PlayerProgression.MarkSaveExists();
+        LoadShipShop();
     }
+
+    public void OnNewGamePressed() => OnPlayPressed();
 
     public void OnContinuePressed()
     {
-        if (hasSaveFile)
+        if (PlayerProgression.HasSaveFile())
         {
-            // Placeholder for future save system flow.
-            SceneManager.LoadScene(gameplaySceneName);
+            LoadShipShop();
             return;
         }
 
@@ -50,6 +60,8 @@ public class MainMenuController : MonoBehaviour
             continueStatusText.text = noSaveFoundMessage;
             continueStatusText.gameObject.SetActive(true);
         }
+
+        RefreshContinueState();
     }
 
     public void OnSettingsPressed()
@@ -80,5 +92,24 @@ public class MainMenuController : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    private void RefreshContinueState()
+    {
+        if (continueButton != null)
+        {
+            continueButton.interactable = PlayerProgression.HasSaveFile();
+        }
+    }
+
+    private void LoadShipShop()
+    {
+        if (string.IsNullOrWhiteSpace(shipShopSceneName))
+        {
+            Debug.LogWarning("MainMenuController: shipShopSceneName is empty.", this);
+            return;
+        }
+
+        SceneManager.LoadScene(shipShopSceneName);
     }
 }

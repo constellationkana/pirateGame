@@ -12,6 +12,7 @@ public class ShopStandInteraction : MonoBehaviour
         CannonDamageUpgrade,
         DashUnlock,
         ForceFieldUnlock,
+        GenericUnlock,
         Cosmetics,
         StartRun
     }
@@ -19,6 +20,7 @@ public class ShopStandInteraction : MonoBehaviour
     [Header("Stand")]
     [SerializeField] private ShopStandType standType;
     [SerializeField] private ShipShopController shopController;
+    [SerializeField] private string genericUnlockId;
     [SerializeField] private string interactionPrompt = "Press E";
     [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private bool playerInRange;
@@ -76,6 +78,9 @@ public class ShopStandInteraction : MonoBehaviour
                 break;
             case ShopStandType.ForceFieldUnlock:
                 shopController.UnlockForceField();
+                break;
+            case ShopStandType.GenericUnlock:
+                shopController.BuyGenericUnlock(genericUnlockId);
                 break;
             case ShopStandType.Cosmetics:
                 shopController.CycleCosmetic();
@@ -150,6 +155,7 @@ public class ShopStandInteraction : MonoBehaviour
             ShopStandType.CannonDamageUpgrade => "Cannon Damage",
             ShopStandType.DashUnlock => "Unlock Dash",
             ShopStandType.ForceFieldUnlock => "Unlock Force Field",
+            ShopStandType.GenericUnlock => string.IsNullOrWhiteSpace(genericUnlockId) ? "Unlock Upgrade" : $"Unlock {genericUnlockId}",
             ShopStandType.Cosmetics => "Ship Looks",
             ShopStandType.StartRun => "Start Run",
             _ => standType.ToString()

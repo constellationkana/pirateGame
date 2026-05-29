@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class ShipShopController : MonoBehaviour
 {
+    [Serializable]
+    private class GenericUnlockOffer
+    {
+        public string id;
+        public int cost = 100;
+    }
     [Header("Top Bar")]
     [SerializeField] private TMP_Text doubloonsText;
 
@@ -41,6 +48,25 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private int dashUnlockCost = 250;
     [SerializeField] private int forceFieldUnlockCost = 400;
 
+    [Header("Stat Upgrade Amounts")]
+    [SerializeField] private int healthIncreasePerLevel = 2;
+    [SerializeField] private float speedIncreasePerLevel = 0.25f;
+    [SerializeField] private float magnetRadiusIncreasePerLevel = 0.5f;
+    [SerializeField] private int cannonDamageIncreasePerLevel = 1;
+
+    [Header("Future Unlock Offers")]
+    [SerializeField]
+    private GenericUnlockOffer[] futureUnlockOffers =
+    {
+        new() { id = PlayerProgression.UnlockHealthRegenId, cost = 150 },
+        new() { id = PlayerProgression.UnlockCannonballSizeId, cost = 150 },
+        new() { id = PlayerProgression.UnlockCannonballSpeedId, cost = 150 },
+        new() { id = PlayerProgression.UnlockCannonballPierceId, cost = 200 },
+        new() { id = PlayerProgression.UnlockCannonballExplosionId, cost = 250 },
+        new() { id = PlayerProgression.UnlockBarnaclesId, cost = 200 },
+        new() { id = PlayerProgression.UnlockCursedDoubloonsId, cost = 200 }
+    };
+
     private PlayerProgression progression;
     private int currentCosmeticIndex;
     private Coroutine clearMessageRoutine;
@@ -58,10 +84,29 @@ public class ShipShopController : MonoBehaviour
         RefreshUI();
     }
 
-    public void BuyHealthUpgrade() => TryBuyUpgrade(GetHealthUpgradeCost(), progression.BuyPermanentHealthUpgrade, "Health upgraded!");
-    public void BuySpeedUpgrade() => TryBuyUpgrade(GetSpeedUpgradeCost(), progression.BuyPermanentSpeedUpgrade, "Speed upgraded!");
-    public void BuyMagnetUpgrade() => TryBuyUpgrade(GetMagnetUpgradeCost(), progression.BuyPermanentMagnetUpgrade, "Magnet upgraded!");
-    public void BuyCannonDamageUpgrade() => TryBuyUpgrade(GetCannonUpgradeCost(), progression.BuyPermanentCannonDamageUpgrade, "Cannon damage upgraded!");
+    public void BuyHealthUpgrade()
+    {
+        if (!HasProgression()) return;
+        TryBuyUpgrade(GetHealthUpgradeCost(), (p, cost) => p.BuyPermanentHealthUpgrade(cost), "Health upgraded!");
+    }
+
+    public void BuySpeedUpgrade()
+    {
+        if (!HasProgression()) return;
+        TryBuyUpgrade(GetSpeedUpgradeCost(), (p, cost) => p.BuyPermanentSpeedUpgrade(cost), "Speed upgraded!");
+    }
+
+    public void BuyMagnetUpgrade()
+    {
+        if (!HasProgression()) return;
+        TryBuyUpgrade(GetMagnetUpgradeCost(), (p, cost) => p.BuyPermanentMagnetUpgrade(cost), "Magnet upgraded and in-run magnet upgrades unlocked!");
+    }
+
+    public void BuyCannonDamageUpgrade()
+    {
+        if (!HasProgression()) return;
+        TryBuyUpgrade(GetCannonUpgradeCost(), (p, cost) => p.BuyPermanentCannonDamageUpgrade(cost), "Cannon damage upgraded!");
+    }
 
     public void UnlockDash()
     {
@@ -117,6 +162,33 @@ public class ShipShopController : MonoBehaviour
 
     public void BuyDashUnlock() => UnlockDash();
     public void BuyForceFieldUnlock() => UnlockForceField();
+
+    public void BuyGenericUnlock(string unlockId)
+    {
+        if (!HasProgression())
+        {
+            return;
+        }
+
+        if (progression.IsUnlocked(unlockId))
+        {
+            SetMessage("Already unlocked.");
+            RefreshUI();
+            return;
+        }
+
+        int cost = GetFutureUnlockCost(unlockId);
+        if (!progression.SpendDoubloons(cost))
+        {
+            SetMessage("Not enough doubloons.");
+            RefreshUI();
+            return;
+        }
+
+        progression.Unlock(unlockId);
+        SetMessage($"Unlocked: {unlockId}");
+        RefreshUI();
+    }
 
     public void BuyOrSelectCosmetic(int index)
     {
@@ -190,14 +262,14 @@ public class ShipShopController : MonoBehaviour
     private int GetMagnetUpgradeCost() => magnetBaseCost * (progression.GetPermanentMagnetLevel() + 1);
     private int GetCannonUpgradeCost() => cannonBaseCost * (progression.GetPermanentCannonDamageLevel() + 1);
 
-    private void TryBuyUpgrade(int cost, System.Func<int, bool> buyAction, string successMessage)
+    private void TryBuyUpgrade(int cost, Func<PlayerProgression, int, bool> buyAction, string successMessage)
     {
         if (!HasProgression())
         {
             return;
         }
 
-        if (!buyAction(cost))
+        if (!buyAction(progression, cost))
         {
             SetMessage("Not enough doubloons.");
             RefreshUI();
@@ -206,6 +278,25 @@ public class ShipShopController : MonoBehaviour
 
         SetMessage(successMessage);
         RefreshUI();
+    }
+
+    private int GetFutureUnlockCost(string unlockId)
+    {
+        if (futureUnlockOffers == null)
+        {
+            return 0;
+        }
+
+        for (int i = 0; i < futureUnlockOffers.Length; i++)
+        {
+            GenericUnlockOffer offer = futureUnlockOffers[i];
+            if (offer != null && string.Equals(offer.id, unlockId, StringComparison.OrdinalIgnoreCase))
+            {
+                return Mathf.Max(0, offer.cost);
+            }
+        }
+
+        return 0;
     }
 
     private bool HasProgression()
@@ -270,22 +361,23 @@ public class ShipShopController : MonoBehaviour
 
         if (healthUpgradeText != null)
         {
-            healthUpgradeText.text = $"Max Health Lv {progression.GetPermanentHealthLevel()} | Cost: {GetHealthUpgradeCost()}";
+            healthUpgradeText.text = $"Max Health Lv {progression.GetPermanentHealthLevel()} (+{healthIncreasePerLevel}) | Cost: {GetHealthUpgradeCost()}";
         }
 
         if (speedUpgradeText != null)
         {
-            speedUpgradeText.text = $"Speed Lv {progression.GetPermanentSpeedLevel()} | Cost: {GetSpeedUpgradeCost()}";
+            speedUpgradeText.text = $"Speed Lv {progression.GetPermanentSpeedLevel()} (+{speedIncreasePerLevel:0.##}) | Cost: {GetSpeedUpgradeCost()}";
         }
 
         if (magnetUpgradeText != null)
         {
-            magnetUpgradeText.text = $"Magnet Lv {progression.GetPermanentMagnetLevel()} | Cost: {GetMagnetUpgradeCost()}";
+            string magnetUnlockState = progression.IsUnlocked(PlayerProgression.UnlockMagnetRadius) ? "Unlocked" : "Unlocks in-run upgrade";
+            magnetUpgradeText.text = $"Magnet Lv {progression.GetPermanentMagnetLevel()} (+{magnetRadiusIncreasePerLevel:0.##}) | Cost: {GetMagnetUpgradeCost()} | {magnetUnlockState}";
         }
 
         if (cannonUpgradeText != null)
         {
-            cannonUpgradeText.text = $"Cannon Damage Lv {progression.GetPermanentCannonDamageLevel()} | Cost: {GetCannonUpgradeCost()}";
+            cannonUpgradeText.text = $"Cannon Damage Lv {progression.GetPermanentCannonDamageLevel()} (+{cannonDamageIncreasePerLevel}) | Cost: {GetCannonUpgradeCost()}";
         }
 
         if (dashUnlockText != null)
