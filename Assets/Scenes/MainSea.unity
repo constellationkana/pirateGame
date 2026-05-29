@@ -1098,13 +1098,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1117855906}
   - {fileID: 740458875}
   - {fileID: 183018204}
   - {fileID: 777483889}
   - {fileID: 1998689559}
   - {fileID: 1813597859}
-  - {fileID: 1888125500}
   m_Father: {fileID: 934854690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &227589206
@@ -3179,7 +3177,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1571774900}
-  - {fileID: 838963683}
   - {fileID: 1671607604}
   - {fileID: 587793441}
   - {fileID: 444849486}
@@ -3472,10 +3469,10 @@ MonoBehaviour:
   elapsedRunTime: 0
   baseSpawnInterval: 8
   minSpawnInterval: 1.5
-  spawnIntervalDecreasePerMinute: 0.5
-  baseMaxEnemiesAlive: 3
-  maxEnemiesAliveIncreasePerMinute: 1
-  absoluteMaxEnemiesAlive: 25
+  spawnIntervalDecreasePerMinute: 1
+  baseMaxEnemiesAlive: 5
+  maxEnemiesAliveIncreasePerMinute: 2
+  absoluteMaxEnemiesAlive: 30
   currentSpawnInterval: 0
   currentMaxEnemiesAlive: 0
 --- !u!4 &742778665
@@ -4219,7 +4216,6 @@ Transform:
   - {fileID: 1776632367}
   - {fileID: 1187295866}
   - {fileID: 1594039711}
-  - {fileID: 1064843352}
   - {fileID: 1652145914}
   - {fileID: 1430881006}
   m_Father: {fileID: 934854690}
@@ -5448,15 +5444,15 @@ MonoBehaviour:
   maxSpawnDistanceFromPlayer: 15
   spawnOnlyWhenPlayerOnBoard: 0
   logSpawns: 1
-  logSpawnedEnemySetup: 0
+  logSpawnedEnemySetup: 1
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 15
+  baseSpawnInterval: 10
   minSpawnInterval: 1.5
-  spawnIntervalDecreasePerMinute: 0.5
+  spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 3
-  maxEnemiesAliveIncreasePerMinute: 1
-  absoluteMaxEnemiesAlive: 25
+  maxEnemiesAliveIncreasePerMinute: 2
+  absoluteMaxEnemiesAlive: 30
   currentSpawnInterval: 0
   currentMaxEnemiesAlive: 0
 --- !u!4 &1002901038
@@ -7617,7 +7613,6 @@ Transform:
   m_Children:
   - {fileID: 1940006091}
   - {fileID: 1518572620}
-  - {fileID: 1100758119}
   - {fileID: 385118923}
   - {fileID: 388065663}
   - {fileID: 874902587}
@@ -7931,7 +7926,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1117855906}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1464871119
 SpriteRenderer:
@@ -8297,7 +8292,6 @@ Transform:
   m_Children:
   - {fileID: 908947000}
   - {fileID: 1843155386}
-  - {fileID: 1068134291}
   - {fileID: 1298581494}
   - {fileID: 59010801}
   - {fileID: 34211268}
@@ -10865,7 +10859,6 @@ Transform:
   - {fileID: 1507467133}
   - {fileID: 1586468963}
   - {fileID: 1736747543}
-  - {fileID: 1098971501}
   - {fileID: 367154706}
   m_Father: {fileID: 934854690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11908,3 +11901,4 @@ SceneRoots:
   - {fileID: 742778665}
   - {fileID: 1928130974}
   - {fileID: 846776504}
+  - {fileID: 1464871118}

@@ -749,7 +749,7 @@ MonoBehaviour:
   doubloonPickupPrefab: {fileID: 6201677647806777943, guid: 1024b82832b8c5d49a158a59422883d7, type: 3}
   minDoubloonDrops: 1
   maxDoubloonDrops: 4
-  xpPickupPrefab: {fileID: 0}
+  xpPickupPrefab: {fileID: 6312591792436907943, guid: de82d20c1bdb6f04aae036ddf1ad2f86, type: 3}
   minXPDrops: 1
   maxXPDrops: 3
   xpAmountPerPickup: 1
