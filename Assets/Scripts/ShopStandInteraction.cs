@@ -7,11 +7,22 @@ public class ShopStandInteraction : MonoBehaviour
     public enum ShopStandType
     {
         HealthUpgrade,
+        HealthRegenUnlock,
         SpeedUpgrade,
-        MagnetUpgrade,
-        CannonDamageUpgrade,
         DashUnlock,
+        CannonDamageUpgrade,
+        CannonballSizeUnlock,
+        CannonballSpeedUnlock,
+        CannonballSpeedUpgrade,
+        ExplodingCannonballsUnlock,
+        ExplosionPowerUpgrade,
+        BarnaclesUnlock,
+        BarnaclesUpgrade,
+        CannonballPierceUnlock,
+        MagnetUnlock,
+        MagnetUpgrade,
         ForceFieldUnlock,
+        CursedDoubloonsUnlock,
         GenericUnlock,
         Cosmetics,
         StartRun
@@ -64,20 +75,53 @@ public class ShopStandInteraction : MonoBehaviour
             case ShopStandType.HealthUpgrade:
                 shopController.BuyHealthUpgrade();
                 break;
+            case ShopStandType.HealthRegenUnlock:
+                shopController.UnlockHealthRegeneration();
+                break;
             case ShopStandType.SpeedUpgrade:
                 shopController.BuySpeedUpgrade();
-                break;
-            case ShopStandType.MagnetUpgrade:
-                shopController.BuyMagnetUpgrade();
-                break;
-            case ShopStandType.CannonDamageUpgrade:
-                shopController.BuyCannonDamageUpgrade();
                 break;
             case ShopStandType.DashUnlock:
                 shopController.UnlockDash();
                 break;
+            case ShopStandType.CannonDamageUpgrade:
+                shopController.BuyCannonDamageUpgrade();
+                break;
+            case ShopStandType.CannonballSizeUnlock:
+                shopController.UnlockCannonballSizeUpgrade();
+                break;
+            case ShopStandType.CannonballSpeedUnlock:
+                shopController.UnlockCannonballSpeedUpgrade();
+                break;
+            case ShopStandType.CannonballSpeedUpgrade:
+                shopController.BuyBaseCannonballSpeedUpgrade();
+                break;
+            case ShopStandType.ExplodingCannonballsUnlock:
+                shopController.UnlockExplodingCannonballs();
+                break;
+            case ShopStandType.ExplosionPowerUpgrade:
+                shopController.BuyExplosionPowerUpgrade();
+                break;
+            case ShopStandType.BarnaclesUnlock:
+                shopController.UnlockBarnacles();
+                break;
+            case ShopStandType.BarnaclesUpgrade:
+                shopController.BuyBarnaclesUpgrade();
+                break;
+            case ShopStandType.CannonballPierceUnlock:
+                shopController.UnlockCannonballPierce();
+                break;
+            case ShopStandType.MagnetUnlock:
+                shopController.UnlockMagnetUpgrades();
+                break;
+            case ShopStandType.MagnetUpgrade:
+                shopController.BuyMagnetUpgrade();
+                break;
             case ShopStandType.ForceFieldUnlock:
                 shopController.UnlockForceField();
+                break;
+            case ShopStandType.CursedDoubloonsUnlock:
+                shopController.UnlockCursedDoubloons();
                 break;
             case ShopStandType.GenericUnlock:
                 shopController.BuyGenericUnlock(genericUnlockId);
@@ -149,12 +193,23 @@ public class ShopStandInteraction : MonoBehaviour
     {
         return standType switch
         {
-            ShopStandType.HealthUpgrade => "Health Upgrade",
-            ShopStandType.SpeedUpgrade => "Speed Upgrade",
-            ShopStandType.MagnetUpgrade => "Magnet Upgrade",
-            ShopStandType.CannonDamageUpgrade => "Cannon Damage",
+            ShopStandType.HealthUpgrade => "Base Health",
+            ShopStandType.HealthRegenUnlock => "Unlock Health Regen",
+            ShopStandType.SpeedUpgrade => "Base Ship Speed",
             ShopStandType.DashUnlock => "Unlock Dash",
+            ShopStandType.CannonDamageUpgrade => "Base Cannon Damage",
+            ShopStandType.CannonballSizeUnlock => "Unlock Cannonball Size",
+            ShopStandType.CannonballSpeedUnlock => "Unlock Cannonball Speed",
+            ShopStandType.CannonballSpeedUpgrade => "Base Cannonball Speed",
+            ShopStandType.ExplodingCannonballsUnlock => "Unlock Exploding Cannonballs",
+            ShopStandType.ExplosionPowerUpgrade => "Explosion Power",
+            ShopStandType.BarnaclesUnlock => "Unlock Barnacles",
+            ShopStandType.BarnaclesUpgrade => "Upgrade Barnacles",
+            ShopStandType.CannonballPierceUnlock => "Unlock Cannonball Pierce",
+            ShopStandType.MagnetUnlock => "Unlock Magnet Upgrades",
+            ShopStandType.MagnetUpgrade => "Base Magnet Radius",
             ShopStandType.ForceFieldUnlock => "Unlock Force Field",
+            ShopStandType.CursedDoubloonsUnlock => "Unlock Cursed Doubloons",
             ShopStandType.GenericUnlock => string.IsNullOrWhiteSpace(genericUnlockId) ? "Unlock Upgrade" : $"Unlock {genericUnlockId}",
             ShopStandType.Cosmetics => "Ship Looks",
             ShopStandType.StartRun => "Start Run",
