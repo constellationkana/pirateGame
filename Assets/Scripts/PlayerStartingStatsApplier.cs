@@ -7,6 +7,7 @@ public class PlayerStartingStatsApplier : MonoBehaviour
     [SerializeField] private float moveSpeedPerLevel = 0.25f;
     [SerializeField] private float magnetRadiusPerLevel = 0.5f;
     [SerializeField] private int cannonDamagePerLevel = 1;
+    [SerializeField] private float cannonballSpeedPerLevel = 1f;
 
     [Header("References")]
     [SerializeField] private ShipHealth shipHealth;
@@ -38,8 +39,8 @@ public class PlayerStartingStatsApplier : MonoBehaviour
             shipController.AddMoveSpeed(speedBonus);
         }
 
-        float magnetBonus = progression.GetPermanentMagnetLevel() * magnetRadiusPerLevel;
-        if (pickupMagnetController != null && magnetBonus > 0f)
+        float magnetBonus = progression.GetBaseMagnetRadiusLevel() * magnetRadiusPerLevel;
+        if (pickupMagnetController != null && progression.IsUnlocked(PlayerProgression.UnlockMagnetId) && magnetBonus > 0f)
         {
             pickupMagnetController.AddMagnetRadius(magnetBonus);
         }
@@ -48,6 +49,12 @@ public class PlayerStartingStatsApplier : MonoBehaviour
         if (cannonShooter != null && cannonBonus > 0)
         {
             cannonShooter.AddCannonballDamage(cannonBonus);
+        }
+
+        float cannonballSpeedBonus = progression.GetBaseCannonballSpeedLevel() * cannonballSpeedPerLevel;
+        if (cannonShooter != null && progression.IsUnlocked(PlayerProgression.UnlockCannonballSpeedId) && cannonballSpeedBonus > 0f)
+        {
+            cannonShooter.AddCannonballSpeed(cannonballSpeedBonus);
         }
     }
 }

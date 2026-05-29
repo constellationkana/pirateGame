@@ -15,21 +15,30 @@ public class PlayerProgression : MonoBehaviour
         public bool isActive;
     }
 
-    public const string UnlockMagnetRadius = "magnet_radius";
-    public const string UnlockDashId = "dash";
-    public const string UnlockForceFieldId = "force_field";
     public const string UnlockHealthRegenId = "health_regen";
+    public const string UnlockDashId = "dash";
+    public const string UnlockMagnetId = "magnet";
+    public const string UnlockForceFieldId = "force_field";
     public const string UnlockCannonballSizeId = "cannonball_size";
     public const string UnlockCannonballSpeedId = "cannonball_speed";
-    public const string UnlockCannonballPierceId = "cannonball_pierce";
     public const string UnlockCannonballExplosionId = "cannonball_explosion";
+    public const string UnlockCannonballPierceId = "cannonball_pierce";
     public const string UnlockBarnaclesId = "barnacles";
     public const string UnlockCursedDoubloonsId = "cursed_doubloons";
 
-    public const string UpgradeHealthId = "health";
-    public const string UpgradeSpeedId = "speed";
-    public const string UpgradeMagnetRadiusId = "magnet_radius";
-    public const string UpgradeCannonDamageId = "cannon_damage";
+    public const string UpgradeBaseHealthId = "base_health";
+    public const string UpgradeBaseSpeedId = "base_speed";
+    public const string UpgradeBaseCannonDamageId = "base_cannon_damage";
+    public const string UpgradeBaseCannonballSpeedId = "base_cannonball_speed";
+    public const string UpgradeBaseMagnetRadiusId = "base_magnet_radius";
+    public const string UpgradeExplosionPowerId = "explosion_power";
+    public const string UpgradeBarnaclePowerId = "barnacle_power";
+
+    public const string UnlockMagnetRadius = UnlockMagnetId;
+    public const string UpgradeHealthId = UpgradeBaseHealthId;
+    public const string UpgradeSpeedId = UpgradeBaseSpeedId;
+    public const string UpgradeMagnetRadiusId = UpgradeBaseMagnetRadiusId;
+    public const string UpgradeCannonDamageId = UpgradeBaseCannonDamageId;
 
     private const string LegacyHasSaveFileKey = "HasSaveFile";
     private const string SaveSlotIdsKey = "SaveSlotIds";
@@ -72,7 +81,10 @@ public class PlayerProgression : MonoBehaviour
         UpgradeHealthId,
         UpgradeSpeedId,
         UpgradeMagnetRadiusId,
-        UpgradeCannonDamageId
+        UpgradeCannonDamageId,
+        UpgradeBaseCannonballSpeedId,
+        UpgradeExplosionPowerId,
+        UpgradeBarnaclePowerId
     };
 
     private static PlayerProgression instance;
@@ -290,6 +302,7 @@ public class PlayerProgression : MonoBehaviour
 
     public bool SpendDoubloons(int amount)
     {
+        if (!HasActiveSaveSlot) return false;
         if (amount <= 0) return true;
         if (totalDoubloons < amount) return false;
 
@@ -348,6 +361,38 @@ public class PlayerProgression : MonoBehaviour
         if (!SpendDoubloons(cost)) return false;
         permanentCannonDamageLevel++;
         SetUpgradeLevel(UpgradeCannonDamageId, permanentCannonDamageLevel);
+        return true;
+    }
+
+    public int GetBaseCannonballSpeedLevel() => GetUpgradeLevel(UpgradeBaseCannonballSpeedId);
+    public int GetBaseMagnetRadiusLevel() => GetUpgradeLevel(UpgradeBaseMagnetRadiusId);
+    public int GetExplosionPowerLevel() => GetUpgradeLevel(UpgradeExplosionPowerId);
+    public int GetBarnaclePowerLevel() => GetUpgradeLevel(UpgradeBarnaclePowerId);
+
+    public bool TryPurchaseUnlock(string id, int cost)
+    {
+        if (!HasActiveSaveSlot) return false;
+
+        string normalizedId = NormalizeId(id);
+        if (string.IsNullOrEmpty(normalizedId) || IsUnlocked(normalizedId)) return false;
+        if (!SpendDoubloons(cost)) return false;
+
+        Unlock(normalizedId);
+        return true;
+    }
+
+    public bool TryPurchaseUpgrade(string id, int cost, int maxLevel, string requiredUnlockId = null)
+    {
+        if (!HasActiveSaveSlot) return false;
+
+        string normalizedId = NormalizeId(id);
+        if (string.IsNullOrEmpty(normalizedId)) return false;
+        if (!string.IsNullOrWhiteSpace(requiredUnlockId) && !IsUnlocked(requiredUnlockId)) return false;
+        int currentLevel = GetUpgradeLevel(normalizedId);
+        if (maxLevel > 0 && currentLevel >= maxLevel) return false;
+        if (!SpendDoubloons(cost)) return false;
+
+        SetUpgradeLevel(normalizedId, currentLevel + 1);
         return true;
     }
 
@@ -637,6 +682,10 @@ public class PlayerProgression : MonoBehaviour
         {
             upgradeIds.Add(NormalizeId(BuiltInGenericUpgradeIds[i]));
         }
+        upgradeIds.Add("health");
+        upgradeIds.Add("speed");
+        upgradeIds.Add("cannon_damage");
+        upgradeIds.Add("magnet_radius");
 
         foreach (string id in upgradeIds)
         {
@@ -712,6 +761,10 @@ public class PlayerProgression : MonoBehaviour
         {
             upgradeIds.Add(NormalizeId(BuiltInGenericUpgradeIds[i]));
         }
+        upgradeIds.Add("health");
+        upgradeIds.Add("speed");
+        upgradeIds.Add("cannon_damage");
+        upgradeIds.Add("magnet_radius");
 
         foreach (string id in upgradeIds)
         {
@@ -725,10 +778,24 @@ public class PlayerProgression : MonoBehaviour
 
     private void SyncGenericUpgradeLevelsIntoLegacyFields()
     {
+        MigrateLegacyGenericUpgradeId("health", UpgradeBaseHealthId);
+        MigrateLegacyGenericUpgradeId("speed", UpgradeBaseSpeedId);
+        MigrateLegacyGenericUpgradeId("cannon_damage", UpgradeBaseCannonDamageId);
+        MigrateLegacyGenericUpgradeId("magnet_radius", UpgradeBaseMagnetRadiusId);
+
         permanentHealthLevel = Mathf.Max(permanentHealthLevel, GetUpgradeLevel(UpgradeHealthId));
         permanentSpeedLevel = Mathf.Max(permanentSpeedLevel, GetUpgradeLevel(UpgradeSpeedId));
         permanentMagnetLevel = Mathf.Max(permanentMagnetLevel, GetUpgradeLevel(UpgradeMagnetRadiusId));
         permanentCannonDamageLevel = Mathf.Max(permanentCannonDamageLevel, GetUpgradeLevel(UpgradeCannonDamageId));
+    }
+
+    private void MigrateLegacyGenericUpgradeId(string oldId, string newId)
+    {
+        int oldLevel = GetUpgradeLevel(oldId);
+        if (oldLevel <= 0) return;
+
+        genericUpgradeLevels[NormalizeId(newId)] = Mathf.Max(GetUpgradeLevel(newId), oldLevel);
+        genericUpgradeLevels.Remove(NormalizeId(oldId));
     }
 
     private void MigrateLegacyProgressionIntoGenericKeys()

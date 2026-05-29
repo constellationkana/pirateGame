@@ -27,6 +27,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private float speedIncreasePerUpgrade = 0.5f;
     [SerializeField] private float magnetRadiusUpgradeAmount = 1f;
     [SerializeField] private int cannonDamageIncreasePerUpgrade = 1;
+    [SerializeField] private float cannonballSpeedUpgradeAmount = 1f;
     [SerializeField] private float dashSpeedUpgradeAmount = 2f;
     [SerializeField] private float dashCooldownReductionAmount = 0.2f;
     [SerializeField] private float forceFieldRadiusUpgradeAmount = 0.5f;
@@ -82,8 +83,11 @@ public class UpgradeManager : MonoBehaviour
         }
 
         phaseOneOptions.Add(new UpgradeOption { id = "health", displayName = "Health Upgrade", description = "Increase max health and heal to full." });
-        phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Ship Speed", description = "Increase ship movement speed." });
         phaseOneOptions.Add(new UpgradeOption { id = "cannon_damage", displayName = "Cannonball Damage", description = "Increase cannonball damage." });
+        phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Ship Speed", description = "Increase ship movement speed." });
+        phaseOneOptions.Add(new UpgradeOption { id = "gold_luck", displayName = "I Love Gold", description = "Not implemented yet." });
+        phaseOneOptions.Add(new UpgradeOption { id = "xp_luck", displayName = "XP Luck", description = "Not implemented yet." });
+        phaseOneOptions.Add(new UpgradeOption { id = "wood_luck", displayName = "Wood Luck", description = "Not implemented yet." });
     }
 
     private void OnEnable()
@@ -132,9 +136,14 @@ public class UpgradeManager : MonoBehaviour
 
         PlayerProgression progression = PlayerProgression.Instance;
 
-        if (progression.IsUnlocked(PlayerProgression.UnlockMagnetRadius))
+        if (progression.IsUnlocked(PlayerProgression.UnlockMagnetId))
         {
             pool.Add(new UpgradeOption { id = "magnet", displayName = "Magnet Radius Upgrade", description = "Increase pickup magnet radius." });
+        }
+
+        if (progression.IsUnlocked(PlayerProgression.UnlockCannonballSpeedId) && cannonShooter != null)
+        {
+            pool.Add(new UpgradeOption { id = "cannonball_speed", displayName = "Cannonball Speed", description = "Increase cannonball travel speed." });
         }
 
         bool dashShopUnlocked = progression.IsUnlocked(PlayerProgression.UnlockDashId) || allowDashWithoutShopUnlock;
@@ -228,6 +237,17 @@ public class UpgradeManager : MonoBehaviour
                 {
                     cannonShooter.AddCannonballDamage(cannonDamageIncreasePerUpgrade);
                 }
+                break;
+            case "cannonball_speed":
+                if (cannonShooter != null)
+                {
+                    cannonShooter.AddCannonballSpeed(cannonballSpeedUpgradeAmount);
+                }
+                break;
+            case "gold_luck":
+            case "xp_luck":
+            case "wood_luck":
+                Debug.Log($"UpgradeManager: {chosenOption.displayName} is not implemented yet.", this);
                 break;
             case "dash_unlock":
                 if (dashController != null)

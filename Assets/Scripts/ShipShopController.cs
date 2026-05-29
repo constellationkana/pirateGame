@@ -3,15 +3,33 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ShipShopController : MonoBehaviour
 {
     [Serializable]
-    private class GenericUnlockOffer
+    private class UpgradePurchaseConfig
     {
-        public string id;
+        public int baseCost = 50;
+        public int costIncreasePerLevel = 50;
+        [Tooltip("0 means uncapped.")]
+        public int maxLevel = 10;
+        public float statIncreasePerLevel = 1f;
+    }
+
+    [Serializable]
+    private class UnlockPurchaseConfig
+    {
         public int cost = 100;
     }
+
+    [Serializable]
+    private class MenuButtonReferences
+    {
+        public TMP_Text labelText;
+        public Button button;
+    }
+
     [Header("Top Bar")]
     [SerializeField] private TMP_Text doubloonsText;
 
@@ -24,48 +42,84 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private string mainSeaSceneName = "MainSea";
     [SerializeField] private bool logSceneTransitions = true;
 
-    [Header("Stat Upgrade Text")]
-    [SerializeField] private TMP_Text healthUpgradeText;
-    [SerializeField] private TMP_Text speedUpgradeText;
-    [SerializeField] private TMP_Text magnetUpgradeText;
-    [SerializeField] private TMP_Text cannonUpgradeText;
+    [Header("Category Menu Panels")]
+    [SerializeField] private GameObject healthMenuPanel;
+    [SerializeField] private GameObject speedMenuPanel;
+    [SerializeField] private GameObject arsenalMenuPanel;
+    [SerializeField] private GameObject abilitiesMenuPanel;
+    [SerializeField] private bool closeMenusOnStart = true;
 
-    [Header("Unlock Text")]
+    [Header("Health Menu Buttons")]
+    [SerializeField] private MenuButtonReferences healthUpgrade = new();
+    [SerializeField] private MenuButtonReferences healthRegenUnlockButton = new();
+
+    [Header("Speed Menu Buttons")]
+    [SerializeField] private MenuButtonReferences speedUpgrade = new();
+    [SerializeField] private MenuButtonReferences dashUnlockButton = new();
+
+    [Header("Arsenal Menu Buttons")]
+    [SerializeField] private MenuButtonReferences cannonDamageUpgrade = new();
+    [SerializeField] private MenuButtonReferences cannonballSizeUnlockButton = new();
+    [SerializeField] private MenuButtonReferences cannonballSpeedUnlockButton = new();
+    [SerializeField] private MenuButtonReferences cannonballSpeedUpgrade = new();
+    [SerializeField] private MenuButtonReferences explodingCannonballsUnlockButton = new();
+    [SerializeField] private MenuButtonReferences explosionPowerUpgradeButton = new();
+    [SerializeField] private MenuButtonReferences barnaclesUnlockButton = new();
+    [SerializeField] private MenuButtonReferences barnaclePowerUpgradeButton = new();
+    [SerializeField] private MenuButtonReferences cannonballPierceUnlockButton = new();
+
+    [Header("Abilities Menu Buttons")]
+    [SerializeField] private MenuButtonReferences magnetUnlockButton = new();
+    [SerializeField] private MenuButtonReferences magnetUpgrade = new();
+    [SerializeField] private MenuButtonReferences forceFieldUnlockButton = new();
+    [SerializeField] private MenuButtonReferences cursedDoubloonsUnlockButton = new();
+
+    [Header("Legacy Text References")]
+    [Tooltip("Optional compatibility text for older scenes. Prefer wiring the Menu Button References above.")]
+    [SerializeField] private TMP_Text healthUpgradeText;
+    [SerializeField] private TMP_Text healthRegenUnlockText;
+    [SerializeField] private TMP_Text speedUpgradeText;
     [SerializeField] private TMP_Text dashUnlockText;
+    [SerializeField] private TMP_Text cannonUpgradeText;
+    [SerializeField] private TMP_Text cannonballSizeUnlockText;
+    [SerializeField] private TMP_Text cannonballSpeedUnlockText;
+    [SerializeField] private TMP_Text cannonballSpeedUpgradeText;
+    [SerializeField] private TMP_Text explodingCannonballsUnlockText;
+    [SerializeField] private TMP_Text explosionPowerUpgradeText;
+    [SerializeField] private TMP_Text barnaclesUnlockText;
+    [SerializeField] private TMP_Text barnaclePowerUpgradeText;
+    [SerializeField] private TMP_Text cannonballPierceUnlockText;
+    [SerializeField] private TMP_Text magnetUnlockText;
+    [SerializeField] private TMP_Text magnetUpgradeText;
     [SerializeField] private TMP_Text forceFieldUnlockText;
+    [SerializeField] private TMP_Text cursedDoubloonsUnlockText;
+
+    [Header("Permanent Upgrade Prices, Amounts, and Max Levels")]
+    [SerializeField] private UpgradePurchaseConfig baseHealth = new() { baseCost = 50, costIncreasePerLevel = 50, maxLevel = 10, statIncreasePerLevel = 2f };
+    [SerializeField] private UpgradePurchaseConfig baseSpeed = new() { baseCost = 75, costIncreasePerLevel = 75, maxLevel = 10, statIncreasePerLevel = 0.25f };
+    [SerializeField] private UpgradePurchaseConfig baseCannonDamage = new() { baseCost = 100, costIncreasePerLevel = 100, maxLevel = 10, statIncreasePerLevel = 1f };
+    [SerializeField] private UpgradePurchaseConfig baseCannonballSpeed = new() { baseCost = 100, costIncreasePerLevel = 100, maxLevel = 10, statIncreasePerLevel = 1f };
+    [SerializeField] private UpgradePurchaseConfig baseMagnetRadius = new() { baseCost = 60, costIncreasePerLevel = 60, maxLevel = 10, statIncreasePerLevel = 0.5f };
+    [SerializeField] private UpgradePurchaseConfig explosionPower = new() { baseCost = 150, costIncreasePerLevel = 150, maxLevel = 10, statIncreasePerLevel = 1f };
+    [SerializeField] private UpgradePurchaseConfig barnaclePower = new() { baseCost = 125, costIncreasePerLevel = 125, maxLevel = 10, statIncreasePerLevel = 1f };
+
+    [Header("One-Time Unlock Prices")]
+    [SerializeField] private UnlockPurchaseConfig healthRegenUnlock = new() { cost = 150 };
+    [SerializeField] private UnlockPurchaseConfig dashUnlock = new() { cost = 250 };
+    [SerializeField] private UnlockPurchaseConfig magnetUnlock = new() { cost = 60 };
+    [SerializeField] private UnlockPurchaseConfig forceFieldUnlock = new() { cost = 400 };
+    [SerializeField] private UnlockPurchaseConfig cannonballSizeUnlock = new() { cost = 150 };
+    [SerializeField] private UnlockPurchaseConfig cannonballSpeedUnlock = new() { cost = 150 };
+    [SerializeField] private UnlockPurchaseConfig explodingCannonballsUnlock = new() { cost = 250 };
+    [SerializeField] private UnlockPurchaseConfig cannonballPierceUnlock = new() { cost = 200 };
+    [SerializeField] private UnlockPurchaseConfig barnaclesUnlock = new() { cost = 200 };
+    [SerializeField] private UnlockPurchaseConfig cursedDoubloonsUnlock = new() { cost = 200 };
 
     [Header("Cosmetics")]
     [SerializeField] private string[] cosmeticIds;
     [SerializeField] private Sprite[] cosmeticSprites;
     [SerializeField] private int[] cosmeticCosts;
     [SerializeField] private TMP_Text cosmeticStatusText;
-
-    [Header("Costs")]
-    [SerializeField] private int healthBaseCost = 50;
-    [SerializeField] private int speedBaseCost = 75;
-    [SerializeField] private int magnetBaseCost = 60;
-    [SerializeField] private int cannonBaseCost = 100;
-    [SerializeField] private int dashUnlockCost = 250;
-    [SerializeField] private int forceFieldUnlockCost = 400;
-
-    [Header("Stat Upgrade Amounts")]
-    [SerializeField] private int healthIncreasePerLevel = 2;
-    [SerializeField] private float speedIncreasePerLevel = 0.25f;
-    [SerializeField] private float magnetRadiusIncreasePerLevel = 0.5f;
-    [SerializeField] private int cannonDamageIncreasePerLevel = 1;
-
-    [Header("Future Unlock Offers")]
-    [SerializeField]
-    private GenericUnlockOffer[] futureUnlockOffers =
-    {
-        new() { id = PlayerProgression.UnlockHealthRegenId, cost = 150 },
-        new() { id = PlayerProgression.UnlockCannonballSizeId, cost = 150 },
-        new() { id = PlayerProgression.UnlockCannonballSpeedId, cost = 150 },
-        new() { id = PlayerProgression.UnlockCannonballPierceId, cost = 200 },
-        new() { id = PlayerProgression.UnlockCannonballExplosionId, cost = 250 },
-        new() { id = PlayerProgression.UnlockBarnaclesId, cost = 200 },
-        new() { id = PlayerProgression.UnlockCursedDoubloonsId, cost = 200 }
-    };
 
     private PlayerProgression progression;
     private int currentCosmeticIndex;
@@ -74,136 +128,66 @@ public class ShipShopController : MonoBehaviour
     private void Start()
     {
         progression = PlayerProgression.Instance;
-
         if (progression == null)
         {
             Debug.LogWarning("ShipShopController: PlayerProgression singleton could not be created.", this);
             return;
         }
 
+        if (closeMenusOnStart)
+        {
+            CloseAllMenus();
+        }
+
         RefreshUI();
     }
 
-    public void BuyHealthUpgrade()
+    public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
+    public void OpenSpeedMenu() => OpenOnlyMenu(speedMenuPanel, "Speed Menu");
+    public void OpenArsenalMenu() => OpenOnlyMenu(arsenalMenuPanel, "Arsenal Menu");
+    public void OpenAbilitiesMenu() => OpenOnlyMenu(abilitiesMenuPanel, "Abilities Menu");
+
+    public void CloseAllMenus()
     {
-        if (!HasProgression()) return;
-        TryBuyUpgrade(GetHealthUpgradeCost(), (p, cost) => p.BuyPermanentHealthUpgrade(cost), "Health upgraded!");
+        SetMenuActive(healthMenuPanel, false);
+        SetMenuActive(speedMenuPanel, false);
+        SetMenuActive(arsenalMenuPanel, false);
+        SetMenuActive(abilitiesMenuPanel, false);
     }
 
-    public void BuySpeedUpgrade()
-    {
-        if (!HasProgression()) return;
-        TryBuyUpgrade(GetSpeedUpgradeCost(), (p, cost) => p.BuyPermanentSpeedUpgrade(cost), "Speed upgraded!");
-    }
-
-    public void BuyMagnetUpgrade()
-    {
-        if (!HasProgression()) return;
-        TryBuyUpgrade(GetMagnetUpgradeCost(), (p, cost) => p.BuyPermanentMagnetUpgrade(cost), "Magnet upgraded and in-run magnet upgrades unlocked!");
-    }
-
-    public void BuyCannonDamageUpgrade()
-    {
-        if (!HasProgression()) return;
-        TryBuyUpgrade(GetCannonUpgradeCost(), (p, cost) => p.BuyPermanentCannonDamageUpgrade(cost), "Cannon damage upgraded!");
-    }
-
-    public void UnlockDash()
-    {
-        if (!HasProgression())
-        {
-            return;
-        }
-
-        if (progression.IsDashUnlocked())
-        {
-            SetMessage("Already unlocked.");
-            RefreshUI();
-            return;
-        }
-
-        if (!progression.SpendDoubloons(dashUnlockCost))
-        {
-            SetMessage("Not enough doubloons.");
-            RefreshUI();
-            return;
-        }
-
-        progression.UnlockDash();
-        SetMessage("Dash unlocked!");
-        RefreshUI();
-    }
-
-    public void UnlockForceField()
-    {
-        if (!HasProgression())
-        {
-            return;
-        }
-
-        if (progression.IsForceFieldUnlocked())
-        {
-            SetMessage("Already unlocked.");
-            RefreshUI();
-            return;
-        }
-
-        if (!progression.SpendDoubloons(forceFieldUnlockCost))
-        {
-            SetMessage("Not enough doubloons.");
-            RefreshUI();
-            return;
-        }
-
-        progression.UnlockForceField();
-        SetMessage("Force field unlocked!");
-        RefreshUI();
-    }
-
+    public void BuyHealthUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseHealthId, baseHealth, null, "Base health upgraded!");
+    public void UnlockHealthRegeneration() => TryBuyUnlock(PlayerProgression.UnlockHealthRegenId, healthRegenUnlock, "Health regeneration unlocked for level-up choices!");
+    public void BuySpeedUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseSpeedId, baseSpeed, null, "Base ship speed upgraded!");
+    public void UnlockDash() => TryBuyUnlock(PlayerProgression.UnlockDashId, dashUnlock, "Dash unlocked for level-up choices!");
     public void BuyDashUnlock() => UnlockDash();
+    public void BuyCannonDamageUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage, null, "Base cannonball damage upgraded!");
+    public void UnlockCannonballSizeUpgrade() => TryBuyUnlock(PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock, "Cannonball size upgrades unlocked!");
+    public void UnlockCannonballSpeedUpgrade() => TryBuyUnlock(PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock, "Cannonball speed upgrades unlocked!");
+    public void BuyBaseCannonballSpeedUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId, "Base cannonball speed upgraded!");
+    public void UnlockExplodingCannonballs() => TryBuyUnlock(PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock, "Exploding cannonballs unlocked!");
+    public void BuyExplosionPowerUpgrade() => TryBuyLevel(PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId, "Explosion power upgraded!");
+    public void UnlockBarnacles() => TryBuyUnlock(PlayerProgression.UnlockBarnaclesId, barnaclesUnlock, "Barnacles unlocked!");
+    public void BuyBarnaclesUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId, "Barnacles upgraded!");
+    public void UnlockCannonballPierce() => TryBuyUnlock(PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock, "Cannonball pierce unlocked!");
+    public void UnlockMagnetUpgrades() => TryBuyUnlock(PlayerProgression.UnlockMagnetId, magnetUnlock, "Magnet upgrades unlocked!");
+    public void BuyMagnetUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseMagnetRadiusId, baseMagnetRadius, PlayerProgression.UnlockMagnetId, "Base magnet radius upgraded!");
+    public void UnlockForceField() => TryBuyUnlock(PlayerProgression.UnlockForceFieldId, forceFieldUnlock, "Force field unlocked for level-up choices!");
     public void BuyForceFieldUnlock() => UnlockForceField();
+    public void UnlockCursedDoubloons() => TryBuyUnlock(PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock, "Cursed doubloons unlocked!");
 
     public void BuyGenericUnlock(string unlockId)
     {
-        if (!HasProgression())
-        {
-            return;
-        }
-
-        if (progression.IsUnlocked(unlockId))
-        {
-            SetMessage("Already unlocked.");
-            RefreshUI();
-            return;
-        }
-
-        int cost = GetFutureUnlockCost(unlockId);
-        if (!progression.SpendDoubloons(cost))
-        {
-            SetMessage("Not enough doubloons.");
-            RefreshUI();
-            return;
-        }
-
-        progression.Unlock(unlockId);
-        SetMessage($"Unlocked: {unlockId}");
-        RefreshUI();
+        if (string.IsNullOrWhiteSpace(unlockId)) return;
+        TryBuyUnlock(unlockId, GetUnlockConfig(unlockId), $"Unlocked: {unlockId}");
     }
 
     public void BuyOrSelectCosmetic(int index)
     {
-        if (!HasProgression())
-        {
-            return;
-        }
-
-        if (index < 0 || index >= cosmeticIds.Length)
-        {
-            return;
-        }
+        if (!HasProgression()) return;
+        if (cosmeticIds == null || index < 0 || index >= cosmeticIds.Length) return;
 
         string cosmeticId = cosmeticIds[index];
-        int cost = (index < cosmeticCosts.Length) ? Mathf.Max(0, cosmeticCosts[index]) : 0;
+        int cost = (cosmeticCosts != null && index < cosmeticCosts.Length) ? Mathf.Max(0, cosmeticCosts[index]) : 0;
 
         if (!progression.IsCosmeticOwned(cosmeticId) && !progression.BuyCosmetic(cosmeticId, cost))
         {
@@ -257,19 +241,43 @@ public class ShipShopController : MonoBehaviour
         SceneManager.LoadScene(mainSeaSceneName);
     }
 
-    private int GetHealthUpgradeCost() => healthBaseCost * (progression.GetPermanentHealthLevel() + 1);
-    private int GetSpeedUpgradeCost() => speedBaseCost * (progression.GetPermanentSpeedLevel() + 1);
-    private int GetMagnetUpgradeCost() => magnetBaseCost * (progression.GetPermanentMagnetLevel() + 1);
-    private int GetCannonUpgradeCost() => cannonBaseCost * (progression.GetPermanentCannonDamageLevel() + 1);
-
-    private void TryBuyUpgrade(int cost, Func<PlayerProgression, int, bool> buyAction, string successMessage)
+    private void OpenOnlyMenu(GameObject menuPanel, string menuName)
     {
-        if (!HasProgression())
+        if (!HasProgression()) return;
+
+        RefreshUI();
+        CloseAllMenus();
+
+        if (menuPanel == null)
         {
+            SetMessage($"{menuName} is not assigned.");
             return;
         }
 
-        if (!buyAction(progression, cost))
+        SetMenuActive(menuPanel, true);
+        SetMessage(menuName);
+    }
+
+    private static void SetMenuActive(GameObject panel, bool isActive)
+    {
+        if (panel != null)
+        {
+            panel.SetActive(isActive);
+        }
+    }
+
+    private void TryBuyUnlock(string unlockId, UnlockPurchaseConfig config, string successMessage)
+    {
+        if (!CanAttemptPurchase()) return;
+        if (progression.IsUnlocked(unlockId))
+        {
+            SetMessage("Already unlocked.");
+            RefreshUI();
+            return;
+        }
+
+        int cost = Mathf.Max(0, config != null ? config.cost : 0);
+        if (!progression.TryPurchaseUnlock(unlockId, cost))
         {
             SetMessage("Not enough doubloons.");
             RefreshUI();
@@ -280,32 +288,78 @@ public class ShipShopController : MonoBehaviour
         RefreshUI();
     }
 
-    private int GetFutureUnlockCost(string unlockId)
+    private void TryBuyLevel(string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId, string successMessage)
     {
-        if (futureUnlockOffers == null)
+        if (!CanAttemptPurchase()) return;
+        if (!string.IsNullOrWhiteSpace(requiredUnlockId) && !progression.IsUnlocked(requiredUnlockId))
         {
-            return 0;
+            SetMessage("Locked. Buy the required unlock first.");
+            RefreshUI();
+            return;
         }
 
-        for (int i = 0; i < futureUnlockOffers.Length; i++)
+        config ??= new UpgradePurchaseConfig();
+        int currentLevel = progression.GetUpgradeLevel(upgradeId);
+        if (IsAtMax(currentLevel, config.maxLevel))
         {
-            GenericUnlockOffer offer = futureUnlockOffers[i];
-            if (offer != null && string.Equals(offer.id, unlockId, StringComparison.OrdinalIgnoreCase))
-            {
-                return Mathf.Max(0, offer.cost);
-            }
+            SetMessage("Max level reached.");
+            RefreshUI();
+            return;
         }
 
-        return 0;
+        if (!progression.TryPurchaseUpgrade(upgradeId, GetUpgradeCost(config, currentLevel), config.maxLevel, requiredUnlockId))
+        {
+            SetMessage("Not enough doubloons.");
+            RefreshUI();
+            return;
+        }
+
+        SetMessage(successMessage);
+        RefreshUI();
+    }
+
+    private bool CanAttemptPurchase()
+    {
+        if (!HasProgression()) return false;
+        if (!PlayerProgression.HasActiveSaveSlot)
+        {
+            SetMessage("No active save slot selected.");
+            RefreshUI();
+            return false;
+        }
+
+        return true;
+    }
+
+    private static int GetUpgradeCost(UpgradePurchaseConfig config, int currentLevel)
+    {
+        if (config == null) return 0;
+        return Mathf.Max(0, config.baseCost + config.costIncreasePerLevel * Mathf.Max(0, currentLevel));
+    }
+
+    private static bool IsAtMax(int currentLevel, int maxLevel) => maxLevel > 0 && currentLevel >= maxLevel;
+
+    private UnlockPurchaseConfig GetUnlockConfig(string unlockId)
+    {
+        return unlockId switch
+        {
+            PlayerProgression.UnlockHealthRegenId => healthRegenUnlock,
+            PlayerProgression.UnlockDashId => dashUnlock,
+            PlayerProgression.UnlockMagnetId => magnetUnlock,
+            PlayerProgression.UnlockForceFieldId => forceFieldUnlock,
+            PlayerProgression.UnlockCannonballSizeId => cannonballSizeUnlock,
+            PlayerProgression.UnlockCannonballSpeedId => cannonballSpeedUnlock,
+            PlayerProgression.UnlockCannonballExplosionId => explodingCannonballsUnlock,
+            PlayerProgression.UnlockCannonballPierceId => cannonballPierceUnlock,
+            PlayerProgression.UnlockBarnaclesId => barnaclesUnlock,
+            PlayerProgression.UnlockCursedDoubloonsId => cursedDoubloonsUnlock,
+            _ => new UnlockPurchaseConfig { cost = 0 }
+        };
     }
 
     private bool HasProgression()
     {
-        if (progression != null)
-        {
-            return true;
-        }
-
+        if (progression != null) return true;
         progression = PlayerProgression.Instance;
         if (progression == null)
         {
@@ -318,11 +372,7 @@ public class ShipShopController : MonoBehaviour
 
     private void SetMessage(string message)
     {
-        if (messageText == null)
-        {
-            return;
-        }
-
+        if (messageText == null) return;
         messageText.text = message;
 
         if (clearMessageRoutine != null)
@@ -349,50 +399,81 @@ public class ShipShopController : MonoBehaviour
 
     private void RefreshUI()
     {
-        if (!HasProgression())
-        {
-            return;
-        }
+        if (!HasProgression()) return;
 
         if (doubloonsText != null)
         {
-            doubloonsText.text = $"Doubloons: {progression.GetDoubloons()}";
+            doubloonsText.text = $"Save: {PlayerProgression.GetActiveSaveName()} | Doubloons: {progression.GetDoubloons()}";
         }
 
-        if (healthUpgradeText != null)
-        {
-            healthUpgradeText.text = $"Max Health Lv {progression.GetPermanentHealthLevel()} (+{healthIncreasePerLevel}) | Cost: {GetHealthUpgradeCost()}";
-        }
-
-        if (speedUpgradeText != null)
-        {
-            speedUpgradeText.text = $"Speed Lv {progression.GetPermanentSpeedLevel()} (+{speedIncreasePerLevel:0.##}) | Cost: {GetSpeedUpgradeCost()}";
-        }
-
-        if (magnetUpgradeText != null)
-        {
-            string magnetUnlockState = progression.IsUnlocked(PlayerProgression.UnlockMagnetRadius) ? "Unlocked" : "Unlocks in-run upgrade";
-            magnetUpgradeText.text = $"Magnet Lv {progression.GetPermanentMagnetLevel()} (+{magnetRadiusIncreasePerLevel:0.##}) | Cost: {GetMagnetUpgradeCost()} | {magnetUnlockState}";
-        }
-
-        if (cannonUpgradeText != null)
-        {
-            cannonUpgradeText.text = $"Cannon Damage Lv {progression.GetPermanentCannonDamageLevel()} (+{cannonDamageIncreasePerLevel}) | Cost: {GetCannonUpgradeCost()}";
-        }
-
-        if (dashUnlockText != null)
-        {
-            dashUnlockText.text = progression.IsDashUnlocked() ? "Dash: Unlocked" : $"Unlock Dash ({dashUnlockCost})";
-        }
-
-        if (forceFieldUnlockText != null)
-        {
-            forceFieldUnlockText.text = progression.IsForceFieldUnlocked() ? "Force Field: Unlocked" : $"Unlock Force Field ({forceFieldUnlockCost})";
-        }
+        SetUpgradeButton(healthUpgrade, healthUpgradeText, "Upgrade Base Health", PlayerProgression.UpgradeBaseHealthId, baseHealth);
+        SetUnlockButton(healthRegenUnlockButton, healthRegenUnlockText, "Unlock Health Regeneration", PlayerProgression.UnlockHealthRegenId, healthRegenUnlock);
+        SetUpgradeButton(speedUpgrade, speedUpgradeText, "Upgrade Base Speed", PlayerProgression.UpgradeBaseSpeedId, baseSpeed);
+        SetUnlockButton(dashUnlockButton, dashUnlockText, "Unlock Dash", PlayerProgression.UnlockDashId, dashUnlock);
+        SetUpgradeButton(cannonDamageUpgrade, cannonUpgradeText, "Upgrade Base Cannonball Damage", PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage);
+        SetUnlockButton(cannonballSizeUnlockButton, cannonballSizeUnlockText, "Unlock Cannonball Size", PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock);
+        SetUnlockButton(cannonballSpeedUnlockButton, cannonballSpeedUnlockText, "Unlock Cannonball Speed", PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock);
+        SetUpgradeButton(cannonballSpeedUpgrade, cannonballSpeedUpgradeText, "Upgrade Base Cannonball Speed", PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId);
+        SetUnlockButton(explodingCannonballsUnlockButton, explodingCannonballsUnlockText, "Unlock Cannonball Explosion", PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock);
+        SetUpgradeButton(explosionPowerUpgradeButton, explosionPowerUpgradeText, "Upgrade Explosion Power", PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId);
+        SetUnlockButton(barnaclesUnlockButton, barnaclesUnlockText, "Unlock Barnacles", PlayerProgression.UnlockBarnaclesId, barnaclesUnlock);
+        SetUpgradeButton(barnaclePowerUpgradeButton, barnaclePowerUpgradeText, "Upgrade Barnacle Power", PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId);
+        SetUnlockButton(cannonballPierceUnlockButton, cannonballPierceUnlockText, "Unlock Cannonball Pierce", PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock);
+        SetUnlockButton(magnetUnlockButton, magnetUnlockText, "Unlock Magnet Upgrades", PlayerProgression.UnlockMagnetId, magnetUnlock);
+        SetUpgradeButton(magnetUpgrade, magnetUpgradeText, "Upgrade Base Magnet Radius", PlayerProgression.UpgradeBaseMagnetRadiusId, baseMagnetRadius, PlayerProgression.UnlockMagnetId);
+        SetUnlockButton(forceFieldUnlockButton, forceFieldUnlockText, "Unlock Force Field", PlayerProgression.UnlockForceFieldId, forceFieldUnlock);
+        SetUnlockButton(cursedDoubloonsUnlockButton, cursedDoubloonsUnlockText, "Unlock Cursed Doubloons", PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock);
 
         if (cosmeticStatusText != null)
         {
-            cosmeticStatusText.text = $"Selected Cosmetic: {progression.GetSelectedShipCosmeticId()}\nCosmetics Configured: {Mathf.Min(cosmeticIds.Length, cosmeticSprites.Length)}";
+            int configuredSprites = cosmeticSprites == null ? 0 : cosmeticSprites.Length;
+            int configuredIds = cosmeticIds == null ? 0 : cosmeticIds.Length;
+            cosmeticStatusText.text = $"Selected Cosmetic: {progression.GetSelectedShipCosmeticId()}\nCosmetics Configured: {Mathf.Min(configuredIds, configuredSprites)}";
+        }
+    }
+
+    private void SetUpgradeButton(MenuButtonReferences references, TMP_Text legacyText, string label, string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId = null)
+    {
+        config ??= new UpgradePurchaseConfig();
+        int currentLevel = progression.GetUpgradeLevel(upgradeId);
+        bool locked = !string.IsNullOrWhiteSpace(requiredUnlockId) && !progression.IsUnlocked(requiredUnlockId);
+        bool maxed = IsAtMax(currentLevel, config.maxLevel);
+        string status = locked ? "Locked" : maxed ? "Maxed" : $"Price: {GetUpgradeCost(config, currentLevel)}";
+        string maxText = config.maxLevel > 0 ? $"/{config.maxLevel}" : string.Empty;
+        string text = $"{label}\nLevel: {currentLevel}{maxText}\nIncrease: +{config.statIncreasePerLevel:0.##}\n{status}";
+
+        SetText(references, legacyText, text);
+        SetButtonInteractable(references, !locked && !maxed);
+    }
+
+    private void SetUnlockButton(MenuButtonReferences references, TMP_Text legacyText, string label, string unlockId, UnlockPurchaseConfig config)
+    {
+        bool unlocked = progression.IsUnlocked(unlockId);
+        int cost = Mathf.Max(0, config != null ? config.cost : 0);
+        string text = unlocked ? $"{label}\nStatus: Unlocked" : $"{label}\nPrice: {cost}\nStatus: Locked";
+
+        SetText(references, legacyText, text);
+        SetButtonInteractable(references, !unlocked);
+    }
+
+    private static void SetText(MenuButtonReferences references, TMP_Text legacyText, string text)
+    {
+        if (references != null && references.labelText != null)
+        {
+            references.labelText.text = text;
+        }
+
+        if (legacyText != null)
+        {
+            legacyText.text = text;
+        }
+    }
+
+    private static void SetButtonInteractable(MenuButtonReferences references, bool interactable)
+    {
+        if (references != null && references.button != null)
+        {
+            references.button.interactable = interactable;
         }
     }
 }
