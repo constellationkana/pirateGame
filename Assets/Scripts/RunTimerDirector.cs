@@ -1,8 +1,22 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class RunTimerDirector : MonoBehaviour
 {
+    [System.Serializable]
+    public class TimedSpawnerEvent
+    {
+        public string eventName;
+        public float triggerTimeSeconds;
+        public GameObject[] spawnerObjectsToEnable;
+        public MonoBehaviour[] spawnerComponentsToEnable;
+        public GameObject[] spawnerObjectsToDisable;
+        public MonoBehaviour[] spawnerComponentsToDisable;
+        public string eventMessage;
+        [HideInInspector] public bool triggered;
+    }
+
     [Header("UI")]
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text eventMessageText;
@@ -14,8 +28,10 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private bool startTimerOnAwake = true;
     [SerializeField] private bool countOnlyWhenPlayerBoarded = true;
     [SerializeField] private bool logTimerDebug;
+    [SerializeField] private bool logSpawnerEvents;
 
     [Header("Spawners")]
+    [SerializeField] private TimedSpawnerEvent[] timedSpawnerEvents;
     [SerializeField] private MonoBehaviour[] normalSpawners;
     [SerializeField] private GameObject[] spawnerObjectsToEnableAtOneMinute;
 
@@ -26,6 +42,7 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private float bossSpawnDistanceFromPlayer = 12f;
 
     [Header("Messages")]
+    [SerializeField] private float eventMessageDuration = 10f;
     [SerializeField] private string oneMinuteMessage = "Stronger enemies incoming!";
     [SerializeField] private string bossIncomingMessage = "Boss ship incoming!";
 
@@ -36,6 +53,7 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private GameObject spawnedBoss;
 
     private ShipController2D playerShipController;
+    private Coroutine clearEventMessageCoroutine;
     private bool timerRunning;
     private float nextDebugLogTime;
 
@@ -44,6 +62,7 @@ public class RunTimerDirector : MonoBehaviour
         timerRunning = startTimerOnAwake;
         ResolvePlayerReferences();
         RefreshTimerText();
+        ResetTimedSpawnerEvents();
 
         if (eventMessageText != null)
         {
@@ -81,11 +100,7 @@ public class RunTimerDirector : MonoBehaviour
         }
 
         RefreshTimerText();
-
-        if (!secondSpawnerActivated && elapsedTime >= secondSpawnerTime)
-        {
-            ActivateSecondSpawnerWave();
-        }
+        CheckTimedSpawnerEvents();
 
         if (!bossSpawned && elapsedTime >= bossSpawnTime)
         {
@@ -109,20 +124,170 @@ public class RunTimerDirector : MonoBehaviour
         timerText.text = $"{minutes:00}:{seconds:00}";
     }
 
-    private void ActivateSecondSpawnerWave()
+    private void ResetTimedSpawnerEvents()
     {
-        secondSpawnerActivated = true;
-
-        for (int i = 0; i < spawnerObjectsToEnableAtOneMinute.Length; i++)
+        if (timedSpawnerEvents == null)
         {
-            GameObject spawnerObject = spawnerObjectsToEnableAtOneMinute[i];
-            if (spawnerObject != null)
+            return;
+        }
+
+        for (int i = 0; i < timedSpawnerEvents.Length; i++)
+        {
+            if (timedSpawnerEvents[i] != null)
             {
-                spawnerObject.SetActive(true);
+                timedSpawnerEvents[i].triggered = false;
+            }
+        }
+    }
+
+    private void CheckTimedSpawnerEvents()
+    {
+        if (timedSpawnerEvents == null || timedSpawnerEvents.Length == 0)
+        {
+            CheckLegacySecondSpawnerEvent();
+            return;
+        }
+
+        for (int i = 0; i < timedSpawnerEvents.Length; i++)
+        {
+            TimedSpawnerEvent timedEvent = timedSpawnerEvents[i];
+            if (timedEvent == null || timedEvent.triggered || elapsedTime < timedEvent.triggerTimeSeconds)
+            {
+                continue;
+            }
+
+            TriggerTimedSpawnerEvent(timedEvent);
+        }
+    }
+
+    private void CheckLegacySecondSpawnerEvent()
+    {
+        if (!secondSpawnerActivated && elapsedTime >= secondSpawnerTime)
+        {
+            secondSpawnerActivated = true;
+            int objectsEnabled = EnableGameObjects(spawnerObjectsToEnableAtOneMinute);
+            ShowEventMessage(oneMinuteMessage);
+
+            if (logSpawnerEvents)
+            {
+                Debug.Log(
+                    $"RunTimerDirector legacy spawner event triggered | eventName=Legacy Second Spawner triggerTimeSeconds={secondSpawnerTime:F2} " +
+                    $"elapsedTime={elapsedTime:F2} objectsEnabled={objectsEnabled} componentsEnabled=0 objectsDisabled=0 componentsDisabled=0",
+                    this);
+            }
+        }
+    }
+
+    private void TriggerTimedSpawnerEvent(TimedSpawnerEvent timedEvent)
+    {
+        timedEvent.triggered = true;
+
+        int objectsEnabled = EnableGameObjects(timedEvent.spawnerObjectsToEnable);
+        int componentsEnabled = EnableComponents(timedEvent.spawnerComponentsToEnable);
+        int objectsDisabled = DisableGameObjects(timedEvent.spawnerObjectsToDisable);
+        int componentsDisabled = DisableComponents(timedEvent.spawnerComponentsToDisable);
+
+        if (!string.IsNullOrEmpty(timedEvent.eventMessage))
+        {
+            ShowEventMessage(timedEvent.eventMessage);
+        }
+
+        if (logSpawnerEvents)
+        {
+            Debug.Log(
+                $"RunTimerDirector spawner event triggered | eventName={timedEvent.eventName} triggerTimeSeconds={timedEvent.triggerTimeSeconds:F2} " +
+                $"elapsedTime={elapsedTime:F2} objectsEnabled={objectsEnabled} componentsEnabled={componentsEnabled} " +
+                $"objectsDisabled={objectsDisabled} componentsDisabled={componentsDisabled}",
+                this);
+        }
+    }
+
+    private int EnableGameObjects(GameObject[] gameObjects)
+    {
+        int changedCount = 0;
+
+        if (gameObjects == null)
+        {
+            return changedCount;
+        }
+
+        for (int i = 0; i < gameObjects.Length; i++)
+        {
+            GameObject gameObjectToEnable = gameObjects[i];
+            if (gameObjectToEnable != null)
+            {
+                gameObjectToEnable.SetActive(true);
+                changedCount++;
             }
         }
 
-        ShowEventMessage(oneMinuteMessage);
+        return changedCount;
+    }
+
+    private int EnableComponents(MonoBehaviour[] components)
+    {
+        int changedCount = 0;
+
+        if (components == null)
+        {
+            return changedCount;
+        }
+
+        for (int i = 0; i < components.Length; i++)
+        {
+            MonoBehaviour component = components[i];
+            if (component != null)
+            {
+                component.enabled = true;
+                changedCount++;
+            }
+        }
+
+        return changedCount;
+    }
+
+    private int DisableGameObjects(GameObject[] gameObjects)
+    {
+        int changedCount = 0;
+
+        if (gameObjects == null)
+        {
+            return changedCount;
+        }
+
+        for (int i = 0; i < gameObjects.Length; i++)
+        {
+            GameObject gameObjectToDisable = gameObjects[i];
+            if (gameObjectToDisable != null)
+            {
+                gameObjectToDisable.SetActive(false);
+                changedCount++;
+            }
+        }
+
+        return changedCount;
+    }
+
+    private int DisableComponents(MonoBehaviour[] components)
+    {
+        int changedCount = 0;
+
+        if (components == null)
+        {
+            return changedCount;
+        }
+
+        for (int i = 0; i < components.Length; i++)
+        {
+            MonoBehaviour component = components[i];
+            if (component != null)
+            {
+                component.enabled = false;
+                changedCount++;
+            }
+        }
+
+        return changedCount;
     }
 
     private void TriggerBossPhase()
@@ -137,14 +302,7 @@ public class RunTimerDirector : MonoBehaviour
 
     private void DisableNormalSpawners()
     {
-        for (int i = 0; i < normalSpawners.Length; i++)
-        {
-            MonoBehaviour spawner = normalSpawners[i];
-            if (spawner != null)
-            {
-                spawner.enabled = false;
-            }
-        }
+        DisableComponents(normalSpawners);
     }
 
     private void SpawnBoss()
@@ -212,11 +370,36 @@ public class RunTimerDirector : MonoBehaviour
 
     private void ShowEventMessage(string message)
     {
-        if (eventMessageText != null)
+        if (eventMessageText == null)
         {
-            eventMessageText.text = message;
-            eventMessageText.gameObject.SetActive(true);
+            return;
         }
+
+        eventMessageText.text = message;
+        eventMessageText.gameObject.SetActive(true);
+
+        if (clearEventMessageCoroutine != null)
+        {
+            StopCoroutine(clearEventMessageCoroutine);
+        }
+
+        clearEventMessageCoroutine = StartCoroutine(ClearEventMessageAfterDelay(message));
+    }
+
+    private IEnumerator ClearEventMessageAfterDelay(string messageToClear)
+    {
+        if (eventMessageDuration > 0f)
+        {
+            yield return new WaitForSeconds(eventMessageDuration);
+        }
+
+        if (eventMessageText != null && eventMessageText.text == messageToClear)
+        {
+            eventMessageText.text = string.Empty;
+            eventMessageText.gameObject.SetActive(false);
+        }
+
+        clearEventMessageCoroutine = null;
     }
 
     private void ResolvePlayerReferencesIfNeeded()
