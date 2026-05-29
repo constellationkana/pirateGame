@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private float bossSpawnDistanceFromPlayer = 12f;
 
     [Header("Messages")]
+    [SerializeField] private float eventMessageDuration = 10f;
     [SerializeField] private string oneMinuteMessage = "Stronger enemies incoming!";
     [SerializeField] private string bossIncomingMessage = "Boss ship incoming!";
 
@@ -36,6 +38,7 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private GameObject spawnedBoss;
 
     private ShipController2D playerShipController;
+    private Coroutine clearEventMessageCoroutine;
     private bool timerRunning;
     private float nextDebugLogTime;
 
@@ -212,11 +215,36 @@ public class RunTimerDirector : MonoBehaviour
 
     private void ShowEventMessage(string message)
     {
-        if (eventMessageText != null)
+        if (eventMessageText == null)
         {
-            eventMessageText.text = message;
-            eventMessageText.gameObject.SetActive(true);
+            return;
         }
+
+        eventMessageText.text = message;
+        eventMessageText.gameObject.SetActive(true);
+
+        if (clearEventMessageCoroutine != null)
+        {
+            StopCoroutine(clearEventMessageCoroutine);
+        }
+
+        clearEventMessageCoroutine = StartCoroutine(ClearEventMessageAfterDelay(message));
+    }
+
+    private IEnumerator ClearEventMessageAfterDelay(string messageToClear)
+    {
+        if (eventMessageDuration > 0f)
+        {
+            yield return new WaitForSeconds(eventMessageDuration);
+        }
+
+        if (eventMessageText != null && eventMessageText.text == messageToClear)
+        {
+            eventMessageText.text = string.Empty;
+            eventMessageText.gameObject.SetActive(false);
+        }
+
+        clearEventMessageCoroutine = null;
     }
 
     private void ResolvePlayerReferencesIfNeeded()
