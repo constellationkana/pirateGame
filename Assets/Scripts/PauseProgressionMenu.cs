@@ -19,14 +19,14 @@ public class PauseProgressionMenu : MonoBehaviour
     [SerializeField]
     private string[] genericUnlockIdsToShow =
     {
-        PlayerProgression.UnlockMagnetRadius,
-        PlayerProgression.UnlockDashId,
-        PlayerProgression.UnlockForceFieldId,
         PlayerProgression.UnlockHealthRegenId,
+        PlayerProgression.UnlockDashId,
+        PlayerProgression.UnlockMagnetId,
+        PlayerProgression.UnlockForceFieldId,
         PlayerProgression.UnlockCannonballSizeId,
         PlayerProgression.UnlockCannonballSpeedId,
-        PlayerProgression.UnlockCannonballPierceId,
         PlayerProgression.UnlockCannonballExplosionId,
+        PlayerProgression.UnlockCannonballPierceId,
         PlayerProgression.UnlockBarnaclesId,
         PlayerProgression.UnlockCursedDoubloonsId
     };
@@ -120,17 +120,23 @@ public class PauseProgressionMenu : MonoBehaviour
         }
 
         StringBuilder builder = new();
+        builder.AppendLine($"Save Name: {PlayerProgression.GetActiveSaveName()}");
         builder.AppendLine($"Doubloons: {progression.GetDoubloons()}");
-        builder.AppendLine($"Base Health Level: {progression.GetPermanentHealthLevel()}");
-        builder.AppendLine($"Base Speed Level: {progression.GetPermanentSpeedLevel()}");
-        builder.AppendLine($"Cannon Damage Level: {progression.GetPermanentCannonDamageLevel()}");
-        builder.AppendLine($"Magnet Level: {progression.GetPermanentMagnetLevel()}");
-        builder.AppendLine($"Dash Unlocked: {FormatYesNo(progression.IsDashUnlocked())}");
-        builder.AppendLine($"Force Field Unlocked: {FormatYesNo(progression.IsForceFieldUnlocked())}");
+        builder.AppendLine("Permanent Upgrade Levels:");
+        builder.AppendLine($"- {PlayerProgression.UpgradeBaseHealthId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseHealthId)}");
+        builder.AppendLine($"- {PlayerProgression.UpgradeBaseSpeedId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseSpeedId)}");
+        builder.AppendLine($"- {PlayerProgression.UpgradeBaseCannonDamageId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseCannonDamageId)}");
+        builder.AppendLine($"- {PlayerProgression.UpgradeBaseCannonballSpeedId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseCannonballSpeedId)}");
+        builder.AppendLine($"- {PlayerProgression.UpgradeBaseMagnetRadiusId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseMagnetRadiusId)}");
+        builder.AppendLine($"- {PlayerProgression.UpgradeExplosionPowerId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeExplosionPowerId)}");
+        builder.AppendLine($"- {PlayerProgression.UpgradeBarnaclePowerId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBarnaclePowerId)}");
+        builder.AppendLine("Unlocked Abilities:");
+        builder.AppendLine($"- Dash: {FormatYesNo(progression.IsDashUnlocked())}");
+        builder.AppendLine($"- Force Field: {FormatYesNo(progression.IsForceFieldUnlocked())}");
 
         if (genericUnlockIdsToShow != null && genericUnlockIdsToShow.Length > 0)
         {
-            builder.AppendLine("Generic Unlocks:");
+            builder.AppendLine("ShipShop Unlocks:");
             for (int i = 0; i < genericUnlockIdsToShow.Length; i++)
             {
                 string unlockId = genericUnlockIdsToShow[i];
