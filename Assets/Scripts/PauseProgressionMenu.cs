@@ -239,17 +239,16 @@ public class PauseProgressionMenu : MonoBehaviour
 
         controlsSummaryText.text =
             "Movement:\n" +
-            "W = Forward\n" +
-            "S = Reverse\n" +
-            "A = Rotate Left\n" +
-            "D = Rotate Right\n\n" +
+            "WASD = Move PlayerShip while boarded\n\n" +
             "Combat:\n" +
-            "Left Mouse = Fire Cannon\n\n" +
+            "Arrow Keys = Fire cannon in cardinal directions\n" +
+            "Space = Fire toward mouse\n\n" +
+            "Interaction:\n" +
+            "E = Board / interact\n\n" +
             "Abilities:\n" +
-            "Shift = Dash\n\n" +
+            "Shift = Dash if unlocked\n\n" +
             "Menus:\n" +
-            "E = Interact\n" +
-            "U = Open Menu";
+            "U = Pause / progression menu";
     }
 
     private void LoadScene(string sceneName, string fieldName)
