@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene Loading")]
+    [SerializeField] private string mapSceneName = "Map";
     [SerializeField] private string shipShopSceneName = "ShipShop";
 
     [Header("Panels")]
@@ -52,7 +53,7 @@ public class MainMenuController : MonoBehaviour
     public void OnPlayPressed()
     {
         PlayerProgression.CreateNewSaveSlot();
-        LoadShipShop();
+        LoadMap();
     }
 
     public void OnNewGamePressed() => OnPlayPressed();
@@ -88,7 +89,7 @@ public class MainMenuController : MonoBehaviour
     {
         if (PlayerProgression.SetActiveSaveSlot(slotId))
         {
-            LoadShipShop();
+            LoadMap();
         }
     }
 
@@ -220,6 +221,17 @@ public class MainMenuController : MonoBehaviour
         {
             continueButton.interactable = PlayerProgression.HasSaveFile();
         }
+    }
+
+    private void LoadMap()
+    {
+        if (string.IsNullOrWhiteSpace(mapSceneName))
+        {
+            Debug.LogWarning("MainMenuController: mapSceneName is empty.", this);
+            return;
+        }
+
+        SceneManager.LoadScene(mapSceneName);
     }
 
     private void LoadShipShop()
