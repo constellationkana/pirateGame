@@ -19,6 +19,7 @@ public class CannonShooter : MonoBehaviour
 
     private ShipController2D shipController;
     private float nextShootTime;
+    private bool mouseFireQueued;
 
     private void Awake()
     {
@@ -34,12 +35,13 @@ public class CannonShooter : MonoBehaviour
     {
         if (shipController == null || !shipController.PlayerOnBoard)
         {
+            mouseFireQueued = false;
             return;
         }
 
-        if (Keyboard.current == null)
+        if (WasLeftMousePressedThisFrame())
         {
-            return;
+            mouseFireQueued = true;
         }
 
         if (Time.time < nextShootTime)
@@ -47,35 +49,60 @@ public class CannonShooter : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+        if (mouseFireQueued || IsLeftMouseHeld())
+        {
+            mouseFireQueued = false;
+            TryFireTowardMouse();
+            return;
+        }
+
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard == null)
+        {
+            return;
+        }
+
+        if (keyboard.upArrowKey.wasPressedThisFrame)
         {
             TryFireDirectional(Vector2.up, cannonPointUp);
             return;
         }
 
-        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+        if (keyboard.downArrowKey.wasPressedThisFrame)
         {
             TryFireDirectional(Vector2.down, cannonPointDown);
             return;
         }
 
-        if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+        if (keyboard.leftArrowKey.wasPressedThisFrame)
         {
             TryFireDirectional(Vector2.left, cannonPointLeft);
             return;
         }
 
-        if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+        if (keyboard.rightArrowKey.wasPressedThisFrame)
         {
             TryFireDirectional(Vector2.right, cannonPointRight);
             return;
         }
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (keyboard.spaceKey.wasPressedThisFrame)
         {
             TryFireTowardMouse();
             return;
         }
+    }
+
+    private static bool WasLeftMousePressedThisFrame()
+    {
+        Mouse mouse = Mouse.current;
+        return mouse != null && mouse.leftButton.wasPressedThisFrame;
+    }
+
+    private static bool IsLeftMouseHeld()
+    {
+        Mouse mouse = Mouse.current;
+        return mouse != null && mouse.leftButton.isPressed;
     }
 
     private void TryFireDirectional(Vector2 direction, Transform directionalPoint)
