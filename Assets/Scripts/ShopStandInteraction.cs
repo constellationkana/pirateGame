@@ -6,21 +6,16 @@ public class ShopStandInteraction : MonoBehaviour
 {
     public enum ShopStandType
     {
-        HealthUpgrade,
-        SpeedUpgrade,
-        MagnetUpgrade,
-        CannonDamageUpgrade,
-        DashUnlock,
-        ForceFieldUnlock,
-        GenericUnlock,
-        Cosmetics,
+        HealthMenu,
+        SpeedMenu,
+        ArsenalMenu,
+        AbilitiesMenu,
         StartRun
     }
 
     [Header("Stand")]
     [SerializeField] private ShopStandType standType;
     [SerializeField] private ShipShopController shopController;
-    [SerializeField] private string genericUnlockId;
     [SerializeField] private string interactionPrompt = "Press E";
     [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private bool playerInRange;
@@ -61,29 +56,17 @@ public class ShopStandInteraction : MonoBehaviour
 
         switch (standType)
         {
-            case ShopStandType.HealthUpgrade:
-                shopController.BuyHealthUpgrade();
+            case ShopStandType.HealthMenu:
+                shopController.OpenHealthMenu();
                 break;
-            case ShopStandType.SpeedUpgrade:
-                shopController.BuySpeedUpgrade();
+            case ShopStandType.SpeedMenu:
+                shopController.OpenSpeedMenu();
                 break;
-            case ShopStandType.MagnetUpgrade:
-                shopController.BuyMagnetUpgrade();
+            case ShopStandType.ArsenalMenu:
+                shopController.OpenArsenalMenu();
                 break;
-            case ShopStandType.CannonDamageUpgrade:
-                shopController.BuyCannonDamageUpgrade();
-                break;
-            case ShopStandType.DashUnlock:
-                shopController.UnlockDash();
-                break;
-            case ShopStandType.ForceFieldUnlock:
-                shopController.UnlockForceField();
-                break;
-            case ShopStandType.GenericUnlock:
-                shopController.BuyGenericUnlock(genericUnlockId);
-                break;
-            case ShopStandType.Cosmetics:
-                shopController.CycleCosmetic();
+            case ShopStandType.AbilitiesMenu:
+                shopController.OpenAbilitiesMenu();
                 break;
             case ShopStandType.StartRun:
                 shopController.StartRun();
@@ -149,14 +132,10 @@ public class ShopStandInteraction : MonoBehaviour
     {
         return standType switch
         {
-            ShopStandType.HealthUpgrade => "Health Upgrade",
-            ShopStandType.SpeedUpgrade => "Speed Upgrade",
-            ShopStandType.MagnetUpgrade => "Magnet Upgrade",
-            ShopStandType.CannonDamageUpgrade => "Cannon Damage",
-            ShopStandType.DashUnlock => "Unlock Dash",
-            ShopStandType.ForceFieldUnlock => "Unlock Force Field",
-            ShopStandType.GenericUnlock => string.IsNullOrWhiteSpace(genericUnlockId) ? "Unlock Upgrade" : $"Unlock {genericUnlockId}",
-            ShopStandType.Cosmetics => "Ship Looks",
+            ShopStandType.HealthMenu => "Health Stand",
+            ShopStandType.SpeedMenu => "Speed Stand",
+            ShopStandType.ArsenalMenu => "Arsenal Stand",
+            ShopStandType.AbilitiesMenu => "Abilities Stand",
             ShopStandType.StartRun => "Start Run",
             _ => standType.ToString()
         };

@@ -9,10 +9,19 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 00140dea93e7434eb28f4189dbdb9f61
   - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: 6fe6f1e5e6c74093b4127ed7735bba73
+  - enabled: 1
     path: Assets/Scenes/MainSea.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/ShipShop.unity
     guid: 15fe9ded91ed829479d91d1e091675a1
+  - enabled: 1
+    path: Assets/Scenes/Stage2.unity
+    guid: 732e67ddd5af3504280e7153b3be3b77
+  - enabled: 1
+    path: Assets/Scenes/Stage3.unity
+    guid: bf60b500bf202bf4f994db200bc88df4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
