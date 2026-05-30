@@ -58,8 +58,10 @@ public class PlayerProgression : MonoBehaviour
     private const string OwnedCosmeticsKey = "OwnedCosmetics";
     private const string GenericUnlockIdsKey = "GenericUnlockIds";
     private const string GenericUpgradeIdsKey = "GenericUpgradeIds";
+    private const string CrewUnlockIdsKey = "CrewUnlockIds";
     private const string GenericUnlockKeyPrefix = "Unlock_";
     private const string GenericUpgradeKeyPrefix = "Upgrade_";
+    private const string CrewUnlockKeyPrefix = "CrewUnlock_";
     private const string SaveNameKey = "Name";
     private const string HighestUnlockedStageKey = "HighestUnlockedStage";
     private const string CompletedStagesKey = "CompletedStages";
@@ -104,6 +106,7 @@ public class PlayerProgression : MonoBehaviour
     private readonly HashSet<string> ownedCosmetics = new();
     private readonly HashSet<string> genericUnlockIds = new();
     private readonly Dictionary<string, int> genericUpgradeLevels = new();
+    private readonly HashSet<string> crewUnlockIds = new();
     private readonly HashSet<int> completedStages = new();
     private int highestUnlockedStage = FirstStageNumber;
 
@@ -501,6 +504,30 @@ public class PlayerProgression : MonoBehaviour
         SetUpgradeLevel(id, Mathf.Max(0, GetUpgradeLevel(id) + amount));
     }
 
+    public bool IsCrewUnlocked(string crewId)
+    {
+        string normalizedId = NormalizeId(crewId);
+        return !string.IsNullOrEmpty(normalizedId) && crewUnlockIds.Contains(normalizedId);
+    }
+
+    public void UnlockCrew(string crewId)
+    {
+        if (!HasActiveSaveSlot) return;
+
+        string normalizedId = NormalizeId(crewId);
+        if (string.IsNullOrEmpty(normalizedId)) return;
+
+        crewUnlockIds.Add(normalizedId);
+        Save();
+    }
+
+    public List<string> GetUnlockedCrewIds()
+    {
+        List<string> unlockedCrewIds = new(crewUnlockIds);
+        unlockedCrewIds.Sort();
+        return unlockedCrewIds;
+    }
+
     public string GetSelectedShipCosmeticId() => selectedShipCosmeticId;
 
     public void SetSelectedShipCosmeticId(string id)
@@ -541,6 +568,7 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.SetInt(GetSlotKey(slotId, DashUnlockedKey), IsDashUnlocked() ? 1 : 0);
         PlayerPrefs.SetInt(GetSlotKey(slotId, ForceFieldUnlockedKey), IsForceFieldUnlocked() ? 1 : 0);
         PlayerPrefs.SetString(GetSlotKey(slotId, OwnedCosmeticsKey), string.Join(",", ownedCosmetics));
+        SaveCrewUnlocks(slotId);
         SaveStageProgression(slotId);
         SaveGenericProgression(slotId);
         PlayerPrefs.SetInt(LegacyHasSaveFileKey, 1);
@@ -566,6 +594,7 @@ public class PlayerProgression : MonoBehaviour
         forceFieldUnlocked = PlayerPrefs.GetInt(GetSlotKey(slotId, ForceFieldUnlockedKey), 0) == 1;
 
         LoadOwnedCosmetics(slotId);
+        LoadCrewUnlocks(slotId);
         LoadStageProgression(slotId);
         LoadGenericProgression(slotId);
         SyncGenericUpgradeLevelsIntoLegacyFields();
@@ -667,6 +696,7 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.SetString(GetSlotKey(slotId, CompletedStagesKey), string.Empty);
         PlayerPrefs.SetString(GetSlotKey(slotId, GenericUnlockIdsKey), string.Empty);
         PlayerPrefs.SetString(GetSlotKey(slotId, GenericUpgradeIdsKey), string.Empty);
+        PlayerPrefs.SetString(GetSlotKey(slotId, CrewUnlockIdsKey), string.Empty);
     }
 
     private static void DeleteSlotProgression(int slotId)
@@ -692,9 +722,11 @@ public class PlayerProgression : MonoBehaviour
 
         DeleteGenericKeys(slotId, GenericUnlockIdsKey, GenericUnlockKeyPrefix, BuiltInGenericUnlockIds);
         DeleteGenericKeys(slotId, GenericUpgradeIdsKey, GenericUpgradeKeyPrefix, BuiltInGenericUpgradeIds);
+        DeleteCrewUnlockKeys(slotId);
 
         PlayerPrefs.DeleteKey(GetSlotKey(slotId, GenericUnlockIdsKey));
         PlayerPrefs.DeleteKey(GetSlotKey(slotId, GenericUpgradeIdsKey));
+        PlayerPrefs.DeleteKey(GetSlotKey(slotId, CrewUnlockIdsKey));
     }
 
     private static void DeleteGenericKeys(int slotId, string listKey, string keyPrefix, string[] builtInIds)
@@ -775,6 +807,7 @@ public class PlayerProgression : MonoBehaviour
         ownedCosmetics.Add("default");
         genericUnlockIds.Clear();
         genericUpgradeLevels.Clear();
+        crewUnlockIds.Clear();
         completedStages.Clear();
         highestUnlockedStage = FirstStageNumber;
     }
@@ -798,6 +831,36 @@ public class PlayerProgression : MonoBehaviour
         }
 
         ownedCosmetics.Add("default");
+    }
+
+
+    private void LoadCrewUnlocks(int slotId)
+    {
+        crewUnlockIds.Clear();
+        AddCsvIds(crewUnlockIds, PlayerPrefs.GetString(GetSlotKey(slotId, CrewUnlockIdsKey), string.Empty));
+    }
+
+    private void SaveCrewUnlocks(int slotId)
+    {
+        PlayerPrefs.SetString(GetSlotKey(slotId, CrewUnlockIdsKey), string.Join(",", crewUnlockIds));
+        foreach (string crewId in crewUnlockIds)
+        {
+            PlayerPrefs.SetInt(GetSlotKey(slotId, CrewUnlockKeyPrefix + crewId), 1);
+        }
+    }
+
+    private static void DeleteCrewUnlockKeys(int slotId)
+    {
+        HashSet<string> idsToDelete = new();
+        AddCsvIds(idsToDelete, PlayerPrefs.GetString(GetSlotKey(slotId, CrewUnlockIdsKey), string.Empty));
+
+        foreach (string crewId in idsToDelete)
+        {
+            if (!string.IsNullOrEmpty(crewId))
+            {
+                PlayerPrefs.DeleteKey(GetSlotKey(slotId, CrewUnlockKeyPrefix + crewId));
+            }
+        }
     }
 
     private void LoadStageProgression(int slotId)
