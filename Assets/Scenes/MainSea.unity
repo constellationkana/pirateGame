@@ -3510,7 +3510,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 12
+  spawnInterval: 10
   maxEnemiesAlive: 4
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -3519,7 +3519,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 1
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 12
+  baseSpawnInterval: 10
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 3
@@ -4648,6 +4648,7 @@ GameObject:
   - component: {fileID: 1331628605}
   - component: {fileID: 1331628607}
   - component: {fileID: 1331628606}
+  - component: {fileID: 1331628608}
   m_Layer: 6
   m_Name: PlayerShip
   m_TagString: PlayerShip
@@ -4957,6 +4958,7 @@ MonoBehaviour:
   forceFieldDamageUpgradeAmount: 1
   allowDashWithoutShopUnlock: 0
   allowForceFieldWithoutShopUnlock: 0
+  includePlaceholderLuckUpgrades: 0
   magnetRadius: 1
 --- !u!114 &1331628605
 MonoBehaviour:
@@ -5021,6 +5023,27 @@ MonoBehaviour:
   showDebugRadius: 1
   logDamage: 0
   ringVisual: {fileID: 0}
+--- !u!114 &1331628608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46e2414901213cf489ee9f572fce3223, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStartingStatsApplier
+  maxHealthPerLevel: 2
+  moveSpeedPerLevel: 0.25
+  magnetRadiusPerLevel: 0.5
+  cannonDamagePerLevel: 1
+  cannonballSpeedPerLevel: 1
+  shipHealth: {fileID: 0}
+  shipController: {fileID: 0}
+  pickupMagnetController: {fileID: 0}
+  cannonShooter: {fileID: 0}
 --- !u!1 &1358974480
 GameObject:
   m_ObjectHideFlags: 0
