@@ -61,6 +61,10 @@ public class PlayerProgression : MonoBehaviour
     private const string GenericUnlockKeyPrefix = "Unlock_";
     private const string GenericUpgradeKeyPrefix = "Upgrade_";
     private const string SaveNameKey = "Name";
+    private const string HighestUnlockedStageKey = "HighestUnlockedStage";
+    private const string CompletedStagesKey = "CompletedStages";
+    private const string CompletedStageKeyPrefix = "CompletedStage_";
+    private const int FirstStageNumber = 1;
 
     private static readonly string[] BuiltInGenericUnlockIds =
     {
@@ -100,6 +104,8 @@ public class PlayerProgression : MonoBehaviour
     private readonly HashSet<string> ownedCosmetics = new();
     private readonly HashSet<string> genericUnlockIds = new();
     private readonly Dictionary<string, int> genericUpgradeLevels = new();
+    private readonly HashSet<int> completedStages = new();
+    private int highestUnlockedStage = FirstStageNumber;
 
     public static PlayerProgression Instance
     {
@@ -311,6 +317,42 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    public bool IsStageUnlocked(int stageNumber)
+    {
+        return stageNumber >= FirstStageNumber && stageNumber <= GetHighestUnlockedStage();
+    }
+
+    public void UnlockStage(int stageNumber)
+    {
+        if (stageNumber < FirstStageNumber) return;
+
+        highestUnlockedStage = Mathf.Max(GetHighestUnlockedStage(), stageNumber);
+        Save();
+    }
+
+    public int GetHighestUnlockedStage()
+    {
+        highestUnlockedStage = Mathf.Max(FirstStageNumber, highestUnlockedStage);
+
+        if (HasActiveSaveSlot)
+        {
+            highestUnlockedStage = Mathf.Max(
+                highestUnlockedStage,
+                PlayerPrefs.GetInt(GetActiveKey(HighestUnlockedStageKey), FirstStageNumber));
+        }
+
+        return highestUnlockedStage;
+    }
+
+    public void CompleteStage(int stageNumber)
+    {
+        if (stageNumber < FirstStageNumber) return;
+
+        completedStages.Add(stageNumber);
+        highestUnlockedStage = Mathf.Max(GetHighestUnlockedStage(), stageNumber + 1);
+        Save();
+    }
+
     public bool IsDashUnlocked() => IsUnlocked(UnlockDashId) || dashUnlocked;
     public bool IsForceFieldUnlocked() => IsUnlocked(UnlockForceFieldId) || forceFieldUnlocked;
 
@@ -499,6 +541,7 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.SetInt(GetSlotKey(slotId, DashUnlockedKey), IsDashUnlocked() ? 1 : 0);
         PlayerPrefs.SetInt(GetSlotKey(slotId, ForceFieldUnlockedKey), IsForceFieldUnlocked() ? 1 : 0);
         PlayerPrefs.SetString(GetSlotKey(slotId, OwnedCosmeticsKey), string.Join(",", ownedCosmetics));
+        SaveStageProgression(slotId);
         SaveGenericProgression(slotId);
         PlayerPrefs.SetInt(LegacyHasSaveFileKey, 1);
         PlayerPrefs.Save();
@@ -523,6 +566,7 @@ public class PlayerProgression : MonoBehaviour
         forceFieldUnlocked = PlayerPrefs.GetInt(GetSlotKey(slotId, ForceFieldUnlockedKey), 0) == 1;
 
         LoadOwnedCosmetics(slotId);
+        LoadStageProgression(slotId);
         LoadGenericProgression(slotId);
         SyncGenericUpgradeLevelsIntoLegacyFields();
         MigrateLegacyProgressionIntoGenericKeys();
@@ -619,6 +663,8 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.SetInt(GetSlotKey(slotId, DashUnlockedKey), 0);
         PlayerPrefs.SetInt(GetSlotKey(slotId, ForceFieldUnlockedKey), 0);
         PlayerPrefs.SetString(GetSlotKey(slotId, OwnedCosmeticsKey), "default");
+        PlayerPrefs.SetInt(GetSlotKey(slotId, HighestUnlockedStageKey), FirstStageNumber);
+        PlayerPrefs.SetString(GetSlotKey(slotId, CompletedStagesKey), string.Empty);
         PlayerPrefs.SetString(GetSlotKey(slotId, GenericUnlockIdsKey), string.Empty);
         PlayerPrefs.SetString(GetSlotKey(slotId, GenericUpgradeIdsKey), string.Empty);
     }
@@ -640,6 +686,9 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.DeleteKey(GetSlotKey(slotId, DashUnlockedKey));
         PlayerPrefs.DeleteKey(GetSlotKey(slotId, ForceFieldUnlockedKey));
         PlayerPrefs.DeleteKey(GetSlotKey(slotId, OwnedCosmeticsKey));
+        PlayerPrefs.DeleteKey(GetSlotKey(slotId, HighestUnlockedStageKey));
+        DeleteCompletedStageKeys(slotId);
+        PlayerPrefs.DeleteKey(GetSlotKey(slotId, CompletedStagesKey));
 
         DeleteGenericKeys(slotId, GenericUnlockIdsKey, GenericUnlockKeyPrefix, BuiltInGenericUnlockIds);
         DeleteGenericKeys(slotId, GenericUpgradeIdsKey, GenericUpgradeKeyPrefix, BuiltInGenericUpgradeIds);
@@ -726,6 +775,8 @@ public class PlayerProgression : MonoBehaviour
         ownedCosmetics.Add("default");
         genericUnlockIds.Clear();
         genericUpgradeLevels.Clear();
+        completedStages.Clear();
+        highestUnlockedStage = FirstStageNumber;
     }
 
     private void LoadOwnedCosmetics(int slotId)
@@ -747,6 +798,72 @@ public class PlayerProgression : MonoBehaviour
         }
 
         ownedCosmetics.Add("default");
+    }
+
+    private void LoadStageProgression(int slotId)
+    {
+        highestUnlockedStage = Mathf.Max(FirstStageNumber, PlayerPrefs.GetInt(GetSlotKey(slotId, HighestUnlockedStageKey), FirstStageNumber));
+        completedStages.Clear();
+
+        string rawStages = PlayerPrefs.GetString(GetSlotKey(slotId, CompletedStagesKey), string.Empty);
+        if (string.IsNullOrWhiteSpace(rawStages)) return;
+
+        string[] stages = rawStages.Split(',');
+        for (int i = 0; i < stages.Length; i++)
+        {
+            if (int.TryParse(stages[i], out int stageNumber) && stageNumber >= FirstStageNumber)
+            {
+                completedStages.Add(stageNumber);
+                highestUnlockedStage = Mathf.Max(highestUnlockedStage, stageNumber + 1);
+            }
+        }
+    }
+
+    private void SaveStageProgression(int slotId)
+    {
+        highestUnlockedStage = Mathf.Max(FirstStageNumber, highestUnlockedStage);
+        PlayerPrefs.SetInt(GetSlotKey(slotId, HighestUnlockedStageKey), highestUnlockedStage);
+        PlayerPrefs.SetString(GetSlotKey(slotId, CompletedStagesKey), JoinStageNumbers(completedStages));
+
+        foreach (int stageNumber in completedStages)
+        {
+            if (stageNumber >= FirstStageNumber)
+            {
+                PlayerPrefs.SetInt(GetSlotKey(slotId, CompletedStageKeyPrefix + stageNumber), 1);
+            }
+        }
+    }
+
+    private static void DeleteCompletedStageKeys(int slotId)
+    {
+        string rawStages = PlayerPrefs.GetString(GetSlotKey(slotId, CompletedStagesKey), string.Empty);
+        if (string.IsNullOrWhiteSpace(rawStages)) return;
+
+        string[] stages = rawStages.Split(',');
+        for (int i = 0; i < stages.Length; i++)
+        {
+            if (int.TryParse(stages[i], out int stageNumber) && stageNumber >= FirstStageNumber)
+            {
+                PlayerPrefs.DeleteKey(GetSlotKey(slotId, CompletedStageKeyPrefix + stageNumber));
+            }
+        }
+    }
+
+    private static string JoinStageNumbers(HashSet<int> stageNumbers)
+    {
+        List<int> sortedStageNumbers = new(stageNumbers);
+        sortedStageNumbers.Sort();
+
+        List<string> stageStrings = new();
+        foreach (int stageNumber in sortedStageNumbers)
+        {
+            if (stageNumber >= FirstStageNumber)
+            {
+                stageStrings.Add(stageNumber.ToString());
+            }
+        }
+
+        return string.Join(",", stageStrings);
     }
 
     private void LoadGenericProgression(int slotId)
