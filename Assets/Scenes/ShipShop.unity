@@ -10083,6 +10083,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1398161183}
   - component: {fileID: 1398161182}
+  - component: {fileID: 1398161184}
+  - component: {fileID: 1398161185}
   m_Layer: 0
   m_Name: ShipShopController
   m_TagString: Untagged
@@ -10250,6 +10252,42 @@ MonoBehaviour:
   cosmeticSprites: []
   cosmeticCosts: 
   cosmeticStatusText: {fileID: 0}
+--- !u!114 &1398161184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398161181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a89c8d807cf64c39b3b461bd847d920a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ShipShopPauseMenu
+  menuRoot: {fileID: 0}
+  activeSaveText: {fileID: 0}
+  doubloonText: {fileID: 0}
+  toggleKey: 117
+  pauseTime: 1
+  mapSceneName: Map
+  mainMenuSceneName: MainMenu
+  shopController: {fileID: 1398161182}
+  closeShopMenusOnOpen: 1
+--- !u!114 &1398161185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398161181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29d8093f9c64ef4b96213d3c15b8a67, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ShipShopCurrencyHUD
+  doubloonText: {fileID: 0}
+  format: 'Doubloons: {0}'
+  refreshInterval: 0.25
 --- !u!4 &1398161183
 Transform:
   m_ObjectHideFlags: 0
