@@ -9130,6 +9130,7 @@ MonoBehaviour:
   messageText: {fileID: 1217319721}
   promptText: {fileID: 1064288032}
   messageDuration: 2
+  mapSceneName: Map
   mainSeaSceneName: MainSea
   logSceneTransitions: 1
   healthMenuPanel: {fileID: 1842041866}

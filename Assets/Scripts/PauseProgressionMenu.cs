@@ -1,45 +1,46 @@
+using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseProgressionMenu : MonoBehaviour
 {
     [Header("Input")]
     [SerializeField] private KeyCode toggleKey = KeyCode.U;
 
-    [Header("Panel")]
+    [Header("Panels")]
     [SerializeField] private GameObject menuPanel;
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject upgradesPanel;
+    [SerializeField] private GameObject controlsPanel;
+
+    [Header("Buttons")]
+    [SerializeField] private Button upgradesButton;
+    [SerializeField] private bool hideUpgradesButtonOutsideRuns = true;
 
     [Header("Text")]
     [SerializeField] private TMP_Text activeSaveNameText;
     [SerializeField] private TMP_Text progressionSummaryText;
+    [SerializeField] private TMP_Text upgradesSummaryText;
+    [SerializeField] private TMP_Text controlsSummaryText;
     [SerializeField] private TMP_Text messageText;
 
-    [Header("Generic Unlocks Shown")]
-    [SerializeField]
-    private string[] genericUnlockIdsToShow =
-    {
-        PlayerProgression.UnlockHealthRegenId,
-        PlayerProgression.UnlockDashId,
-        PlayerProgression.UnlockMagnetId,
-        PlayerProgression.UnlockForceFieldId,
-        PlayerProgression.UnlockCannonballSizeId,
-        PlayerProgression.UnlockCannonballSpeedId,
-        PlayerProgression.UnlockCannonballExplosionId,
-        PlayerProgression.UnlockCannonballPierceId,
-        PlayerProgression.UnlockBarnaclesId,
-        PlayerProgression.UnlockCursedDoubloonsId
-    };
+    [Header("Scene Loading")]
+    [SerializeField] private string mapSceneName = "Map";
+    [SerializeField] private string shipShopSceneName = "ShipShop";
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
+
+    private const string MainSeaSceneName = "MainSea";
 
     private bool isOpen;
-    private float previousTimeScale = 1f;
 
     private void Start()
     {
-        if (menuPanel != null)
-        {
-            menuPanel.SetActive(false);
-        }
+        CloseMenuPanels();
+        SetControlsText();
+        UpdateUpgradeButtonAvailability();
     }
 
     private void Update()
@@ -70,7 +71,6 @@ public class PauseProgressionMenu : MonoBehaviour
         }
 
         isOpen = true;
-        previousTimeScale = Time.timeScale;
         Time.timeScale = 0f;
 
         if (menuPanel != null)
@@ -78,77 +78,218 @@ public class PauseProgressionMenu : MonoBehaviour
             menuPanel.SetActive(true);
         }
 
-        RefreshProgressionText();
+        ShowMainMenuPanel();
+        UpdateUpgradeButtonAvailability();
+        RefreshActiveSaveText();
     }
 
     public void ResumeGame()
     {
         isOpen = false;
-        Time.timeScale = previousTimeScale <= 0f ? 1f : previousTimeScale;
+        Time.timeScale = 1f;
+        CloseMenuPanels();
+    }
 
-        if (menuPanel != null)
+    public void OpenUpgradesPanel()
+    {
+        if (!IsCurrentRunUpgradePanelAvailable())
         {
-            menuPanel.SetActive(false);
+            SetMessage("Current-run upgrades are only available during an active run.");
+            return;
         }
+
+        ShowSubpanel(upgradesPanel);
+        RefreshUpgradesText();
+    }
+
+    public void OpenControlsPanel()
+    {
+        ShowSubpanel(controlsPanel);
+        SetControlsText();
+    }
+
+    public void BackToMainMenuPanel()
+    {
+        ShowMainMenuPanel();
+        UpdateUpgradeButtonAvailability();
+    }
+
+    public void LoadMap()
+    {
+        LoadScene(mapSceneName, nameof(mapSceneName));
+    }
+
+    public void LoadShipShop()
+    {
+        LoadScene(shipShopSceneName, nameof(shipShopSceneName));
+    }
+
+    public void LoadMainMenu()
+    {
+        LoadScene(mainMenuSceneName, nameof(mainMenuSceneName));
     }
 
     public void SaveGame()
     {
         PlayerProgression.SaveActiveSlot();
         PlayerPrefs.Save();
-
-        if (messageText != null)
-        {
-            messageText.text = "Game saved.";
-        }
-
+        SetMessage("Game saved.");
         Debug.Log($"PauseProgressionMenu: Saved active slot '{PlayerProgression.GetActiveSaveName()}'.", this);
     }
 
-    public void RefreshProgressionText()
+    public void RefreshProgressionText() => RefreshUpgradesText();
+
+    public void RefreshUpgradesText()
     {
-        PlayerProgression progression = PlayerProgression.Instance;
+        RefreshActiveSaveText();
 
-        if (activeSaveNameText != null)
-        {
-            activeSaveNameText.text = $"Active Save: {PlayerProgression.GetActiveSaveName()}";
-        }
-
-        if (progressionSummaryText == null)
+        TMP_Text targetText = upgradesSummaryText != null ? upgradesSummaryText : progressionSummaryText;
+        if (targetText == null)
         {
             return;
         }
 
-        StringBuilder builder = new();
-        builder.AppendLine($"Save Name: {PlayerProgression.GetActiveSaveName()}");
-        builder.AppendLine($"Doubloons: {progression.GetDoubloons()}");
-        builder.AppendLine("Permanent Upgrade Levels:");
-        builder.AppendLine($"- {PlayerProgression.UpgradeBaseHealthId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseHealthId)}");
-        builder.AppendLine($"- {PlayerProgression.UpgradeBaseSpeedId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseSpeedId)}");
-        builder.AppendLine($"- {PlayerProgression.UpgradeBaseCannonDamageId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseCannonDamageId)}");
-        builder.AppendLine($"- {PlayerProgression.UpgradeBaseCannonballSpeedId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseCannonballSpeedId)}");
-        builder.AppendLine($"- {PlayerProgression.UpgradeBaseMagnetRadiusId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBaseMagnetRadiusId)}");
-        builder.AppendLine($"- {PlayerProgression.UpgradeExplosionPowerId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeExplosionPowerId)}");
-        builder.AppendLine($"- {PlayerProgression.UpgradeBarnaclePowerId}: {progression.GetUpgradeLevel(PlayerProgression.UpgradeBarnaclePowerId)}");
-        builder.AppendLine("Unlocked Abilities:");
-        builder.AppendLine($"- Dash: {FormatYesNo(progression.IsDashUnlocked())}");
-        builder.AppendLine($"- Force Field: {FormatYesNo(progression.IsForceFieldUnlocked())}");
-
-        if (genericUnlockIdsToShow != null && genericUnlockIdsToShow.Length > 0)
+        if (!IsCurrentRunUpgradePanelAvailable())
         {
-            builder.AppendLine("ShipShop Unlocks:");
-            for (int i = 0; i < genericUnlockIdsToShow.Length; i++)
-            {
-                string unlockId = genericUnlockIdsToShow[i];
-                if (!string.IsNullOrWhiteSpace(unlockId))
-                {
-                    builder.AppendLine($"- {unlockId}: {FormatYesNo(progression.IsUnlocked(unlockId))}");
-                }
-            }
+            targetText.text = "Current-run upgrades are only available in MainSea during an active run.";
+            return;
         }
 
-        progressionSummaryText.text = builder.ToString();
+        UpgradeManager upgradeManager = FindFirstObjectByType<UpgradeManager>();
+        if (upgradeManager == null || upgradeManager.CurrentRunUpgradeLevels.Count == 0)
+        {
+            targetText.text = "Current-run upgrades:\nNone yet.";
+            return;
+        }
+
+        StringBuilder builder = new();
+        builder.AppendLine("Current-run upgrades:");
+
+        foreach (KeyValuePair<string, int> upgradeLevel in upgradeManager.CurrentRunUpgradeLevels)
+        {
+            string displayName = NormalizeUpgradeDisplayName(upgradeManager.GetCurrentRunUpgradeDisplayName(upgradeLevel.Key));
+            builder.AppendLine($"{displayName}: Lv {upgradeLevel.Value}");
+        }
+
+        targetText.text = builder.ToString();
     }
 
-    private static string FormatYesNo(bool value) => value ? "Yes" : "No";
+    private void CloseMenuPanels()
+    {
+        if (menuPanel != null)
+        {
+            menuPanel.SetActive(false);
+        }
+
+        SetPanelActive(mainMenuPanel, false);
+        SetPanelActive(upgradesPanel, false);
+        SetPanelActive(controlsPanel, false);
+    }
+
+    private void ShowMainMenuPanel()
+    {
+        SetPanelActive(mainMenuPanel, true);
+        SetPanelActive(upgradesPanel, false);
+        SetPanelActive(controlsPanel, false);
+    }
+
+    private void ShowSubpanel(GameObject panel)
+    {
+        SetPanelActive(mainMenuPanel, false);
+        SetPanelActive(upgradesPanel, false);
+        SetPanelActive(controlsPanel, false);
+        SetPanelActive(panel, true);
+    }
+
+    private void UpdateUpgradeButtonAvailability()
+    {
+        if (upgradesButton == null)
+        {
+            return;
+        }
+
+        bool available = IsCurrentRunUpgradePanelAvailable();
+        upgradesButton.interactable = available;
+
+        if (hideUpgradesButtonOutsideRuns)
+        {
+            upgradesButton.gameObject.SetActive(available);
+        }
+    }
+
+    private bool IsCurrentRunUpgradePanelAvailable()
+    {
+        return SceneManager.GetActiveScene().name == MainSeaSceneName && FindFirstObjectByType<UpgradeManager>() != null;
+    }
+
+    private void RefreshActiveSaveText()
+    {
+        if (activeSaveNameText != null)
+        {
+            activeSaveNameText.text = $"Active Save: {PlayerProgression.GetActiveSaveName()}";
+        }
+    }
+
+    private void SetControlsText()
+    {
+        if (controlsSummaryText == null)
+        {
+            return;
+        }
+
+        controlsSummaryText.text =
+            "Movement:\n" +
+            "W = Forward\n" +
+            "S = Reverse\n" +
+            "A = Rotate Left\n" +
+            "D = Rotate Right\n\n" +
+            "Combat:\n" +
+            "Left Mouse = Fire Cannon\n\n" +
+            "Abilities:\n" +
+            "Shift = Dash\n\n" +
+            "Menus:\n" +
+            "E = Interact\n" +
+            "U = Open Menu";
+    }
+
+    private void LoadScene(string sceneName, string fieldName)
+    {
+        Time.timeScale = 1f;
+        isOpen = false;
+
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            Debug.LogWarning($"PauseProgressionMenu: {fieldName} is empty.", this);
+            return;
+        }
+
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private void SetMessage(string message)
+    {
+        if (messageText != null)
+        {
+            messageText.text = message;
+        }
+    }
+
+    private static void SetPanelActive(GameObject panel, bool active)
+    {
+        if (panel != null)
+        {
+            panel.SetActive(active);
+        }
+    }
+
+    private static string NormalizeUpgradeDisplayName(string displayName)
+    {
+        return displayName switch
+        {
+            "Health Upgrade" => "Health",
+            "Ship Speed" => "Speed",
+            "Cannonball Damage" => "Cannon Damage",
+            _ => displayName
+        };
+    }
 }
