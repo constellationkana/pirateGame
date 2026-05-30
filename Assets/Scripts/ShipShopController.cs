@@ -116,6 +116,17 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private UnlockPurchaseConfig barnaclesUnlock = new() { cost = 200 };
     [SerializeField] private UnlockPurchaseConfig cursedDoubloonsUnlock = new() { cost = 200 };
 
+    [Header("Crew Menu")]
+    [SerializeField] private GameObject crewMenuPanel;
+    [SerializeField] private TMP_Text crewNameText;
+    [SerializeField] private TMP_Text crewDescriptionText;
+    [SerializeField] private TMP_Text crewAbilityText;
+    [SerializeField] private TMP_Text crewPriceText;
+    [SerializeField] private TMP_Text crewStatusText;
+    [SerializeField] private Image crewPortraitImage;
+    [SerializeField] private Button crewHireButton;
+    [SerializeField] private Button crewCloseButton;
+
     [Header("Cosmetics")]
     [SerializeField] private string[] cosmeticIds;
     [SerializeField] private Sprite[] cosmeticSprites;
@@ -125,6 +136,7 @@ public class ShipShopController : MonoBehaviour
     private PlayerProgression progression;
     private int currentCosmeticIndex;
     private Coroutine clearMessageRoutine;
+    private CrewNPCInteraction selectedCrew;
 
     private void Start()
     {
@@ -133,6 +145,18 @@ public class ShipShopController : MonoBehaviour
         {
             Debug.LogWarning("ShipShopController: PlayerProgression singleton could not be created.", this);
             return;
+        }
+
+        if (crewHireButton != null)
+        {
+            crewHireButton.onClick.RemoveListener(HireSelectedCrew);
+            crewHireButton.onClick.AddListener(HireSelectedCrew);
+        }
+
+        if (crewCloseButton != null)
+        {
+            crewCloseButton.onClick.RemoveListener(CloseCrewMenu);
+            crewCloseButton.onClick.AddListener(CloseCrewMenu);
         }
 
         if (closeMenusOnStart)
@@ -154,6 +178,7 @@ public class ShipShopController : MonoBehaviour
         SetMenuActive(speedMenuPanel, false);
         SetMenuActive(arsenalMenuPanel, false);
         SetMenuActive(abilitiesMenuPanel, false);
+        SetMenuActive(crewMenuPanel, false);
     }
 
     public void BuyHealthUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseHealthId, baseHealth, null, "Base health upgraded!");
@@ -215,6 +240,81 @@ public class ShipShopController : MonoBehaviour
     }
 
     public void OpenCosmeticShop() => CycleCosmetic();
+
+    public void OpenCrewMenu(CrewNPCInteraction crew)
+    {
+        if (crew == null)
+        {
+            SetMessage("No crew selected.");
+            return;
+        }
+
+        if (!HasProgression()) return;
+
+        selectedCrew = crew;
+        CloseAllMenus();
+
+        if (crewMenuPanel == null)
+        {
+            SetMessage("Crew menu is not assigned.");
+            return;
+        }
+
+        SetMenuActive(crewMenuPanel, true);
+        RefreshCrewMenu();
+        SetMessage($"Talking to {selectedCrew.CrewName}");
+    }
+
+    public void HireSelectedCrew()
+    {
+        if (selectedCrew == null)
+        {
+            SetMessage("No crew selected.");
+            RefreshCrewMenu();
+            return;
+        }
+
+        if (!CanAttemptPurchase())
+        {
+            RefreshCrewMenu();
+            return;
+        }
+
+        string crewId = selectedCrew.CrewId;
+        if (string.IsNullOrWhiteSpace(crewId))
+        {
+            SetMessage("This crew member is missing an id.");
+            RefreshCrewMenu();
+            return;
+        }
+
+        if (progression.IsCrewUnlocked(crewId))
+        {
+            SetMessage("Already hired.");
+            RefreshCrewMenu();
+            return;
+        }
+
+        int cost = selectedCrew.Price;
+        if (!progression.SpendDoubloons(cost))
+        {
+            SetMessage("Not enough doubloons.");
+            RefreshCrewMenu();
+            return;
+        }
+
+        progression.UnlockCrew(crewId);
+        PlayerPrefs.Save();
+        SetMessage($"Hired {selectedCrew.CrewName}!");
+        RefreshUI();
+        RefreshCrewMenu();
+    }
+
+    public void CloseCrewMenu()
+    {
+        SetMenuActive(crewMenuPanel, false);
+        selectedCrew = null;
+    }
 
     public void SetGlobalPrompt(string prompt)
     {
@@ -432,6 +532,70 @@ public class ShipShopController : MonoBehaviour
             int configuredIds = cosmeticIds == null ? 0 : cosmeticIds.Length;
             cosmeticStatusText.text = $"Selected Cosmetic: {progression.GetSelectedShipCosmeticId()}\nCosmetics Configured: {Mathf.Min(configuredIds, configuredSprites)}";
         }
+    }
+
+
+    private void RefreshCrewMenu()
+    {
+        if (!HasProgression()) return;
+
+        if (selectedCrew == null)
+        {
+            SetCrewText(string.Empty, string.Empty, string.Empty, string.Empty, "No crew selected.");
+            SetCrewPortrait(null);
+            SetCrewHireButton(false, "Hire");
+            return;
+        }
+
+        bool hasActiveSave = PlayerProgression.HasActiveSaveSlot;
+        bool isUnlocked = hasActiveSave && progression.IsCrewUnlocked(selectedCrew.CrewId);
+        int price = selectedCrew.Price;
+        bool canAfford = hasActiveSave && progression.GetDoubloons() >= price;
+
+        SetCrewText(
+            selectedCrew.CrewName,
+            selectedCrew.Description,
+            selectedCrew.AbilityDescription,
+            $"Price: {price} doubloons",
+            GetCrewStatusText(hasActiveSave, isUnlocked, canAfford));
+        SetCrewPortrait(selectedCrew.CrewSprite);
+        SetCrewHireButton(hasActiveSave && !isUnlocked && canAfford, isUnlocked ? "Hired" : "Hire");
+    }
+
+    private void SetCrewText(string crewName, string description, string ability, string price, string status)
+    {
+        if (crewNameText != null) crewNameText.text = crewName;
+        if (crewDescriptionText != null) crewDescriptionText.text = description;
+        if (crewAbilityText != null) crewAbilityText.text = ability;
+        if (crewPriceText != null) crewPriceText.text = price;
+        if (crewStatusText != null) crewStatusText.text = status;
+    }
+
+    private void SetCrewPortrait(Sprite sprite)
+    {
+        if (crewPortraitImage == null) return;
+
+        crewPortraitImage.sprite = sprite;
+        crewPortraitImage.enabled = sprite != null;
+    }
+
+    private void SetCrewHireButton(bool interactable, string label)
+    {
+        if (crewHireButton == null) return;
+
+        crewHireButton.interactable = interactable;
+        TMP_Text buttonText = crewHireButton.GetComponentInChildren<TMP_Text>();
+        if (buttonText != null)
+        {
+            buttonText.text = label;
+        }
+    }
+
+    private static string GetCrewStatusText(bool hasActiveSave, bool isUnlocked, bool canAfford)
+    {
+        if (!hasActiveSave) return "No active save slot selected.";
+        if (isUnlocked) return "Hired";
+        return canAfford ? "Available to hire" : "Not enough doubloons";
     }
 
     private void SetUpgradeButton(MenuButtonReferences references, TMP_Text legacyText, string label, string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId = null)
