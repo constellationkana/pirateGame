@@ -2283,7 +2283,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &742778664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,7 +2300,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 8
+  spawnInterval: 12
   maxEnemiesAlive: 3
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -2309,7 +2309,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 0
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 8
+  baseSpawnInterval: 12
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 4
@@ -3510,7 +3510,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 8
+  spawnInterval: 12
   maxEnemiesAlive: 4
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -3519,7 +3519,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 1
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 8
+  baseSpawnInterval: 12
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 3
@@ -6776,19 +6776,46 @@ MonoBehaviour:
   countOnlyWhenPlayerBoarded: 1
   logTimerDebug: 1
   logSpawnerEvents: 0
-  timedSpawnerEvents: []
+  timedSpawnerEvents:
+  - eventName: Fruit Ship Spawn
+    triggerTimeSeconds: 60
+    spawnerObjectsToEnable:
+    - {fileID: 742778663}
+    spawnerComponentsToEnable: []
+    spawnerObjectsToDisable: []
+    spawnerComponentsToDisable: []
+    eventMessage: Fruit Ships Incoming!
+    triggered: 0
+  - eventName: Brute Ship Spawn
+    triggerTimeSeconds: 120
+    spawnerObjectsToEnable:
+    - {fileID: 846776502}
+    spawnerComponentsToEnable: []
+    spawnerObjectsToDisable: []
+    spawnerComponentsToDisable: []
+    eventMessage: Brute Ships Incoming!
+    triggered: 0
+  - eventName: Tank Ship Spawn
+    triggerTimeSeconds: 180
+    spawnerObjectsToEnable:
+    - {fileID: 2144261939}
+    spawnerComponentsToEnable: []
+    spawnerObjectsToDisable: []
+    spawnerComponentsToDisable: []
+    eventMessage: Tank Ships Incoming!
+    triggered: 0
   normalSpawners:
   - {fileID: 1002901037}
   - {fileID: 742778664}
   - {fileID: 846776503}
-  spawnerObjectsToEnableAtOneMinute:
-  - {fileID: 846776502}
+  - {fileID: 2144261940}
+  spawnerObjectsToEnableAtOneMinute: []
   bossShipPrefab: {fileID: 3777281347102299088, guid: 09d17664b4c51f747be3561178252d32, type: 3}
   bossSpawnPoint: {fileID: 0}
   playerShip: {fileID: 1331628595}
   bossSpawnDistanceFromPlayer: 12
   eventMessageDuration: 10
-  oneMinuteMessage: Stronger enemies incoming!
+  oneMinuteMessage: 
   bossIncomingMessage: Boss ship incoming!
   elapsedTime: 0
   secondSpawnerActivated: 0
@@ -7791,7 +7818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2144261940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7804,7 +7831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fab87dbbab93a458785704f8bb80b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShipSpawner
-  enemyShipPrefab: {fileID: 8089797806774398801, guid: 5359ba5bdce4afd4ba20bce8c60fd1a1, type: 3}
+  enemyShipPrefab: {fileID: 3777281347102299088, guid: b07976fb2dec8a44e9339a4d513a39c1, type: 3}
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
