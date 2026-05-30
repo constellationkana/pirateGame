@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 public class BossDefeatHandler : MonoBehaviour
@@ -10,6 +11,9 @@ public class BossDefeatHandler : MonoBehaviour
 
     [Header("Victory")]
     [SerializeField] private string victoryMessage = "Victory! You defeated the Dread Summoner!";
+    [SerializeField] private bool completeStageOnVictory = true;
+    [SerializeField] private int completedStageNumber = 1;
+    [SerializeField] private string requiredSceneName = "MainSea";
     [SerializeField] private bool pauseGameOnVictory;
     [SerializeField] private bool logVictory = true;
 
@@ -53,6 +57,8 @@ public class BossDefeatHandler : MonoBehaviour
 
         victoryHandled = true;
 
+        CompleteStageOnVictory();
+
         if (victoryMessageText != null)
         {
             victoryMessageText.text = victoryMessage;
@@ -67,6 +73,28 @@ public class BossDefeatHandler : MonoBehaviour
         if (pauseGameOnVictory)
         {
             Time.timeScale = 0f;
+        }
+    }
+
+    private void CompleteStageOnVictory()
+    {
+        if (!completeStageOnVictory || completedStageNumber < 1)
+        {
+            return;
+        }
+
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (!string.IsNullOrWhiteSpace(requiredSceneName) && activeScene.name != requiredSceneName)
+        {
+            return;
+        }
+
+        PlayerProgression.Instance.CompleteStage(completedStageNumber);
+
+        if (logVictory)
+        {
+            int unlockedStage = completedStageNumber + 1;
+            Debug.Log($"Stage {completedStageNumber} complete. Stage {unlockedStage} unlocked on the Map.", this);
         }
     }
 }
