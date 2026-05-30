@@ -42,11 +42,37 @@ public class UpgradeManager : MonoBehaviour
 
     private readonly List<UpgradeOption> phaseOneOptions = new();
     private readonly List<UpgradeOption> currentChoices = new();
+    private readonly Dictionary<string, int> currentRunUpgradeLevels = new();
+    private readonly Dictionary<string, string> currentRunUpgradeDisplayNames = new();
 
     public float MagnetRadius => magnetRadius;
+    public IReadOnlyDictionary<string, int> CurrentRunUpgradeLevels => currentRunUpgradeLevels;
+
+    public int GetCurrentRunUpgradeLevel(string upgradeId)
+    {
+        return !string.IsNullOrWhiteSpace(upgradeId) && currentRunUpgradeLevels.TryGetValue(upgradeId, out int level) ? level : 0;
+    }
+
+    public string GetCurrentRunUpgradeDisplayName(string upgradeId)
+    {
+        if (string.IsNullOrWhiteSpace(upgradeId))
+        {
+            return string.Empty;
+        }
+
+        return currentRunUpgradeDisplayNames.TryGetValue(upgradeId, out string displayName) ? displayName : upgradeId;
+    }
+
+    public void ResetCurrentRunUpgradeLevels()
+    {
+        currentRunUpgradeLevels.Clear();
+        currentRunUpgradeDisplayNames.Clear();
+    }
 
     private void Awake()
     {
+        ResetCurrentRunUpgradeLevels();
+
         if (playerLevelSystem == null)
         {
             playerLevelSystem = GetComponent<PlayerLevelSystem>();
@@ -277,9 +303,23 @@ public class UpgradeManager : MonoBehaviour
                 break;
         }
 
+        TrackCurrentRunUpgrade(chosenOption);
+
         if (playerLevelSystem != null)
         {
             playerLevelSystem.NotifyLevelUpChoiceCompleted();
         }
+    }
+
+    private void TrackCurrentRunUpgrade(UpgradeOption chosenOption)
+    {
+        if (chosenOption == null || string.IsNullOrWhiteSpace(chosenOption.id))
+        {
+            return;
+        }
+
+        currentRunUpgradeLevels.TryGetValue(chosenOption.id, out int currentLevel);
+        currentRunUpgradeLevels[chosenOption.id] = currentLevel + 1;
+        currentRunUpgradeDisplayNames[chosenOption.id] = string.IsNullOrWhiteSpace(chosenOption.displayName) ? chosenOption.id : chosenOption.displayName;
     }
 }

@@ -39,6 +39,7 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private float messageDuration = 2f;
 
     [Header("Scene Flow")]
+    [SerializeField] private string mapSceneName = "Map";
     [SerializeField] private string mainSeaSceneName = "MainSea";
     [SerializeField] private bool logSceneTransitions = true;
 
@@ -227,18 +228,19 @@ public class ShipShopController : MonoBehaviour
     {
         if (logSceneTransitions)
         {
-            Debug.Log($"Starting run, loading {mainSeaSceneName}", this);
+            Debug.Log($"Starting run, loading {mapSceneName}", this);
         }
 
         SetMessage("Setting sail...");
 
-        if (string.IsNullOrWhiteSpace(mainSeaSceneName))
+        if (string.IsNullOrWhiteSpace(mapSceneName))
         {
-            Debug.LogWarning("ShipShopController: mainSeaSceneName is empty.", this);
+            Debug.LogWarning("ShipShopController: mapSceneName is empty.", this);
             return;
         }
 
-        SceneManager.LoadScene(mainSeaSceneName);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mapSceneName);
     }
 
     private void OpenOnlyMenu(GameObject menuPanel, string menuName)
