@@ -551,8 +551,8 @@ MonoBehaviour:
   cannonDamage: 2
   cannonballSpeed: 7
   cannonShootInterval: 3
-  fruitProjectilePrefab: {fileID: 6844348078964051180, guid: 8b62b02fc13105e48910b0a7cb3f422a, type: 3}
-  fruitFirePoint: {fileID: 1785004718316856830}
+  fruitProjectilePrefab: {fileID: 0}
+  fruitFirePoint: {fileID: 0}
   fruitFirePoints: []
   fruitDamage: 1
   fruitSpeed: 10
