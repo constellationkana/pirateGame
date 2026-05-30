@@ -141,6 +141,11 @@ public class CannonShooter : MonoBehaviour
         cannonballDamage = Mathf.Max(0, cannonballDamage + amount);
     }
 
+    public void AddCannonballSpeed(float amount)
+    {
+        cannonballSpeed = Mathf.Max(0f, cannonballSpeed + amount);
+    }
+
     private Transform GetSpawnPointForDirection(Vector2 direction)
     {
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
