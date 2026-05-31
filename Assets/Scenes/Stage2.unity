@@ -4294,8 +4294,9 @@ MonoBehaviour:
   bossHealthBarUI: {fileID: 0}
   secondSpawnerTime: 0
   bossSpawnTime: 600
+  runStartMode: 1
   timerEnabled: 1
-  startTimerOnAwake: 1
+  startTimerOnAwake: 0
   countOnlyWhenPlayerBoarded: 1
   logTimerDebug: 1
   logSpawnerEvents: 0
