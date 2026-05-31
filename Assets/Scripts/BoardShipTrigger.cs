@@ -118,11 +118,6 @@ public class BoardShipTrigger : MonoBehaviour
 
     public void ForceUnboardPlayer()
     {
-        if (shipController != null && !shipController.CanUnboard())
-        {
-            return;
-        }
-
         UnboardPlayer();
     }
 

@@ -16,7 +16,6 @@ public class StageStartController : MonoBehaviour
     [SerializeField] private bool startPlayerBoarded = true;
     [SerializeField] private bool disableWalkingPlayerWhileBoarded = true;
     [SerializeField] private bool showStartRunButton = true;
-    [SerializeField] private bool lockPlayerOnShipForRun = true;
 
     [Header("UI")]
     [SerializeField] private GameObject startRunPanel;
@@ -24,12 +23,9 @@ public class StageStartController : MonoBehaviour
     [SerializeField] private TMP_Text startRunText;
     [SerializeField] private string startRunLabel = "Start Run";
 
-    private bool startRunClicked;
-
     private void Awake()
     {
         ResolveReferences();
-        ApplyUnboardingLock();
         WireButton();
         RefreshStartRunUI();
     }
@@ -37,7 +33,6 @@ public class StageStartController : MonoBehaviour
     private void Start()
     {
         ResolveReferences();
-        ApplyUnboardingLock();
 
         if (startPlayerBoarded)
         {
@@ -68,7 +63,6 @@ public class StageStartController : MonoBehaviour
     public void StartRun()
     {
         ResolveReferences();
-        ApplyUnboardingLock();
 
         if (startPlayerBoarded && playerShipController != null && !playerShipController.PlayerOnBoard)
         {
@@ -84,22 +78,21 @@ public class StageStartController : MonoBehaviour
             Debug.LogWarning("StageStartController: RunTimerDirector reference is missing, so the run could not be started.", this);
         }
 
-        startRunClicked = true;
-        RefreshStartRunUI();
+        if (startRunPanel != null)
+        {
+            startRunPanel.SetActive(false);
+        }
     }
 
     private void ForceBoardPlayerForStageStart()
     {
-        if (walkingPlayerObject != null && !walkingPlayerObject.activeSelf)
-        {
-            walkingPlayerObject.SetActive(true);
-        }
-
         if (boardShipTrigger != null)
         {
             boardShipTrigger.ForceBoardPlayer();
+            return;
         }
-        else if (playerShipController != null)
+
+        if (playerShipController != null)
         {
             playerShipController.ForceBoardPlayer();
         }
@@ -110,22 +103,9 @@ public class StageStartController : MonoBehaviour
         }
     }
 
-    private void ApplyUnboardingLock()
-    {
-        if (playerShipController != null)
-        {
-            playerShipController.SetUnboardingLocked(lockPlayerOnShipForRun);
-        }
-    }
-
     private void RefreshStartRunUI()
     {
-        bool shouldShow = showStartRunButton && !startRunClicked;
-
-        if (runTimerDirector != null && runTimerDirector.CurrentRunStartMode == RunTimerDirector.RunStartMode.StartImmediately)
-        {
-            shouldShow = false;
-        }
+        bool shouldShow = showStartRunButton && (runTimerDirector == null || !runTimerDirector.RunStarted);
 
         if (startRunPanel != null)
         {

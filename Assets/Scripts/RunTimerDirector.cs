@@ -69,8 +69,8 @@ public class RunTimerDirector : MonoBehaviour
     private float nextDebugLogTime;
 
     public float ElapsedTime => elapsedTime;
-    public bool RunStarted => runStarted;
     public RunStartMode CurrentRunStartMode => runStartMode;
+    public bool RunStarted => runStarted;
 
     private void Awake()
     {
