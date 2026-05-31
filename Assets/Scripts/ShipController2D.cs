@@ -90,6 +90,16 @@ public class ShipController2D : MonoBehaviour
         moveSpeed = Mathf.Max(0f, moveSpeed + amount);
     }
 
+    public void ForceBoardPlayer()
+    {
+        SetPlayerOnBoard(true);
+    }
+
+    public void ForceUnboardPlayer()
+    {
+        SetPlayerOnBoard(false);
+    }
+
     public void SetPlayerOnBoard(bool value)
     {
         playerOnBoard = value;

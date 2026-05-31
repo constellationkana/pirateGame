@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class RunTimerDirector : MonoBehaviour
 {
+    public enum RunStartMode
+    {
+        StartWhenPlayerBoards,
+        StartFromButton,
+        StartImmediately
+    }
+
     [System.Serializable]
     public class TimedSpawnerEvent
     {
@@ -25,6 +32,7 @@ public class RunTimerDirector : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float secondSpawnerTime = 60f;
     [SerializeField] private float bossSpawnTime = 300f;
+    [SerializeField] private RunStartMode runStartMode = RunStartMode.StartWhenPlayerBoards;
     [SerializeField] private bool timerEnabled = true;
     [SerializeField] private bool startTimerOnAwake = true;
     [SerializeField] private bool countOnlyWhenPlayerBoarded = true;
@@ -52,6 +60,7 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private float elapsedTime;
     [SerializeField] private bool secondSpawnerActivated;
     [SerializeField] private bool bossSpawned;
+    [SerializeField] private bool runStarted;
     [SerializeField] private GameObject spawnedBoss;
 
     private ShipController2D playerShipController;
@@ -59,12 +68,21 @@ public class RunTimerDirector : MonoBehaviour
     private bool timerRunning;
     private float nextDebugLogTime;
 
+    public float ElapsedTime => elapsedTime;
+    public bool RunStarted => runStarted;
+    public RunStartMode CurrentRunStartMode => runStartMode;
+
     private void Awake()
     {
-        timerRunning = startTimerOnAwake;
+        InitializeRunState();
         ResolvePlayerReferences();
         RefreshTimerText();
         ResetTimedSpawnerEvents();
+
+        if (!runStarted)
+        {
+            DisableNormalSpawners();
+        }
 
         if (eventMessageText != null)
         {
@@ -81,25 +99,23 @@ public class RunTimerDirector : MonoBehaviour
     {
         ResolvePlayerReferencesIfNeeded();
 
+        if (runStartMode == RunStartMode.StartWhenPlayerBoards && startTimerOnAwake && !runStarted && playerShipController != null && playerShipController.PlayerOnBoard)
+        {
+            StartRun();
+        }
+
         if (logTimerDebug && Time.unscaledTime >= nextDebugLogTime)
         {
             nextDebugLogTime = Time.unscaledTime + 1f;
             Debug.Log(
-                $"RunTimerDirector debug | timerEnabled={timerEnabled} timerRunning={timerRunning} countOnlyWhenPlayerBoarded={countOnlyWhenPlayerBoarded} " +
-                $"shipControllerFound={(playerShipController != null)} playerOnBoard={(playerShipController != null && playerShipController.PlayerOnBoard)} " +
-                $"timeScale={Time.timeScale:F2} deltaTime={Time.deltaTime:F3} elapsed={elapsedTime:F2}",
+                $"RunTimerDirector debug | runStartMode={runStartMode} runStarted={runStarted} timerEnabled={timerEnabled} timerRunning={timerRunning} " +
+                $"countOnlyWhenPlayerBoarded={countOnlyWhenPlayerBoarded} shipControllerFound={(playerShipController != null)} " +
+                $"playerOnBoard={(playerShipController != null && playerShipController.PlayerOnBoard)} timeScale={Time.timeScale:F2} " +
+                $"deltaTime={Time.deltaTime:F3} elapsed={elapsedTime:F2}",
                 this);
         }
 
-        bool shouldCount = timerEnabled && timerRunning;
-
-        if (shouldCount && countOnlyWhenPlayerBoarded)
-        {
-            if (playerShipController == null || !playerShipController.PlayerOnBoard)
-            {
-                shouldCount = false;
-            }
-        }
+        bool shouldCount = ShouldCountRunTime();
 
         if (shouldCount)
         {
@@ -107,6 +123,12 @@ public class RunTimerDirector : MonoBehaviour
         }
 
         RefreshTimerText();
+
+        if (!runStarted)
+        {
+            return;
+        }
+
         CheckTimedSpawnerEvents();
 
         if (!bossSpawned && elapsedTime >= bossSpawnTime)
@@ -115,8 +137,61 @@ public class RunTimerDirector : MonoBehaviour
         }
     }
 
-    public void StartTimer() => timerRunning = true;
+    public void StartRun()
+    {
+        if (runStarted)
+        {
+            timerRunning = true;
+            return;
+        }
+
+        runStarted = true;
+        timerRunning = true;
+        EnableNormalSpawners();
+
+        if (logTimerDebug)
+        {
+            Debug.Log("RunTimerDirector: Run started.", this);
+        }
+    }
+
+    public void StartTimer() => StartRun();
     public void StopTimer() => timerRunning = false;
+
+    private void InitializeRunState()
+    {
+        switch (runStartMode)
+        {
+            case RunStartMode.StartFromButton:
+                runStarted = false;
+                timerRunning = false;
+                break;
+            case RunStartMode.StartImmediately:
+                runStarted = true;
+                timerRunning = true;
+                break;
+            case RunStartMode.StartWhenPlayerBoards:
+            default:
+                runStarted = false;
+                timerRunning = false;
+                break;
+        }
+    }
+
+    private bool ShouldCountRunTime()
+    {
+        if (!timerEnabled || !timerRunning || !runStarted)
+        {
+            return false;
+        }
+
+        if (countOnlyWhenPlayerBoarded && (playerShipController == null || !playerShipController.PlayerOnBoard))
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private void RefreshTimerText()
     {
@@ -295,6 +370,11 @@ public class RunTimerDirector : MonoBehaviour
         }
 
         return changedCount;
+    }
+
+    private void EnableNormalSpawners()
+    {
+        EnableComponents(normalSpawners);
     }
 
     private void TriggerBossPhase()

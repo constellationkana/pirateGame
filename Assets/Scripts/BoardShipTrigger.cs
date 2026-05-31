@@ -111,6 +111,16 @@ public class BoardShipTrigger : MonoBehaviour
         }
     }
 
+    public void ForceBoardPlayer()
+    {
+        BoardPlayer();
+    }
+
+    public void ForceUnboardPlayer()
+    {
+        UnboardPlayer();
+    }
+
     private void BoardPlayer()
     {
         if (!ValidateReferences())
