@@ -341,11 +341,6 @@ public class RunSummaryController : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning(
-            "RunSummaryController: Summary Root is not assigned, so runtime fallback UI is being generated. " +
-            "Add and wire a scene-authored RunSummaryPanel under the Canvas for production scenes.",
-            this);
-
         Canvas canvas = FindFirstObjectByType<Canvas>();
         if (canvas == null)
         {

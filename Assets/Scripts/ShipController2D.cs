@@ -99,22 +99,7 @@ public class ShipController2D : MonoBehaviour
 
     public void ForceUnboardPlayer()
     {
-        if (!CanUnboard())
-        {
-            return;
-        }
-
         SetPlayerOnBoard(false);
-    }
-
-    public void SetUnboardingLocked(bool locked)
-    {
-        unboardingLocked = locked;
-    }
-
-    public bool CanUnboard()
-    {
-        return !unboardingLocked;
     }
 
     public void SetPlayerOnBoard(bool value)
