@@ -29,17 +29,17 @@ public class SaveSlotEntryUI : MonoBehaviour
 
         if (saveNameText != null)
         {
-            saveNameText.text = summary.isActive ? $"{summary.saveName} (Active)" : summary.saveName;
+            saveNameText.text = summary.saveName;
         }
 
         if (doubloonsText != null)
         {
-            doubloonsText.text = $"Doubloons: {summary.doubloons}";
+            doubloonsText.text = string.Empty;
         }
 
         if (progressCountText != null)
         {
-            progressCountText.text = $"Upgrades: {summary.upgradeCount} | Unlocks: {summary.unlockCount}";
+            progressCountText.text = $"D: {summary.doubloons} | Up: {summary.upgradeCount} | Un: {summary.unlockCount}";
         }
 
         if (loadButton != null)
