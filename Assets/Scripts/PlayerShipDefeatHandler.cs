@@ -9,6 +9,7 @@ public class PlayerShipDefeatHandler : MonoBehaviour
     [SerializeField] private ShipHealth shipHealth;
 
     [Header("Defeat")]
+    [SerializeField] private bool showRunSummaryBeforeSceneLoad = true;
     [SerializeField] private string defeatSceneName = "ShipShop";
     [SerializeField] private float defeatLoadDelay = 0.5f;
     [SerializeField] private bool logDefeatTransition = true;
@@ -54,12 +55,28 @@ public class PlayerShipDefeatHandler : MonoBehaviour
 
         hasTriggeredDefeat = true;
 
+        if (showRunSummaryBeforeSceneLoad && TryShowRunSummary(deadShip))
+        {
+            return;
+        }
+
         if (defeatRoutine != null)
         {
             StopCoroutine(defeatRoutine);
         }
 
         defeatRoutine = StartCoroutine(LoadDefeatSceneAfterDelay());
+    }
+
+    private bool TryShowRunSummary(ShipHealth deadShip)
+    {
+        RunSummaryController runSummaryController = FindFirstObjectByType<RunSummaryController>();
+        if (runSummaryController == null)
+        {
+            runSummaryController = gameObject.AddComponent<RunSummaryController>();
+        }
+
+        return runSummaryController != null && runSummaryController.TryShowDeathSummary(deadShip);
     }
 
     private IEnumerator LoadDefeatSceneAfterDelay()

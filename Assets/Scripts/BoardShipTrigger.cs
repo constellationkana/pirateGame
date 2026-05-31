@@ -69,7 +69,7 @@ public class BoardShipTrigger : MonoBehaviour
             {
                 BoardPlayer();
             }
-            else
+            else if (shipController == null || shipController.CanUnboard())
             {
                 UnboardPlayer();
             }
@@ -111,8 +111,28 @@ public class BoardShipTrigger : MonoBehaviour
         }
     }
 
+    public void ForceBoardPlayer()
+    {
+        BoardPlayer();
+    }
+
+    public void ForceUnboardPlayer()
+    {
+        if (shipController != null && !shipController.CanUnboard())
+        {
+            return;
+        }
+
+        UnboardPlayer();
+    }
+
     private void BoardPlayer()
     {
+        if (playerObject != null && !playerObject.activeSelf)
+        {
+            playerObject.SetActive(true);
+        }
+
         if (!ValidateReferences())
         {
             return;
@@ -166,6 +186,11 @@ public class BoardShipTrigger : MonoBehaviour
         }
 
         isBoarded = false;
+
+        if (playerObject != null && !playerObject.activeSelf)
+        {
+            playerObject.SetActive(true);
+        }
 
         shipController.SetPlayerOnBoard(false);
 
