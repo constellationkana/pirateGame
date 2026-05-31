@@ -202,7 +202,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 16093833}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1398161182}
+        m_TargetAssemblyTypeName: ShipShopController, Assembly-CSharp
+        m_MethodName: UnlockForceField
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ''
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &16093833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7421,7 +7433,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 958579490}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1398161182}
+        m_TargetAssemblyTypeName: ShipShopController, Assembly-CSharp
+        m_MethodName: UnlockCursedDoubloons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ''
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &958579490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10750,6 +10774,42 @@ MonoBehaviour:
   cosmeticSprites: []
   cosmeticCosts: 
   cosmeticStatusText: {fileID: 0}
+--- !u!114 &1398161184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398161181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a89c8d807cf64c39b3b461bd847d920a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ShipShopPauseMenu
+  menuRoot: {fileID: 0}
+  activeSaveText: {fileID: 0}
+  doubloonText: {fileID: 0}
+  toggleKey: 117
+  pauseTime: 1
+  mapSceneName: Map
+  mainMenuSceneName: MainMenu
+  shopController: {fileID: 1398161182}
+  closeShopMenusOnOpen: 1
+--- !u!114 &1398161185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398161181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29d8093f9c64ef4b96213d3c15b8a67, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ShipShopCurrencyHUD
+  doubloonText: {fileID: 0}
+  format: 'Doubloons: {0}'
+  refreshInterval: 0.25
 --- !u!4 &1398161183
 Transform:
   m_ObjectHideFlags: 0
@@ -13792,7 +13852,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1728773943}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1398161182}
+        m_TargetAssemblyTypeName: ShipShopController, Assembly-CSharp
+        m_MethodName: UnlockMagnetUpgrades
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ''
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1728773943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15295,7 +15367,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1984838161}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1398161182}
+        m_TargetAssemblyTypeName: ShipShopController, Assembly-CSharp
+        m_MethodName: BuyMagnetUpgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ''
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1984838161
 MonoBehaviour:
   m_ObjectHideFlags: 0

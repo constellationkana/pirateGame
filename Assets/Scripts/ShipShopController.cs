@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ShipShopController : MonoBehaviour
@@ -147,17 +148,7 @@ public class ShipShopController : MonoBehaviour
             return;
         }
 
-        if (crewHireButton != null)
-        {
-            crewHireButton.onClick.RemoveListener(HireSelectedCrew);
-            crewHireButton.onClick.AddListener(HireSelectedCrew);
-        }
-
-        if (crewCloseButton != null)
-        {
-            crewCloseButton.onClick.RemoveListener(CloseCrewMenu);
-            crewCloseButton.onClick.AddListener(CloseCrewMenu);
-        }
+        WireShopButtonListeners();
 
         if (closeMenusOnStart)
         {
@@ -165,6 +156,63 @@ public class ShipShopController : MonoBehaviour
         }
 
         RefreshUI();
+    }
+
+    private void WireShopButtonListeners()
+    {
+        EnsureButtonListener(healthUpgrade.button, BuyHealthUpgrade, nameof(BuyHealthUpgrade));
+        EnsureButtonListener(healthRegenUnlockButton.button, UnlockHealthRegeneration, nameof(UnlockHealthRegeneration));
+        EnsureButtonListener(speedUpgrade.button, BuySpeedUpgrade, nameof(BuySpeedUpgrade));
+        EnsureButtonListener(dashUnlockButton.button, BuyDashUnlock, nameof(BuyDashUnlock));
+        EnsureButtonListener(cannonDamageUpgrade.button, BuyCannonDamageUpgrade, nameof(BuyCannonDamageUpgrade));
+        EnsureButtonListener(cannonballSizeUnlockButton.button, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade));
+        EnsureButtonListener(cannonballSpeedUnlockButton.button, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade));
+        EnsureButtonListener(cannonballSpeedUpgrade.button, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade));
+        EnsureButtonListener(explodingCannonballsUnlockButton.button, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs));
+        EnsureButtonListener(explosionPowerUpgradeButton.button, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade));
+        EnsureButtonListener(barnaclesUnlockButton.button, UnlockBarnacles, nameof(UnlockBarnacles));
+        EnsureButtonListener(barnaclePowerUpgradeButton.button, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade));
+        EnsureButtonListener(cannonballPierceUnlockButton.button, UnlockCannonballPierce, nameof(UnlockCannonballPierce));
+        EnsureButtonListener(magnetUnlockButton.button, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades));
+        EnsureButtonListener(magnetUpgrade.button, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade));
+        EnsureButtonListener(forceFieldUnlockButton.button, UnlockForceField, nameof(UnlockForceField));
+        EnsureButtonListener(cursedDoubloonsUnlockButton.button, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons));
+        EnsureButtonListener(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew));
+        EnsureButtonListener(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu));
+    }
+
+    private void EnsureButtonListener(Button button, UnityAction action, string methodName)
+    {
+        if (button == null || action == null)
+        {
+            return;
+        }
+
+        button.onClick.RemoveListener(action);
+
+        if (!HasPersistentListener(button, methodName))
+        {
+            button.onClick.AddListener(action);
+        }
+    }
+
+    private bool HasPersistentListener(Button button, string methodName)
+    {
+        if (button == null || string.IsNullOrWhiteSpace(methodName))
+        {
+            return false;
+        }
+
+        int listenerCount = button.onClick.GetPersistentEventCount();
+        for (int i = 0; i < listenerCount; i++)
+        {
+            if (button.onClick.GetPersistentTarget(i) == this && button.onClick.GetPersistentMethodName(i) == methodName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
