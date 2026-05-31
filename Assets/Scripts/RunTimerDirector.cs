@@ -20,6 +20,7 @@ public class RunTimerDirector : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text eventMessageText;
+    [SerializeField] private BossHealthBarUI bossHealthBarUI;
 
     [Header("Timing")]
     [SerializeField] private float secondSpawnerTime = 60f;
@@ -40,6 +41,7 @@ public class RunTimerDirector : MonoBehaviour
     [SerializeField] private Transform bossSpawnPoint;
     [SerializeField] private Transform playerShip;
     [SerializeField] private float bossSpawnDistanceFromPlayer = 12f;
+    [SerializeField] private string bossDisplayName = "Dread Summoner";
 
     [Header("Messages")]
     [SerializeField] private float eventMessageDuration = 10f;
@@ -67,6 +69,11 @@ public class RunTimerDirector : MonoBehaviour
         if (eventMessageText != null)
         {
             eventMessageText.text = string.Empty;
+        }
+
+        if (bossHealthBarUI != null)
+        {
+            bossHealthBarUI.SetBoss(null, bossDisplayName);
         }
     }
 
@@ -342,6 +349,14 @@ public class RunTimerDirector : MonoBehaviour
         {
             attack.enabled = true;
             attack.Initialize(playerShip, playerShipController, playerHealth);
+        }
+
+        ShipHealth bossHealth = spawnedBoss.GetComponent<ShipHealth>()
+                                ?? spawnedBoss.GetComponentInChildren<ShipHealth>(true);
+
+        if (bossHealthBarUI != null)
+        {
+            bossHealthBarUI.SetBoss(bossHealth, bossDisplayName);
         }
 
         BossDefeatHandler bossDefeatHandler = spawnedBoss.GetComponent<BossDefeatHandler>();
