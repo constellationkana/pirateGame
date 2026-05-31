@@ -16,6 +16,7 @@ public class StageStartController : MonoBehaviour
     [SerializeField] private bool startPlayerBoarded = true;
     [SerializeField] private bool disableWalkingPlayerWhileBoarded = true;
     [SerializeField] private bool showStartRunButton = true;
+    [SerializeField] private bool lockPlayerOnShipForRun = true;
 
     [Header("UI")]
     [SerializeField] private GameObject startRunPanel;
@@ -38,6 +39,8 @@ public class StageStartController : MonoBehaviour
         {
             ForceBoardPlayerForStageStart();
         }
+
+        ApplyUnboardingLock();
 
         if (runTimerDirector != null && runTimerDirector.CurrentRunStartMode == RunTimerDirector.RunStartMode.StartFromButton)
         {
@@ -69,6 +72,8 @@ public class StageStartController : MonoBehaviour
             ForceBoardPlayerForStageStart();
         }
 
+        ApplyUnboardingLock();
+
         if (runTimerDirector != null)
         {
             runTimerDirector.StartRun();
@@ -86,13 +91,16 @@ public class StageStartController : MonoBehaviour
 
     private void ForceBoardPlayerForStageStart()
     {
+        if (walkingPlayerObject != null)
+        {
+            walkingPlayerObject.SetActive(true);
+        }
+
         if (boardShipTrigger != null)
         {
             boardShipTrigger.ForceBoardPlayer();
-            return;
         }
-
-        if (playerShipController != null)
+        else if (playerShipController != null)
         {
             playerShipController.ForceBoardPlayer();
         }
@@ -100,6 +108,14 @@ public class StageStartController : MonoBehaviour
         if (walkingPlayerObject != null && disableWalkingPlayerWhileBoarded)
         {
             walkingPlayerObject.SetActive(false);
+        }
+    }
+
+    private void ApplyUnboardingLock()
+    {
+        if (playerShipController != null)
+        {
+            playerShipController.SetAllowUnboarding(!lockPlayerOnShipForRun);
         }
     }
 
