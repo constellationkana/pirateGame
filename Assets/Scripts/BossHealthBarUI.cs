@@ -7,17 +7,11 @@ public class BossHealthBarUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject root;
     [SerializeField] private Slider healthSlider;
-    [SerializeField] private Image fillImage;
     [SerializeField] private TMP_Text bossNameText;
     [SerializeField] private TMP_Text healthText;
 
     [Header("Text")]
     [SerializeField] private string defaultBossName = "Boss";
-
-    [Header("Health Colors")]
-    [SerializeField] private Color highHealthColor = Color.green;
-    [SerializeField] private Color midHealthColor = Color.yellow;
-    [SerializeField] private Color lowHealthColor = Color.red;
 
     private ShipHealth bossHealth;
     private ShipHealth subscribedHealth;
@@ -33,11 +27,6 @@ public class BossHealthBarUI : MonoBehaviour
         if (healthSlider == null)
         {
             healthSlider = GetComponentInChildren<Slider>(true);
-        }
-
-        if (fillImage == null && healthSlider != null && healthSlider.fillRect != null)
-        {
-            fillImage = healthSlider.fillRect.GetComponent<Image>();
         }
 
         Hide();
@@ -119,43 +108,17 @@ public class BossHealthBarUI : MonoBehaviour
             bossNameText.text = string.IsNullOrWhiteSpace(currentBossName) ? defaultBossName : currentBossName;
         }
 
-        int maxHealth = Mathf.Max(1, bossHealth.MaxHealth);
-        int currentHealth = Mathf.Clamp(bossHealth.CurrentHealth, 0, maxHealth);
-        float healthPercent = (float)currentHealth / maxHealth;
-
         if (healthSlider != null)
         {
             healthSlider.minValue = 0f;
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
+            healthSlider.maxValue = Mathf.Max(1, bossHealth.MaxHealth);
+            healthSlider.value = Mathf.Clamp(bossHealth.CurrentHealth, 0, bossHealth.MaxHealth);
         }
-
-        UpdateFillColor(healthPercent);
 
         if (healthText != null)
         {
-            healthText.text = $"{currentHealth}/{maxHealth}";
+            healthText.text = $"{bossHealth.CurrentHealth}/{bossHealth.MaxHealth}";
         }
-    }
-
-    private void UpdateFillColor(float healthPercent)
-    {
-        if (fillImage == null)
-        {
-            return;
-        }
-
-        float clampedPercent = Mathf.Clamp01(healthPercent);
-
-        if (clampedPercent > 0.5f)
-        {
-            float highRangePercent = Mathf.InverseLerp(0.5f, 1f, clampedPercent);
-            fillImage.color = Color.Lerp(midHealthColor, highHealthColor, highRangePercent);
-            return;
-        }
-
-        float lowRangePercent = Mathf.InverseLerp(0f, 0.5f, clampedPercent);
-        fillImage.color = Color.Lerp(lowHealthColor, midHealthColor, lowRangePercent);
     }
 
     private void Show()
