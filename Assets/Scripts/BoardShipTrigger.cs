@@ -69,7 +69,7 @@ public class BoardShipTrigger : MonoBehaviour
             {
                 BoardPlayer();
             }
-            else
+            else if (shipController == null || shipController.CanUnboard())
             {
                 UnboardPlayer();
             }
@@ -123,6 +123,11 @@ public class BoardShipTrigger : MonoBehaviour
 
     private void BoardPlayer()
     {
+        if (playerObject != null && !playerObject.activeSelf)
+        {
+            playerObject.SetActive(true);
+        }
+
         if (!ValidateReferences())
         {
             return;
@@ -176,6 +181,11 @@ public class BoardShipTrigger : MonoBehaviour
         }
 
         isBoarded = false;
+
+        if (playerObject != null && !playerObject.activeSelf)
+        {
+            playerObject.SetActive(true);
+        }
 
         shipController.SetPlayerOnBoard(false);
 
