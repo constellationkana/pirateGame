@@ -7942,6 +7942,7 @@ MonoBehaviour:
   continueButton: {fileID: 1128896879}
   continueStatusText: {fileID: 306772623}
   noSaveFoundMessage: No Save Found
+  saveSlotScrollRect: {fileID: 897200066}
   saveSlotListParent: {fileID: 575275944}
   saveSlotEntryPrefab: {fileID: 6710277192494816872, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
   saveSelectStatusText: {fileID: 1973031987}
