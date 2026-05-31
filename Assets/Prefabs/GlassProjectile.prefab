@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5189942664920294911}
   - component: {fileID: 1945784111575220040}
   - component: {fileID: 7493296174593052726}
-  - component: {fileID: 8536141418258491037}
   - component: {fileID: 3491578470234540550}
+  - component: {fileID: -813242033350602648}
   m_Layer: 7
   m_Name: GlassProjectile
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,8 +121,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!58 &8536141418258491037
-CircleCollider2D:
+--- !u!114 &3491578470234540550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5583544770070118670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e97d5db410f348a9aae07af1e5ee3b7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Cannonball
+  damage: 1
+  lifetime: 3
+--- !u!70 &-813242033350602648
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -156,18 +170,5 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
---- !u!114 &3491578470234540550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5583544770070118670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e97d5db410f348a9aae07af1e5ee3b7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Cannonball
-  damage: 1
-  lifetime: 3
+  m_Size: {x: 6, y: 6}
+  m_Direction: 0
