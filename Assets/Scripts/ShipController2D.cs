@@ -9,12 +9,14 @@ public class ShipController2D : MonoBehaviour
 
     [Header("State")]
     [SerializeField] private bool playerOnBoard;
+    [SerializeField] private bool unboardingLocked;
 
     private Rigidbody2D rb;
     private Vector2 movementInput;
     private ShipDashController dashController;
 
     public bool PlayerOnBoard => playerOnBoard;
+    public bool UnboardingLocked => unboardingLocked;
     public Vector2 LastMoveDirection { get; private set; } = Vector2.up;
 
     private void Awake()
@@ -88,6 +90,31 @@ public class ShipController2D : MonoBehaviour
     public void AddMoveSpeed(float amount)
     {
         moveSpeed = Mathf.Max(0f, moveSpeed + amount);
+    }
+
+    public void ForceBoardPlayer()
+    {
+        SetPlayerOnBoard(true);
+    }
+
+    public void ForceUnboardPlayer()
+    {
+        if (!CanUnboard())
+        {
+            return;
+        }
+
+        SetPlayerOnBoard(false);
+    }
+
+    public void SetUnboardingLocked(bool locked)
+    {
+        unboardingLocked = locked;
+    }
+
+    public bool CanUnboard()
+    {
+        return !unboardingLocked;
     }
 
     public void SetPlayerOnBoard(bool value)
