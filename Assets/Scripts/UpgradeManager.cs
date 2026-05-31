@@ -37,6 +37,9 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private bool allowDashWithoutShopUnlock = false;
     [SerializeField] private bool allowForceFieldWithoutShopUnlock = false;
 
+    [Header("Placeholder Upgrades")]
+    [SerializeField] private bool includePlaceholderLuckUpgrades = false;
+
     [Header("Runtime Stats")]
     [SerializeField] private float magnetRadius;
 
@@ -111,9 +114,13 @@ public class UpgradeManager : MonoBehaviour
         phaseOneOptions.Add(new UpgradeOption { id = "health", displayName = "Health Upgrade", description = "Increase max health and heal to full." });
         phaseOneOptions.Add(new UpgradeOption { id = "cannon_damage", displayName = "Cannonball Damage", description = "Increase cannonball damage." });
         phaseOneOptions.Add(new UpgradeOption { id = "speed", displayName = "Ship Speed", description = "Increase ship movement speed." });
-        phaseOneOptions.Add(new UpgradeOption { id = "gold_luck", displayName = "I Love Gold", description = "Not implemented yet." });
-        phaseOneOptions.Add(new UpgradeOption { id = "xp_luck", displayName = "XP Luck", description = "Not implemented yet." });
-        phaseOneOptions.Add(new UpgradeOption { id = "wood_luck", displayName = "Wood Luck", description = "Not implemented yet." });
+
+        if (includePlaceholderLuckUpgrades)
+        {
+            phaseOneOptions.Add(new UpgradeOption { id = "gold_luck", displayName = "I Love Gold", description = "Not implemented yet." });
+            phaseOneOptions.Add(new UpgradeOption { id = "xp_luck", displayName = "XP Luck", description = "Not implemented yet." });
+            phaseOneOptions.Add(new UpgradeOption { id = "wood_luck", displayName = "Wood Luck", description = "Not implemented yet." });
+        }
     }
 
     private void OnEnable()
