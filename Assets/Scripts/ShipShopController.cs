@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ShipShopController : MonoBehaviour
@@ -42,6 +43,9 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private string mapSceneName = "Map";
     [SerializeField] private string mainSeaSceneName = "MainSea";
     [SerializeField] private bool logSceneTransitions = true;
+
+    [Header("Debug")]
+    [SerializeField] private bool logShopDebug = false;
 
     [Header("Category Menu Panels")]
     [SerializeField] private GameObject healthMenuPanel;
@@ -147,17 +151,7 @@ public class ShipShopController : MonoBehaviour
             return;
         }
 
-        if (crewHireButton != null)
-        {
-            crewHireButton.onClick.RemoveListener(HireSelectedCrew);
-            crewHireButton.onClick.AddListener(HireSelectedCrew);
-        }
-
-        if (crewCloseButton != null)
-        {
-            crewCloseButton.onClick.RemoveListener(CloseCrewMenu);
-            crewCloseButton.onClick.AddListener(CloseCrewMenu);
-        }
+        WireShopButtonListeners();
 
         if (closeMenusOnStart)
         {
@@ -165,6 +159,87 @@ public class ShipShopController : MonoBehaviour
         }
 
         RefreshUI();
+    }
+
+    private void WireShopButtonListeners()
+    {
+        WireButton(healthUpgrade, BuyHealthUpgrade, nameof(BuyHealthUpgrade));
+        WireButton(healthRegenUnlockButton, UnlockHealthRegeneration, nameof(UnlockHealthRegeneration));
+        WireButton(speedUpgrade, BuySpeedUpgrade, nameof(BuySpeedUpgrade));
+        WireButton(dashUnlockButton, BuyDashUnlock, nameof(BuyDashUnlock));
+        WireButton(cannonDamageUpgrade, BuyCannonDamageUpgrade, nameof(BuyCannonDamageUpgrade));
+        WireButton(cannonballSizeUnlockButton, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade));
+        WireButton(cannonballSpeedUnlockButton, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade));
+        WireButton(cannonballSpeedUpgrade, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade));
+        WireButton(explodingCannonballsUnlockButton, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs));
+        WireButton(explosionPowerUpgradeButton, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade));
+        WireButton(barnaclesUnlockButton, UnlockBarnacles, nameof(UnlockBarnacles));
+        WireButton(barnaclePowerUpgradeButton, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade));
+        WireButton(cannonballPierceUnlockButton, UnlockCannonballPierce, nameof(UnlockCannonballPierce));
+        WireButton(magnetUnlockButton, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades));
+        WireButton(magnetUpgrade, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade));
+        WireButton(forceFieldUnlockButton, UnlockForceField, nameof(UnlockForceField));
+        WireButton(cursedDoubloonsUnlockButton, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons));
+        WireButton(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew));
+        WireButton(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu));
+    }
+
+    private void WireButton(MenuButtonReferences references, UnityAction action, string methodName)
+    {
+        if (references == null)
+        {
+            LogShopDebug($"Cannot wire {methodName}: button references are missing.");
+            return;
+        }
+
+        WireButton(references.button, action, methodName);
+    }
+
+    private void WireButton(Button button, UnityAction action, string methodName)
+    {
+        if (button == null || action == null)
+        {
+            LogShopDebug($"Cannot wire {methodName}: button or action is missing.");
+            return;
+        }
+
+        button.onClick.RemoveListener(action);
+
+        if (HasPersistentListener(button, methodName))
+        {
+            LogShopDebug($"{button.name} already has persistent listener {methodName}.");
+            return;
+        }
+
+        button.onClick.AddListener(action);
+        LogShopDebug($"Added runtime listener {methodName} to {button.name}.");
+    }
+
+    private bool HasPersistentListener(Button button, string methodName)
+    {
+        if (button == null || string.IsNullOrWhiteSpace(methodName))
+        {
+            return false;
+        }
+
+        int listenerCount = button.onClick.GetPersistentEventCount();
+        for (int i = 0; i < listenerCount; i++)
+        {
+            if (button.onClick.GetPersistentTarget(i) == this && button.onClick.GetPersistentMethodName(i) == methodName)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void LogShopDebug(string message)
+    {
+        if (logShopDebug)
+        {
+            Debug.Log($"ShipShopController: {message}", this);
+        }
     }
 
     public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
