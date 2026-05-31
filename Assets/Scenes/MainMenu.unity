@@ -2345,7 +2345,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -794, y: -8.4999695}
+  m_AnchoredPosition: {x: 51, y: -8.4999695}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &575275945
@@ -7969,6 +7969,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1133063821}
     m_Modifications:
+    - target: {fileID: 1411742993788629552, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
+      propertyPath: m_PreferredHeight
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 2578858045223586172, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -8247,19 +8251,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7834224937875416654, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
       propertyPath: m_fontSize
-      value: 24
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7834224937875416654, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
       propertyPath: m_fontSizeBase
-      value: 24
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8834259389474295837, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
       propertyPath: m_fontSize
-      value: 24
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8834259389474295837, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
       propertyPath: m_fontSizeBase
-      value: 24
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 9014572709063773318, guid: fdf8411026861c04fa807666e075ecc7, type: 3}
       propertyPath: m_Name
