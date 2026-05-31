@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private string noSaveFoundMessage = "No Save Found";
 
     [Header("Save Select")]
+    [SerializeField] private ScrollRect saveSlotScrollRect;
     [SerializeField] private Transform saveSlotListParent;
     [SerializeField] private SaveSlotEntryUI saveSlotEntryPrefab;
     [SerializeField] private TMP_Text saveSelectStatusText;
@@ -33,6 +35,7 @@ public class MainMenuController : MonoBehaviour
 
     private readonly List<SaveSlotEntryUI> spawnedSaveEntries = new();
     private int selectedRenameSlotId = -1;
+    private Coroutine resetSaveSlotScrollCoroutine;
 
     private void Start()
     {
@@ -212,6 +215,45 @@ public class MainMenuController : MonoBehaviour
             SaveSlotEntryUI entry = Instantiate(saveSlotEntryPrefab, saveSlotListParent);
             entry.Configure(save, LoadSaveSlot, BeginRenameSaveSlot, DeleteSaveSlot);
             spawnedSaveEntries.Add(entry);
+        }
+
+        ResetSaveSlotScrollPosition();
+    }
+
+    private void ResetSaveSlotScrollPosition()
+    {
+        if (resetSaveSlotScrollCoroutine != null)
+        {
+            StopCoroutine(resetSaveSlotScrollCoroutine);
+        }
+
+        RebuildSaveSlotListLayout();
+        SetSaveSlotScrollToTop();
+        resetSaveSlotScrollCoroutine = StartCoroutine(ResetSaveSlotScrollPositionNextFrame());
+    }
+
+    private IEnumerator ResetSaveSlotScrollPositionNextFrame()
+    {
+        yield return null;
+
+        RebuildSaveSlotListLayout();
+        SetSaveSlotScrollToTop();
+        resetSaveSlotScrollCoroutine = null;
+    }
+
+    private void RebuildSaveSlotListLayout()
+    {
+        if (saveSlotListParent is RectTransform saveListContent)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(saveListContent);
+        }
+    }
+
+    private void SetSaveSlotScrollToTop()
+    {
+        if (saveSlotScrollRect != null)
+        {
+            saveSlotScrollRect.verticalNormalizedPosition = 1f;
         }
     }
 
