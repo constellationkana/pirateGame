@@ -79,7 +79,11 @@ public class RunTimerDirector : MonoBehaviour
         RefreshTimerText();
         ResetTimedSpawnerEvents();
 
-        if (!runStarted)
+        if (runStarted)
+        {
+            EnableNormalSpawners();
+        }
+        else
         {
             DisableNormalSpawners();
         }
