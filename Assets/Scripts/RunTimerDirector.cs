@@ -59,6 +59,8 @@ public class RunTimerDirector : MonoBehaviour
     private bool timerRunning;
     private float nextDebugLogTime;
 
+    public float ElapsedTime => elapsedTime;
+
     private void Awake()
     {
         timerRunning = startTimerOnAwake;
