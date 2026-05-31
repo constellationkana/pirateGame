@@ -163,63 +163,43 @@ public class ShipShopController : MonoBehaviour
 
     private void WireShopButtonListeners()
     {
-        WireButton(healthUpgrade, BuyHealthUpgrade, nameof(BuyHealthUpgrade), "Upgrade Base Health");
-        WireButton(healthRegenUnlockButton, UnlockHealthRegeneration, nameof(UnlockHealthRegeneration), "Unlock Health Regeneration");
-
-        WireButton(speedUpgrade, BuySpeedUpgrade, nameof(BuySpeedUpgrade), "Upgrade Base Speed");
-        WireButton(dashUnlockButton, UnlockDash, nameof(UnlockDash), "Unlock Dash", nameof(BuyDashUnlock));
-
-        WireButton(cannonDamageUpgrade, BuyCannonDamageUpgrade, nameof(BuyCannonDamageUpgrade), "Upgrade Base Cannonball Damage");
-        WireButton(cannonballSizeUnlockButton, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade), "Unlock Cannonball Size");
-        WireButton(cannonballSpeedUnlockButton, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade), "Unlock Cannonball Speed");
-        WireButton(cannonballSpeedUpgrade, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade), "Upgrade Base Cannonball Speed");
-        WireButton(explodingCannonballsUnlockButton, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs), "Unlock Exploding Cannonballs");
-        WireButton(explosionPowerUpgradeButton, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade), "Upgrade Explosion Power");
-        WireButton(barnaclesUnlockButton, UnlockBarnacles, nameof(UnlockBarnacles), "Unlock Barnacles");
-        WireButton(barnaclePowerUpgradeButton, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade), "Upgrade Barnacles");
-        WireButton(cannonballPierceUnlockButton, UnlockCannonballPierce, nameof(UnlockCannonballPierce), "Unlock Cannonball Pierce");
-
-        WireButton(magnetUnlockButton, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades), "Unlock Magnet Upgrades");
-        WireButton(magnetUpgrade, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade), "Upgrade Base Magnet Radius");
-        WireButton(forceFieldUnlockButton, UnlockForceField, nameof(UnlockForceField), "Unlock Force Field");
-        WireButton(cursedDoubloonsUnlockButton, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons), "Unlock Cursed Doubloons");
-
-        WireStandaloneButton(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew), "Crew Hire");
-        WireStandaloneButton(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu), "Crew Close");
+        EnsureButtonListener(healthUpgrade.button, BuyHealthUpgrade, nameof(BuyHealthUpgrade));
+        EnsureButtonListener(healthRegenUnlockButton.button, UnlockHealthRegeneration, nameof(UnlockHealthRegeneration));
+        EnsureButtonListener(speedUpgrade.button, BuySpeedUpgrade, nameof(BuySpeedUpgrade));
+        EnsureButtonListener(dashUnlockButton.button, BuyDashUnlock, nameof(BuyDashUnlock));
+        EnsureButtonListener(cannonDamageUpgrade.button, BuyCannonDamageUpgrade, nameof(BuyCannonDamageUpgrade));
+        EnsureButtonListener(cannonballSizeUnlockButton.button, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade));
+        EnsureButtonListener(cannonballSpeedUnlockButton.button, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade));
+        EnsureButtonListener(cannonballSpeedUpgrade.button, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade));
+        EnsureButtonListener(explodingCannonballsUnlockButton.button, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs));
+        EnsureButtonListener(explosionPowerUpgradeButton.button, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade));
+        EnsureButtonListener(barnaclesUnlockButton.button, UnlockBarnacles, nameof(UnlockBarnacles));
+        EnsureButtonListener(barnaclePowerUpgradeButton.button, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade));
+        EnsureButtonListener(cannonballPierceUnlockButton.button, UnlockCannonballPierce, nameof(UnlockCannonballPierce));
+        EnsureButtonListener(magnetUnlockButton.button, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades));
+        EnsureButtonListener(magnetUpgrade.button, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade));
+        EnsureButtonListener(forceFieldUnlockButton.button, UnlockForceField, nameof(UnlockForceField));
+        EnsureButtonListener(cursedDoubloonsUnlockButton.button, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons));
+        EnsureButtonListener(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew));
+        EnsureButtonListener(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu));
     }
 
-    private void WireButton(MenuButtonReferences references, UnityAction action, string methodName, string debugName, params string[] equivalentPersistentMethodNames)
-    {
-        if (references == null || references.button == null)
-        {
-            LogShopWarning($"Button reference missing for {debugName}.");
-            return;
-        }
-
-        WireStandaloneButton(references.button, action, methodName, debugName, equivalentPersistentMethodNames);
-    }
-
-    private void WireStandaloneButton(Button button, UnityAction action, string methodName, string debugName, params string[] equivalentPersistentMethodNames)
+    private void EnsureButtonListener(Button button, UnityAction action, string methodName)
     {
         if (button == null || action == null)
         {
-            LogShopWarning($"Standalone button missing for {debugName}.");
             return;
         }
 
         button.onClick.RemoveListener(action);
 
-        if (HasPersistentListener(button, methodName, equivalentPersistentMethodNames))
+        if (!HasPersistentListener(button, methodName))
         {
-            LogShopDebug($"Button {debugName} already has an equivalent persistent listener.");
-            return;
+            button.onClick.AddListener(action);
         }
-
-        button.onClick.AddListener(action);
-        LogShopDebug($"Wired runtime button {debugName}.");
     }
 
-    private bool HasPersistentListener(Button button, string methodName, params string[] equivalentMethodNames)
+    private bool HasPersistentListener(Button button, string methodName)
     {
         if (button == null || string.IsNullOrWhiteSpace(methodName))
         {
@@ -229,54 +209,13 @@ public class ShipShopController : MonoBehaviour
         int listenerCount = button.onClick.GetPersistentEventCount();
         for (int i = 0; i < listenerCount; i++)
         {
-            if (button.onClick.GetPersistentTarget(i) != this)
-            {
-                continue;
-            }
-
-            string persistentMethodName = button.onClick.GetPersistentMethodName(i);
-            if (persistentMethodName == methodName || IsEquivalentMethodName(persistentMethodName, equivalentMethodNames))
+            if (button.onClick.GetPersistentTarget(i) == this && button.onClick.GetPersistentMethodName(i) == methodName)
             {
                 return true;
             }
         }
 
         return false;
-    }
-
-
-    private static bool IsEquivalentMethodName(string persistentMethodName, string[] equivalentMethodNames)
-    {
-        if (equivalentMethodNames == null)
-        {
-            return false;
-        }
-
-        foreach (string equivalentMethodName in equivalentMethodNames)
-        {
-            if (!string.IsNullOrWhiteSpace(equivalentMethodName) && persistentMethodName == equivalentMethodName)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void LogShopDebug(string message)
-    {
-        if (logShopDebug)
-        {
-            Debug.Log($"ShipShopController: {message}", this);
-        }
-    }
-
-    private void LogShopWarning(string message)
-    {
-        if (logShopDebug)
-        {
-            Debug.LogWarning($"ShipShopController: {message}", this);
-        }
     }
 
     public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
