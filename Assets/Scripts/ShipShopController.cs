@@ -163,56 +163,40 @@ public class ShipShopController : MonoBehaviour
 
     private void WireShopButtonListeners()
     {
-        WireButton(healthUpgrade, BuyHealthUpgrade, nameof(BuyHealthUpgrade));
-        WireButton(healthRegenUnlockButton, UnlockHealthRegeneration, nameof(UnlockHealthRegeneration));
-        WireButton(speedUpgrade, BuySpeedUpgrade, nameof(BuySpeedUpgrade));
-        WireButton(dashUnlockButton, BuyDashUnlock, nameof(BuyDashUnlock));
-        WireButton(cannonDamageUpgrade, BuyCannonDamageUpgrade, nameof(BuyCannonDamageUpgrade));
-        WireButton(cannonballSizeUnlockButton, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade));
-        WireButton(cannonballSpeedUnlockButton, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade));
-        WireButton(cannonballSpeedUpgrade, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade));
-        WireButton(explodingCannonballsUnlockButton, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs));
-        WireButton(explosionPowerUpgradeButton, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade));
-        WireButton(barnaclesUnlockButton, UnlockBarnacles, nameof(UnlockBarnacles));
-        WireButton(barnaclePowerUpgradeButton, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade));
-        WireButton(cannonballPierceUnlockButton, UnlockCannonballPierce, nameof(UnlockCannonballPierce));
-        WireButton(magnetUnlockButton, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades));
-        WireButton(magnetUpgrade, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade));
-        WireButton(forceFieldUnlockButton, UnlockForceField, nameof(UnlockForceField));
-        WireButton(cursedDoubloonsUnlockButton, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons));
-        WireButton(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew));
-        WireButton(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu));
+        EnsureButtonListener(healthUpgrade.button, BuyHealthUpgrade, nameof(BuyHealthUpgrade));
+        EnsureButtonListener(healthRegenUnlockButton.button, UnlockHealthRegeneration, nameof(UnlockHealthRegeneration));
+        EnsureButtonListener(speedUpgrade.button, BuySpeedUpgrade, nameof(BuySpeedUpgrade));
+        EnsureButtonListener(dashUnlockButton.button, BuyDashUnlock, nameof(BuyDashUnlock));
+        EnsureButtonListener(cannonDamageUpgrade.button, BuyCannonDamageUpgrade, nameof(BuyCannonDamageUpgrade));
+        EnsureButtonListener(cannonballSizeUnlockButton.button, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade));
+        EnsureButtonListener(cannonballSpeedUnlockButton.button, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade));
+        EnsureButtonListener(cannonballSpeedUpgrade.button, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade));
+        EnsureButtonListener(explodingCannonballsUnlockButton.button, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs));
+        EnsureButtonListener(explosionPowerUpgradeButton.button, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade));
+        EnsureButtonListener(barnaclesUnlockButton.button, UnlockBarnacles, nameof(UnlockBarnacles));
+        EnsureButtonListener(barnaclePowerUpgradeButton.button, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade));
+        EnsureButtonListener(cannonballPierceUnlockButton.button, UnlockCannonballPierce, nameof(UnlockCannonballPierce));
+        EnsureButtonListener(magnetUnlockButton.button, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades));
+        EnsureButtonListener(magnetUpgrade.button, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade));
+        EnsureButtonListener(forceFieldUnlockButton.button, UnlockForceField, nameof(UnlockForceField));
+        EnsureButtonListener(cursedDoubloonsUnlockButton.button, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons));
+        EnsureButtonListener(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew));
+        EnsureButtonListener(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu));
     }
 
-    private void WireButton(MenuButtonReferences references, UnityAction action, string methodName)
-    {
-        if (references == null)
-        {
-            LogShopDebug($"Cannot wire {methodName}: button references are missing.");
-            return;
-        }
-
-        WireButton(references.button, action, methodName);
-    }
-
-    private void WireButton(Button button, UnityAction action, string methodName)
+    private void EnsureButtonListener(Button button, UnityAction action, string methodName)
     {
         if (button == null || action == null)
         {
-            LogShopDebug($"Cannot wire {methodName}: button or action is missing.");
             return;
         }
 
         button.onClick.RemoveListener(action);
 
-        if (HasPersistentListener(button, methodName))
+        if (!HasPersistentListener(button, methodName))
         {
-            LogShopDebug($"{button.name} already has persistent listener {methodName}.");
-            return;
+            button.onClick.AddListener(action);
         }
-
-        button.onClick.AddListener(action);
-        LogShopDebug($"Added runtime listener {methodName} to {button.name}.");
     }
 
     private bool HasPersistentListener(Button button, string methodName)
@@ -232,14 +216,6 @@ public class ShipShopController : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void LogShopDebug(string message)
-    {
-        if (logShopDebug)
-        {
-            Debug.Log($"ShipShopController: {message}", this);
-        }
     }
 
     public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
