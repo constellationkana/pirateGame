@@ -44,6 +44,9 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private string mainSeaSceneName = "MainSea";
     [SerializeField] private bool logSceneTransitions = true;
 
+    [Header("Debug")]
+    [SerializeField] private bool logShopDebug = false;
+
     [Header("Category Menu Panels")]
     [SerializeField] private GameObject healthMenuPanel;
     [SerializeField] private GameObject speedMenuPanel;
