@@ -420,14 +420,12 @@ public class PauseProgressionMenu : MonoBehaviour
         int wood = inventory != null ? inventory.Wood : 0;
         int doubloons = inventory != null ? inventory.Doubloons : progression != null ? progression.GetDoubloons() : 0;
         bool dashUnlocked = progression != null && progression.IsDashUnlocked();
-        int unlockedUpgradeCount = GetUnlockedUpgradeCount();
 
         StringBuilder builder = new();
         builder.AppendLine($"Level: {level}");
         builder.AppendLine(nextXP > 0 ? $"XP: {currentXP}/{nextXP}" : $"XP: {currentXP}");
         builder.AppendLine($"Wood: {wood}");
         builder.AppendLine($"Doubloons: {doubloons}");
-        builder.AppendLine($"Upgrades Unlocked: {unlockedUpgradeCount}");
         builder.AppendLine($"Stage: {SceneManager.GetActiveScene().name}");
         builder.AppendLine($"Run Time: {FormatSeconds(Time.timeSinceLevelLoad)}");
         builder.AppendLine($"Dash: {(dashUnlocked ? "Unlocked" : "Locked")}");
@@ -447,30 +445,10 @@ public class PauseProgressionMenu : MonoBehaviour
             "Controls:\n" +
             "WASD = move while boarded\n" +
             "Arrow keys = fire cannons\n" +
-            "Left Click = fire toward mouse\n" +
+            "Space = fire toward mouse\n" +
             "E = board / interact\n" +
             "U = pause\n" +
             "Shift = dash if unlocked";
-    }
-
-    private int GetUnlockedUpgradeCount()
-    {
-        if (!PlayerProgression.HasActiveSaveSlot)
-        {
-            return 0;
-        }
-
-        List<PlayerProgression.SaveSlotSummary> summaries = PlayerProgression.GetAllSaveSlotSummaries();
-        for (int i = 0; i < summaries.Count; i++)
-        {
-            PlayerProgression.SaveSlotSummary summary = summaries[i];
-            if (summary != null && summary.isActive)
-            {
-                return Mathf.Max(0, summary.unlockCount) + Mathf.Max(0, summary.upgradeCount);
-            }
-        }
-
-        return 0;
     }
 
     private void LoadScene(string sceneName, string fieldName)
