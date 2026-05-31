@@ -420,6 +420,8 @@ public class PauseProgressionMenu : MonoBehaviour
         int wood = inventory != null ? inventory.Wood : 0;
         int doubloons = inventory != null ? inventory.Doubloons : progression != null ? progression.GetDoubloons() : 0;
         bool dashUnlocked = progression != null && progression.IsDashUnlocked();
+        UpgradeManager upgradeManager = FindFirstObjectByType<UpgradeManager>();
+        int upgradesUnlocked = upgradeManager != null ? upgradeManager.CurrentRunUpgradeLevels.Count : 0;
 
         StringBuilder builder = new();
         builder.AppendLine($"Level: {level}");
@@ -428,6 +430,7 @@ public class PauseProgressionMenu : MonoBehaviour
         builder.AppendLine($"Doubloons: {doubloons}");
         builder.AppendLine($"Stage: {SceneManager.GetActiveScene().name}");
         builder.AppendLine($"Run Time: {FormatSeconds(Time.timeSinceLevelLoad)}");
+        builder.AppendLine($"Upgrades Unlocked: {upgradesUnlocked}");
         builder.AppendLine($"Dash: {(dashUnlocked ? "Unlocked" : "Locked")}");
 
         targetText.text = builder.ToString();
@@ -445,7 +448,7 @@ public class PauseProgressionMenu : MonoBehaviour
             "Controls:\n" +
             "WASD = move while boarded\n" +
             "Arrow keys = fire cannons\n" +
-            "Space = fire toward mouse\n" +
+            "Left Click = fire toward mouse\n" +
             "E = board / interact\n" +
             "U = pause\n" +
             "Shift = dash if unlocked";
