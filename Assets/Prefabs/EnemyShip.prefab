@@ -551,8 +551,8 @@ MonoBehaviour:
   cannonDamage: 2
   cannonballSpeed: 7
   cannonShootInterval: 3
-  fruitProjectilePrefab: {fileID: 6844348078964051180, guid: 8b62b02fc13105e48910b0a7cb3f422a, type: 3}
-  fruitFirePoint: {fileID: 1785004718316856830}
+  fruitProjectilePrefab: {fileID: 0}
+  fruitFirePoint: {fileID: 0}
   fruitFirePoints: []
   fruitDamage: 1
   fruitSpeed: 10
@@ -574,12 +574,12 @@ MonoBehaviour:
   minWoodDrops: 1
   maxWoodDrops: 3
   doubloonPickupPrefab: {fileID: 6201677647806777943, guid: 1024b82832b8c5d49a158a59422883d7, type: 3}
-  minDoubloonDrops: 1
-  maxDoubloonDrops: 4
+  minDoubloonDrops: 200
+  maxDoubloonDrops: 500
   xpPickupPrefab: {fileID: 6312591792436907943, guid: de82d20c1bdb6f04aae036ddf1ad2f86, type: 3}
   minXPDrops: 1
   maxXPDrops: 3
-  xpAmountPerPickup: 1
+  xpAmountPerPickup: 100
   dropScatterRadius: 0.75
   logDrops: 0
 --- !u!1 &4999598627304264944
