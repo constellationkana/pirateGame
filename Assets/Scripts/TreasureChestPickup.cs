@@ -74,7 +74,7 @@ public class TreasureChestPickup : MonoBehaviour
                 runCrewManager?.ActivateCrew(choice.CrewId);
                 break;
             case TreasureChestChoiceType.CrewUpgrade:
-                runCrewManager?.ApplyCrewUpgrade(choice.CrewId);
+                runCrewManager?.ApplyCrewUpgrade(choice.CrewId, choice.CrewUpgradeId);
                 break;
             default:
                 upgradeManager?.ApplyFreeUpgrade(choice.UpgradeOption);
@@ -162,9 +162,10 @@ public class TreasureChestPickup : MonoBehaviour
                 continue;
             }
 
+            string choiceName = crew.id == RunCrewManager.PaulCrewId ? "Recruit Paul" : crew.displayName;
             pool.Add(new TreasureChestChoice(
                 TreasureChestChoiceType.Crew,
-                crew.displayName,
+                choiceName,
                 string.IsNullOrWhiteSpace(crew.joinDescription) ? $"{crew.displayName} joins for this run only." : crew.joinDescription,
                 crewId: crew.id));
             addedCrew = true;
@@ -180,9 +181,11 @@ public class TreasureChestPickup : MonoBehaviour
             return;
         }
 
+        AddPaulUpgradeChoices(pool);
+
         foreach (RunCrewManager.CrewDefinition crew in runCrewManager.GetActiveCrew())
         {
-            if (crew == null)
+            if (crew == null || crew.id == RunCrewManager.PaulCrewId)
             {
                 continue;
             }
@@ -204,6 +207,27 @@ public class TreasureChestPickup : MonoBehaviour
         }
     }
 
+    private void AddPaulUpgradeChoices(List<TreasureChestChoice> pool)
+    {
+        foreach (RunCrewManager.CrewUpgradeDefinition upgrade in runCrewManager.GetAvailablePaulUpgrades())
+        {
+            if (upgrade == null)
+            {
+                continue;
+            }
+
+            int nextLevel = runCrewManager.GetPaulUpgradeLevel(upgrade.id) + 1;
+            int maxLevel = runCrewManager.GetMaxPaulUpgradeLevel(upgrade.id);
+            string levelSuffix = maxLevel > 1 ? $" Lv. {nextLevel}" : string.Empty;
+            pool.Add(new TreasureChestChoice(
+                TreasureChestChoiceType.CrewUpgrade,
+                $"{upgrade.displayName}{levelSuffix}",
+                upgrade.description,
+                crewId: RunCrewManager.PaulCrewId,
+                crewUpgradeId: upgrade.id));
+        }
+    }
+
     private void EnsureReferences()
     {
         if (upgradeManager == null)
@@ -220,6 +244,7 @@ public class TreasureChestPickup : MonoBehaviour
         {
             GameObject managerObject = new("Run Crew Manager");
             runCrewManager = managerObject.AddComponent<RunCrewManager>();
+            managerObject.AddComponent<PaulCrewController>();
         }
 
         if (choiceUI == null)

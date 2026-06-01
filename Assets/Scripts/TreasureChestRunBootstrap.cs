@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public static class TreasureChestRunBootstrap
 {
     private static readonly string[] RunSceneNames = { "MainSea", "Stage2", "Stage3" };
+    private static bool wasInRunScene;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Initialize()
@@ -20,20 +21,37 @@ public static class TreasureChestRunBootstrap
 
     private static void EnsureRunSceneServices(Scene scene)
     {
-        if (!IsRunScene(scene.name))
+        bool isRunScene = IsRunScene(scene.name);
+        if (!isRunScene)
         {
+            wasInRunScene = false;
             return;
         }
+
+        bool startsNewRun = !wasInRunScene;
+        wasInRunScene = true;
 
         RunCrewManager runCrewManager = Object.FindFirstObjectByType<RunCrewManager>();
         if (runCrewManager == null)
         {
             GameObject crewManagerObject = new("Run Crew Manager");
-            crewManagerObject.AddComponent<RunCrewManager>();
+            runCrewManager = crewManagerObject.AddComponent<RunCrewManager>();
+            crewManagerObject.AddComponent<PaulCrewController>();
+            Object.DontDestroyOnLoad(crewManagerObject);
         }
         else
         {
-            runCrewManager.ResetRunCrew();
+            Object.DontDestroyOnLoad(runCrewManager.gameObject);
+
+            if (startsNewRun)
+            {
+                runCrewManager.ResetRunCrew();
+            }
+
+            if (runCrewManager.GetComponent<PaulCrewController>() == null)
+            {
+                runCrewManager.gameObject.AddComponent<PaulCrewController>();
+            }
         }
 
         if (Object.FindFirstObjectByType<TreasureChestChoiceUI>() == null)
