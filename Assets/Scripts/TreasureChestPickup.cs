@@ -57,14 +57,13 @@ public class TreasureChestPickup : MonoBehaviour
             return;
         }
 
-        choiceUI.ShowChoices(choices, ApplyChoice);
+        choiceUI.ShowChoices(choices, ApplyChoice, FinishCollection);
     }
 
     private void ApplyChoice(TreasureChestChoice choice)
     {
         if (choice == null)
         {
-            FinishCollection();
             return;
         }
 
@@ -81,43 +80,48 @@ public class TreasureChestPickup : MonoBehaviour
                 upgradeManager?.ApplyFreeUpgrade(choice.UpgradeOption);
                 break;
         }
-
-        FinishCollection();
     }
 
     private List<TreasureChestChoice> BuildChoices(int choiceCount)
     {
-        List<TreasureChestChoice> pool = new();
-        AddUpgradeChoices(pool, Mathf.Max(choiceCount, 10));
-
-        bool hasAvailableCrew = AddAvailableCrewChoices(pool);
-        if (hasAvailableCrew)
-        {
-            AddActiveCrewUpgradeChoices(pool);
-        }
-
         List<TreasureChestChoice> choices = new();
-        if (pool.Count == 0)
+        if (choiceCount <= 0)
         {
             return choices;
         }
 
-        List<TreasureChestChoice> shuffledPool = new(pool);
-        for (int i = 0; i < choiceCount; i++)
+        List<TreasureChestChoice> crewRecruitChoices = new();
+        AddAvailableCrewChoices(crewRecruitChoices);
+
+        List<TreasureChestChoice> crewUpgradeChoices = new();
+        AddActiveCrewUpgradeChoices(crewUpgradeChoices);
+
+        AddRandomChoices(choices, crewRecruitChoices, choiceCount);
+        AddRandomChoices(choices, crewUpgradeChoices, choiceCount);
+
+        if (choices.Count < choiceCount)
         {
-            if (i < shuffledPool.Count)
-            {
-                int index = Random.Range(i, shuffledPool.Count);
-                (shuffledPool[i], shuffledPool[index]) = (shuffledPool[index], shuffledPool[i]);
-                choices.Add(shuffledPool[i]);
-            }
-            else
-            {
-                choices.Add(pool[Random.Range(0, pool.Count)]);
-            }
+            List<TreasureChestChoice> upgradeChoices = new();
+            AddUpgradeChoices(upgradeChoices, Mathf.Max(choiceCount - choices.Count, 10));
+            AddRandomChoices(choices, upgradeChoices, choiceCount);
         }
 
         return choices;
+    }
+
+    private static void AddRandomChoices(List<TreasureChestChoice> choices, List<TreasureChestChoice> pool, int choiceCount)
+    {
+        if (choices == null || pool == null || choiceCount <= 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < pool.Count && choices.Count < choiceCount; i++)
+        {
+            int index = Random.Range(i, pool.Count);
+            (pool[i], pool[index]) = (pool[index], pool[i]);
+            choices.Add(pool[i]);
+        }
     }
 
     private void AddUpgradeChoices(List<TreasureChestChoice> pool, int requestedCount)
@@ -179,6 +183,11 @@ public class TreasureChestPickup : MonoBehaviour
         foreach (RunCrewManager.CrewDefinition crew in runCrewManager.GetActiveCrew())
         {
             if (crew == null)
+            {
+                continue;
+            }
+
+            if (!runCrewManager.IsCrewUpgradeAvailable(crew.id))
             {
                 continue;
             }
