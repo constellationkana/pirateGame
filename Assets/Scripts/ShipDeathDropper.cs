@@ -21,6 +21,13 @@ public class ShipDeathDropper : MonoBehaviour
     [SerializeField] private int maxXPDrops = 3;
     [SerializeField] private int xpAmountPerPickup = 1;
 
+    [Header("Treasure Chest Drops")]
+    [SerializeField] private GameObject treasureChestPrefab;
+    [SerializeField] private int minTreasureChestDrops = 0;
+    [SerializeField] private int maxTreasureChestDrops = 0;
+    [Range(0f, 1f)]
+    [SerializeField] private float treasureChestDropChance = 0f;
+
     [Header("Drop Scatter")]
     [SerializeField] private float dropScatterRadius = 0.75f;
     [SerializeField] private bool logDrops;
@@ -54,11 +61,22 @@ public class ShipDeathDropper : MonoBehaviour
         int woodDropCount = SpawnDrops(woodPickupPrefab, minWoodDrops, maxWoodDrops);
         int doubloonDropCount = SpawnDrops(doubloonPickupPrefab, minDoubloonDrops, maxDoubloonDrops);
         int xpDropCount = SpawnDrops(xpPickupPrefab, minXPDrops, maxXPDrops, true);
+        int treasureChestDropCount = SpawnTreasureChestDrops();
 
         if (logDrops)
         {
-            Debug.Log($"Dropped {woodDropCount} wood, {doubloonDropCount} doubloons, and {xpDropCount} XP pickups from {gameObject.name}.", this);
+            Debug.Log($"Dropped {woodDropCount} wood, {doubloonDropCount} doubloons, {xpDropCount} XP pickups, and {treasureChestDropCount} treasure chests from {gameObject.name}.", this);
         }
+    }
+
+    private int SpawnTreasureChestDrops()
+    {
+        if (treasureChestPrefab == null || Mathf.Clamp01(treasureChestDropChance) <= 0f || Random.value > Mathf.Clamp01(treasureChestDropChance))
+        {
+            return 0;
+        }
+
+        return SpawnDrops(treasureChestPrefab, minTreasureChestDrops, maxTreasureChestDrops);
     }
 
     private int SpawnDrops(GameObject pickupPrefab, int minDrops, int maxDrops, bool assignXPAmount = false)
