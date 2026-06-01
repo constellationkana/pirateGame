@@ -406,8 +406,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1198814145
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 6574b6505d0c5ff46a7281743bcb382b, type: 3}
@@ -509,6 +509,9 @@ MonoBehaviour:
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
+  healthRegenerationEnabled: 0
+  regenerationAmount: 1
+  regenerationInterval: 5
 --- !u!114 &2983384552859054284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,6 +552,10 @@ MonoBehaviour:
   minXPDrops: 5
   maxXPDrops: 10
   xpAmountPerPickup: 1
+  treasureChestPrefab: {fileID: 0}
+  minTreasureChestDrops: 0
+  maxTreasureChestDrops: 0
+  treasureChestDropChance: 0
   dropScatterRadius: 2
   logDrops: 1
 --- !u!114 &5177527815735268424

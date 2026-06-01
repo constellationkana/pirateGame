@@ -221,6 +221,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3766797133107031815, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
   m_PrefabInstance: {fileID: 4208820}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4208822 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1946803551555946945, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
+  m_PrefabInstance: {fileID: 4208820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &4208823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1584788550761024573, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
+  m_PrefabInstance: {fileID: 4208820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &25784201
 GameObject:
   m_ObjectHideFlags: 0
@@ -4485,6 +4507,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3766797133107031815, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
   m_PrefabInstance: {fileID: 661937546}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &661937548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1946803551555946945, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
+  m_PrefabInstance: {fileID: 661937546}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &661937549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1584788550761024573, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
+  m_PrefabInstance: {fileID: 661937546}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &713942624
 GameObject:
   m_ObjectHideFlags: 0
@@ -9853,15 +9897,18 @@ MonoBehaviour:
   magnetUnlockButton:
     labelText: {fileID: 1431677863}
     button: {fileID: 1431677864}
-  magnetUpgrade:
-    labelText: {fileID: 0}
-    button: {fileID: 0}
-  forceFieldUnlockButton:
+  forceFieldButton:
     labelText: {fileID: 1355293757}
     button: {fileID: 1355293758}
-  cursedDoubloonsUnlockButton:
+  forceFieldDamageUpgradeButton:
+    labelText: {fileID: 4208822}
+    button: {fileID: 4208823}
+  cursedDoubloonsButton:
     labelText: {fileID: 477544208}
     button: {fileID: 477544209}
+  cursedDoubloonsDamageUpgradeButton:
+    labelText: {fileID: 661937548}
+    button: {fileID: 661937549}
   healthUpgradeText: {fileID: 1782256068}
   healthRegenUnlockText: {fileID: 0}
   speedUpgradeText: {fileID: 412540296}
@@ -9876,9 +9923,10 @@ MonoBehaviour:
   barnaclePowerUpgradeText: {fileID: 0}
   cannonballPierceUnlockText: {fileID: 0}
   magnetUnlockText: {fileID: 0}
-  magnetUpgradeText: {fileID: 1062838473}
   forceFieldUnlockText: {fileID: 1820873373}
+  forceFieldDamageUpgradeText: {fileID: 0}
   cursedDoubloonsUnlockText: {fileID: 0}
+  cursedDoubloonsDamageUpgradeText: {fileID: 0}
   baseHealth:
     baseCost: 50
     costIncreasePerLevel: 50
@@ -9899,11 +9947,6 @@ MonoBehaviour:
     costIncreasePerLevel: 100
     maxLevel: 10
     statIncreasePerLevel: 1
-  baseMagnetRadius:
-    baseCost: 60
-    costIncreasePerLevel: 60
-    maxLevel: 10
-    statIncreasePerLevel: 0.5
   explosionPower:
     baseCost: 150
     costIncreasePerLevel: 150
@@ -9914,12 +9957,12 @@ MonoBehaviour:
     costIncreasePerLevel: 125
     maxLevel: 10
     statIncreasePerLevel: 1
-  cursedDoubloonsPower:
+  cursedDoubloonsDamage:
     baseCost: 125
     costIncreasePerLevel: 125
     maxLevel: 10
     statIncreasePerLevel: 1
-  forceFieldPower:
+  forceFieldDamage:
     baseCost: 150
     costIncreasePerLevel: 150
     maxLevel: 10
