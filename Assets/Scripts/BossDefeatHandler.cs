@@ -8,6 +8,7 @@ public class BossDefeatHandler : MonoBehaviour
     [Header("References")]
     [SerializeField] private ShipHealth bossHealth;
     [SerializeField] private TMP_Text victoryMessageText;
+    [SerializeField] private RunSummaryController runSummaryController;
 
     [Header("Victory")]
     [SerializeField] private string victoryMessage = "Victory! You defeated the Dread Summoner!";
@@ -17,6 +18,10 @@ public class BossDefeatHandler : MonoBehaviour
     [SerializeField] private bool pauseGameOnVictory;
     [SerializeField] private bool logVictory = true;
 
+    [Header("Stage Complete Summary")]
+    [SerializeField] private bool showStageCompleteSummary = true;
+    [SerializeField] private bool hideVictoryMessageWhenSummaryShows = true;
+
     private bool victoryHandled;
 
     private void Awake()
@@ -25,6 +30,8 @@ public class BossDefeatHandler : MonoBehaviour
         {
             bossHealth = GetComponent<ShipHealth>();
         }
+
+        ResolveRunSummaryController();
     }
 
     private void OnEnable()
@@ -59,7 +66,9 @@ public class BossDefeatHandler : MonoBehaviour
 
         CompleteStageOnVictory();
 
-        if (victoryMessageText != null)
+        bool summaryShown = TryShowStageCompleteSummary();
+
+        if (victoryMessageText != null && (!summaryShown || !hideVictoryMessageWhenSummaryShows))
         {
             victoryMessageText.text = victoryMessage;
             victoryMessageText.gameObject.SetActive(true);
@@ -70,10 +79,32 @@ public class BossDefeatHandler : MonoBehaviour
             Debug.Log("Boss defeated! Vertical slice complete!", this);
         }
 
-        if (pauseGameOnVictory)
+        if (pauseGameOnVictory && !summaryShown)
         {
             Time.timeScale = 0f;
         }
+    }
+
+
+    private bool TryShowStageCompleteSummary()
+    {
+        if (!showStageCompleteSummary)
+        {
+            return false;
+        }
+
+        ResolveRunSummaryController();
+        return runSummaryController != null && runSummaryController.TryShowStageCompleteSummary(bossHealth);
+    }
+
+    private void ResolveRunSummaryController()
+    {
+        if (runSummaryController != null)
+        {
+            return;
+        }
+
+        runSummaryController = FindFirstObjectByType<RunSummaryController>();
     }
 
     private void CompleteStageOnVictory()

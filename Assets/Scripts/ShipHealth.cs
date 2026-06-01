@@ -11,7 +11,13 @@ public class ShipHealth : MonoBehaviour
     [SerializeField] private bool destroyOnDeath = true;
     [SerializeField] private bool disableOnDeath;
 
+    [Header("Regeneration")]
+    [SerializeField] private bool healthRegenerationEnabled;
+    [SerializeField] private int regenerationAmount = 1;
+    [SerializeField] private float regenerationInterval = 5f;
+
     private bool isDead;
+    private float regenerationTimer;
 
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
@@ -30,6 +36,11 @@ public class ShipHealth : MonoBehaviour
     private void Start()
     {
         NotifyHealthChanged();
+    }
+
+    private void Update()
+    {
+        TickHealthRegeneration();
     }
 
     public void TakeDamage(int damage)
@@ -61,6 +72,31 @@ public class ShipHealth : MonoBehaviour
         NotifyHealthChanged();
     }
 
+    public void EnableHealthRegeneration(int amount, float interval)
+    {
+        healthRegenerationEnabled = true;
+        regenerationAmount = Mathf.Max(1, amount);
+        regenerationInterval = Mathf.Max(0.1f, interval);
+        regenerationTimer = 0f;
+    }
+
+    private void TickHealthRegeneration()
+    {
+        if (!healthRegenerationEnabled || isDead || currentHealth >= maxHealth)
+        {
+            regenerationTimer = 0f;
+            return;
+        }
+
+        regenerationTimer += Time.deltaTime;
+        if (regenerationTimer < regenerationInterval)
+        {
+            return;
+        }
+
+        regenerationTimer = 0f;
+        Heal(regenerationAmount);
+    }
 
     public void AddMaxHealth(int amount, bool healToFull)
     {
