@@ -17,6 +17,12 @@ public class CannonShooter : MonoBehaviour
     [SerializeField] private float cannonballSpeed = 12f;
     [SerializeField] private int cannonballDamage = 1;
 
+    [Header("Projectile Upgrades")]
+    [SerializeField] private float cannonballSizeMultiplier = 1f;
+    [SerializeField] private bool explosiveCannonballs;
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private int explosionDamage = 1;
+
     private ShipController2D shipController;
     private float nextShootTime;
     private bool mouseFireQueued;
@@ -132,6 +138,8 @@ public class CannonShooter : MonoBehaviour
         }
 
         cannonball.SetDamage(cannonballDamage);
+        cannonball.SetSizeMultiplier(cannonballSizeMultiplier);
+        cannonball.SetExplosion(explosiveCannonballs, explosionRadius, explosionDamage);
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
         nextShootTime = Time.time + shootCooldown;
     }
@@ -171,6 +179,18 @@ public class CannonShooter : MonoBehaviour
     public void AddCannonballSpeed(float amount)
     {
         cannonballSpeed = Mathf.Max(0f, cannonballSpeed + amount);
+    }
+
+    public void SetCannonballSizeMultiplier(float multiplier)
+    {
+        cannonballSizeMultiplier = Mathf.Max(0.1f, multiplier);
+    }
+
+    public void EnableExplosiveCannonballs(float radius, int damage)
+    {
+        explosiveCannonballs = true;
+        explosionRadius = Mathf.Max(0f, radius);
+        explosionDamage = Mathf.Max(0, damage);
     }
 
     private Transform GetSpawnPointForDirection(Vector2 direction)
