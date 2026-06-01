@@ -160,9 +160,31 @@ public class UpgradeManager : MonoBehaviour
         upgradeChoiceUI.ShowChoices(currentChoices, ApplyUpgrade);
     }
 
+    public List<UpgradeOption> GetRandomUpgradeChoices(int choiceCount)
+    {
+        List<UpgradeOption> options = BuildRandomUpgradeChoices(choiceCount);
+        return new List<UpgradeOption>(options);
+    }
+
+    public void ApplyFreeUpgrade(UpgradeOption chosenOption)
+    {
+        ApplyUpgradeInternal(chosenOption);
+    }
+
     private void BuildUpgradeChoices()
     {
         currentChoices.Clear();
+        currentChoices.AddRange(BuildRandomUpgradeChoices(3));
+    }
+
+    private List<UpgradeOption> BuildRandomUpgradeChoices(int choiceCount)
+    {
+        List<UpgradeOption> choices = new();
+
+        if (choiceCount <= 0)
+        {
+            return choices;
+        }
 
         List<UpgradeOption> pool = new();
         pool.AddRange(phaseOneOptions);
@@ -219,16 +241,33 @@ public class UpgradeManager : MonoBehaviour
             }
         }
 
-        int count = Mathf.Min(3, pool.Count);
+        int count = Mathf.Min(choiceCount, pool.Count);
         for (int i = 0; i < count; i++)
         {
             int index = UnityEngine.Random.Range(i, pool.Count);
             (pool[i], pool[index]) = (pool[index], pool[i]);
-            currentChoices.Add(pool[i]);
+            choices.Add(pool[i]);
         }
+
+        return choices;
     }
 
     private void ApplyUpgrade(UpgradeOption chosenOption)
+    {
+        if (chosenOption == null)
+        {
+            return;
+        }
+
+        ApplyUpgradeInternal(chosenOption);
+
+        if (playerLevelSystem != null)
+        {
+            playerLevelSystem.NotifyLevelUpChoiceCompleted();
+        }
+    }
+
+    private void ApplyUpgradeInternal(UpgradeOption chosenOption)
     {
         if (chosenOption == null)
         {
@@ -311,11 +350,6 @@ public class UpgradeManager : MonoBehaviour
         }
 
         TrackCurrentRunUpgrade(chosenOption);
-
-        if (playerLevelSystem != null)
-        {
-            playerLevelSystem.NotifyLevelUpChoiceCompleted();
-        }
     }
 
     private void TrackCurrentRunUpgrade(UpgradeOption chosenOption)
