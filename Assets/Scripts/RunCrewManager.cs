@@ -11,6 +11,7 @@ public class RunCrewManager : MonoBehaviour
         public string displayName;
         [TextArea] public string joinDescription;
         [TextArea] public string upgradeDescription;
+        public int maxUpgradeLevel = DefaultMaxCrewUpgradeLevel;
     }
 
     [Header("Crew Definitions")]
@@ -27,6 +28,8 @@ public class RunCrewManager : MonoBehaviour
         new CrewDefinition { id = "zeus", displayName = "Zeus", joinDescription = "Zeus joins for this run.", upgradeDescription = "Improve Zeus's current-run support. Placeholder only." },
         new CrewDefinition { id = "carpenter", displayName = "Carpenter", joinDescription = "Carpenter joins for this run.", upgradeDescription = "Improve Carpenter's current-run support. Placeholder only." }
     };
+
+    private const int DefaultMaxCrewUpgradeLevel = 3;
 
     private readonly HashSet<string> activeCrewIds = new();
     private readonly Dictionary<string, int> currentRunCrewUpgradeLevels = new();
@@ -103,7 +106,7 @@ public class RunCrewManager : MonoBehaviour
     public void ApplyCrewUpgrade(string crewId)
     {
         string normalizedId = NormalizeId(crewId);
-        if (string.IsNullOrEmpty(normalizedId) || !activeCrewIds.Contains(normalizedId))
+        if (!IsCrewUpgradeAvailable(normalizedId))
         {
             return;
         }
@@ -112,6 +115,20 @@ public class RunCrewManager : MonoBehaviour
         currentRunCrewUpgradeLevels[normalizedId] = currentLevel + 1;
         CrewDefinition definition = GetDefinition(normalizedId);
         Debug.Log($"{definition.displayName} upgrade selected", this);
+    }
+
+    public bool IsCrewUpgradeAvailable(string crewId)
+    {
+        string normalizedId = NormalizeId(crewId);
+        return !string.IsNullOrEmpty(normalizedId)
+            && activeCrewIds.Contains(normalizedId)
+            && GetCrewUpgradeLevel(normalizedId) < GetMaxCrewUpgradeLevel(normalizedId);
+    }
+
+    public int GetMaxCrewUpgradeLevel(string crewId)
+    {
+        CrewDefinition definition = GetDefinition(crewId);
+        return definition != null && definition.maxUpgradeLevel > 0 ? definition.maxUpgradeLevel : DefaultMaxCrewUpgradeLevel;
     }
 
     public int GetCrewUpgradeLevel(string crewId)
@@ -139,7 +156,8 @@ public class RunCrewManager : MonoBehaviour
             id = normalizedId,
             displayName = fallbackName,
             joinDescription = $"{fallbackName} joins for this run.",
-            upgradeDescription = $"Improve {fallbackName}'s current-run support. Placeholder only."
+            upgradeDescription = $"Improve {fallbackName}'s current-run support. Placeholder only.",
+            maxUpgradeLevel = DefaultMaxCrewUpgradeLevel
         };
     }
 
