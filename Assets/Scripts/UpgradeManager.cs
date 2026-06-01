@@ -36,6 +36,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private PickupMagnetController pickupMagnetController;
     [SerializeField] private ShipDashController dashController;
     [SerializeField] private ForceFieldController forceFieldController;
+    [SerializeField] private CursedDoubloonsController cursedDoubloonsController;
 
     [Header("Default Active Upgrade Values")]
     [SerializeField] private int healthIncreasePerUpgrade = 2;
@@ -113,6 +114,11 @@ public class UpgradeManager : MonoBehaviour
     {
         currentRunUpgradeLevels.Clear();
         currentRunUpgradeDisplayNames.Clear();
+
+        if (cursedDoubloonsController != null)
+        {
+            cursedDoubloonsController.ResetForNewRun();
+        }
     }
 
     private void Awake()
@@ -126,6 +132,8 @@ public class UpgradeManager : MonoBehaviour
         if (pickupMagnetController == null) pickupMagnetController = GetComponent<PickupMagnetController>();
         if (dashController == null) dashController = GetComponent<ShipDashController>();
         if (forceFieldController == null) forceFieldController = GetComponent<ForceFieldController>();
+        if (cursedDoubloonsController == null) cursedDoubloonsController = GetComponent<CursedDoubloonsController>();
+        if (cursedDoubloonsController != null) cursedDoubloonsController.ResetForNewRun();
     }
 
     private void OnEnable()
@@ -216,7 +224,7 @@ public class UpgradeManager : MonoBehaviour
         AddUnlocked(pool, progression, PlayerProgression.UnlockCannonballSpeedId, CannonballSpeedId, "Cannonball Speed", "Increase cannonball travel speed.", cannonShooter != null);
         AddUnlocked(pool, progression, PlayerProgression.UnlockCannonballShootRateId, CannonballShootRateId, "Cannonball Shoot Rate", "Fire cannonballs more frequently.", cannonShooter != null, progression.IsUnlocked(PlayerProgression.UnlockCannonballSpeedId));
         AddUnlocked(pool, progression, PlayerProgression.UnlockBarnaclesId, BarnaclesId, "Barnacles", "Improve barnacle attachment chance and duration.", true);
-        AddUnlocked(pool, progression, PlayerProgression.UnlockCursedDoubloonsId, CursedDoubloonsId, "Cursed Doubloons", "Activate or improve spinning cursed doubloons.", true);
+        AddUnlocked(pool, progression, PlayerProgression.UnlockCursedDoubloonsId, CursedDoubloonsId, "Cursed Doubloons", "Activate or improve spinning cursed doubloons.", cursedDoubloonsController != null);
         AddUnlocked(pool, progression, PlayerProgression.UnlockDashId, DashId, "Dash Upgrade", "Unlock dash, then dash farther and reduce cooldown.", dashController != null || allowDashWithoutShopUnlock, allowDashWithoutShopUnlock);
         AddUnlocked(pool, progression, PlayerProgression.UnlockMagnetId, MagnetId, "Magnet Radius Upgrade", "Increase pickup magnet radius.", true);
         AddUnlocked(pool, progression, PlayerProgression.UnlockForceFieldId, ForceFieldId, "Force Field Upgrade", "Activate or improve a damaging aura around the ship.", forceFieldController != null || allowForceFieldWithoutShopUnlock, allowForceFieldWithoutShopUnlock);
@@ -345,8 +353,10 @@ public class UpgradeManager : MonoBehaviour
                 if (cannonShooter != null) cannonShooter.SetCannonballPierceCount(nextLevel);
                 break;
             case BarnaclesId:
-            case CursedDoubloonsId:
                 Debug.Log($"UpgradeManager: {chosenOption.displayName} selected for this run, but no runtime controller is wired yet.", this);
+                break;
+            case CursedDoubloonsId:
+                ApplyCursedDoubloonsUpgrade();
                 break;
             case "gold_luck":
             case "xp_luck":
@@ -424,6 +434,16 @@ public class UpgradeManager : MonoBehaviour
 
         forceFieldController.AddRadius(forceFieldRadiusUpgradeAmount);
         forceFieldController.AddDamage(forceFieldDamageUpgradeAmount);
+    }
+
+    private void ApplyCursedDoubloonsUpgrade()
+    {
+        if (cursedDoubloonsController == null)
+        {
+            return;
+        }
+
+        cursedDoubloonsController.ActivateOrUpgrade();
     }
 
     private void ApplyHealthRegenerationUpgrade(int currentLevel)
