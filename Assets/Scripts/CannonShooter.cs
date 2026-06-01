@@ -22,8 +22,6 @@ public class CannonShooter : MonoBehaviour
     [SerializeField] private bool explosiveCannonballs;
     [SerializeField] private float explosionRadius = 2f;
     [SerializeField] private int explosionDamage = 1;
-    [SerializeField] private float explosionRadiusPerPowerLevel = 0.25f;
-    [SerializeField] private int explosionDamagePerPowerLevel = 1;
     [SerializeField] private LayerMask explosionDamageMask = Physics2D.DefaultRaycastLayers;
     [SerializeField] private GameObject explosionEffectPrefab;
     [SerializeField] private float explosionEffectLifetime = 0.5f;
@@ -32,13 +30,9 @@ public class CannonShooter : MonoBehaviour
     private ShipController2D shipController;
     private float nextShootTime;
     private bool mouseFireQueued;
-    private float baseExplosionRadius;
-    private int baseExplosionDamage;
 
     private void Awake()
     {
-        baseExplosionRadius = explosionRadius;
-        baseExplosionDamage = explosionDamage;
         shipController = GetComponent<ShipController2D>();
 
         if (shipController == null)
@@ -46,7 +40,6 @@ public class CannonShooter : MonoBehaviour
             Debug.LogWarning("CannonShooter: ShipController2D is missing on PlayerShip.", this);
         }
     }
-
 
     private void Update()
     {
