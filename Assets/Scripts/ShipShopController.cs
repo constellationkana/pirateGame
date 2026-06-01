@@ -107,6 +107,8 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private UpgradePurchaseConfig baseMagnetRadius = new() { baseCost = 60, costIncreasePerLevel = 60, maxLevel = 10, statIncreasePerLevel = 0.5f };
     [SerializeField] private UpgradePurchaseConfig explosionPower = new() { baseCost = 150, costIncreasePerLevel = 150, maxLevel = 10, statIncreasePerLevel = 1f };
     [SerializeField] private UpgradePurchaseConfig barnaclePower = new() { baseCost = 125, costIncreasePerLevel = 125, maxLevel = 10, statIncreasePerLevel = 1f };
+    [SerializeField] private UpgradePurchaseConfig cursedDoubloonsPower = new() { baseCost = 125, costIncreasePerLevel = 125, maxLevel = 10, statIncreasePerLevel = 1f };
+    [SerializeField] private UpgradePurchaseConfig forceFieldPower = new() { baseCost = 150, costIncreasePerLevel = 150, maxLevel = 10, statIncreasePerLevel = 1f };
 
     [Header("One-Time Unlock Prices")]
     [SerializeField] private UnlockPurchaseConfig healthRegenUnlock = new() { cost = 150 };
@@ -171,15 +173,15 @@ public class ShipShopController : MonoBehaviour
         EnsureButtonListener(cannonballSizeUnlockButton.button, UnlockCannonballSizeUpgrade, nameof(UnlockCannonballSizeUpgrade));
         EnsureButtonListener(cannonballSpeedUnlockButton.button, UnlockCannonballSpeedUpgrade, nameof(UnlockCannonballSpeedUpgrade));
         EnsureButtonListener(cannonballSpeedUpgrade.button, BuyBaseCannonballSpeedUpgrade, nameof(BuyBaseCannonballSpeedUpgrade));
-        EnsureButtonListener(explodingCannonballsUnlockButton.button, UnlockExplodingCannonballs, nameof(UnlockExplodingCannonballs));
+        EnsureButtonListener(explodingCannonballsUnlockButton.button, BuyOrUnlockExplodingCannonballs, nameof(BuyOrUnlockExplodingCannonballs));
         EnsureButtonListener(explosionPowerUpgradeButton.button, BuyExplosionPowerUpgrade, nameof(BuyExplosionPowerUpgrade));
-        EnsureButtonListener(barnaclesUnlockButton.button, UnlockBarnacles, nameof(UnlockBarnacles));
+        EnsureButtonListener(barnaclesUnlockButton.button, BuyOrUnlockBarnacles, nameof(BuyOrUnlockBarnacles));
         EnsureButtonListener(barnaclePowerUpgradeButton.button, BuyBarnaclesUpgrade, nameof(BuyBarnaclesUpgrade));
         EnsureButtonListener(cannonballPierceUnlockButton.button, UnlockCannonballPierce, nameof(UnlockCannonballPierce));
         EnsureButtonListener(magnetUnlockButton.button, UnlockMagnetUpgrades, nameof(UnlockMagnetUpgrades));
         EnsureButtonListener(magnetUpgrade.button, BuyMagnetUpgrade, nameof(BuyMagnetUpgrade));
-        EnsureButtonListener(forceFieldUnlockButton.button, UnlockForceField, nameof(UnlockForceField));
-        EnsureButtonListener(cursedDoubloonsUnlockButton.button, UnlockCursedDoubloons, nameof(UnlockCursedDoubloons));
+        EnsureButtonListener(forceFieldUnlockButton.button, BuyOrUnlockForceField, nameof(BuyOrUnlockForceField));
+        EnsureButtonListener(cursedDoubloonsUnlockButton.button, BuyOrUnlockCursedDoubloons, nameof(BuyOrUnlockCursedDoubloons));
         EnsureButtonListener(crewHireButton, HireSelectedCrew, nameof(HireSelectedCrew));
         EnsureButtonListener(crewCloseButton, CloseCrewMenu, nameof(CloseCrewMenu));
     }
@@ -239,18 +241,51 @@ public class ShipShopController : MonoBehaviour
     public void BuyDashUnlock() => UnlockDash();
     public void BuyCannonDamageUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage, null, "Base cannonball damage upgraded!");
     public void UnlockCannonballSizeUpgrade() => TryBuyUnlock(PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock, "Cannonball size upgrades unlocked!");
-    public void UnlockCannonballSpeedUpgrade() => TryBuyUnlock(PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock, "Cannonball speed upgrades unlocked!");
+    public void UnlockCannonballSpeedUpgrade()
+    {
+        TryBuyUnlock(PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock, "Cannonball speed and shoot-rate upgrades unlocked!");
+        if (HasProgression() && progression.IsUnlocked(PlayerProgression.UnlockCannonballSpeedId) && !progression.IsUnlocked(PlayerProgression.UnlockCannonballShootRateId))
+        {
+            progression.Unlock(PlayerProgression.UnlockCannonballShootRateId);
+        }
+    }
     public void BuyBaseCannonballSpeedUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId, "Base cannonball speed upgraded!");
-    public void UnlockExplodingCannonballs() => TryBuyUnlock(PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock, "Exploding cannonballs unlocked!");
-    public void BuyExplosionPowerUpgrade() => TryBuyLevel(PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId, "Explosion power upgraded!");
-    public void UnlockBarnacles() => TryBuyUnlock(PlayerProgression.UnlockBarnaclesId, barnaclesUnlock, "Barnacles unlocked!");
-    public void BuyBarnaclesUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId, "Barnacles upgraded!");
+    public void UnlockExplodingCannonballs() => TryBuyUnlock(PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock, "Exploding cannonballs unlocked for level-up choices!");
+    public void BuyExplosionPowerUpgrade() => TryBuyLevel(PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId, "Explosion damage upgraded!");
+    public void BuyOrUnlockExplodingCannonballs()
+    {
+        if (!HasProgression()) return;
+        if (progression.IsUnlocked(PlayerProgression.UnlockCannonballExplosionId)) BuyExplosionPowerUpgrade();
+        else UnlockExplodingCannonballs();
+    }
+    public void UnlockBarnacles() => TryBuyUnlock(PlayerProgression.UnlockBarnaclesId, barnaclesUnlock, "Barnacles unlocked for level-up choices!");
+    public void BuyBarnaclesUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId, "Barnacles damage upgraded!");
+    public void BuyOrUnlockBarnacles()
+    {
+        if (!HasProgression()) return;
+        if (progression.IsUnlocked(PlayerProgression.UnlockBarnaclesId)) BuyBarnaclesUpgrade();
+        else UnlockBarnacles();
+    }
     public void UnlockCannonballPierce() => TryBuyUnlock(PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock, "Cannonball pierce unlocked!");
     public void UnlockMagnetUpgrades() => TryBuyUnlock(PlayerProgression.UnlockMagnetId, magnetUnlock, "Magnet upgrades unlocked!");
     public void BuyMagnetUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseMagnetRadiusId, baseMagnetRadius, PlayerProgression.UnlockMagnetId, "Base magnet radius upgraded!");
     public void UnlockForceField() => TryBuyUnlock(PlayerProgression.UnlockForceFieldId, forceFieldUnlock, "Force field unlocked for level-up choices!");
     public void BuyForceFieldUnlock() => UnlockForceField();
-    public void UnlockCursedDoubloons() => TryBuyUnlock(PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock, "Cursed doubloons unlocked!");
+    public void BuyForceFieldPowerUpgrade() => TryBuyLevel(PlayerProgression.UpgradeForceFieldPowerId, forceFieldPower, PlayerProgression.UnlockForceFieldId, "Force field damage upgraded!");
+    public void BuyOrUnlockForceField()
+    {
+        if (!HasProgression()) return;
+        if (progression.IsUnlocked(PlayerProgression.UnlockForceFieldId)) BuyForceFieldPowerUpgrade();
+        else UnlockForceField();
+    }
+    public void UnlockCursedDoubloons() => TryBuyUnlock(PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock, "Cursed doubloons unlocked for level-up choices!");
+    public void BuyCursedDoubloonsPowerUpgrade() => TryBuyLevel(PlayerProgression.UpgradeCursedDoubloonsPowerId, cursedDoubloonsPower, PlayerProgression.UnlockCursedDoubloonsId, "Cursed doubloons damage upgraded!");
+    public void BuyOrUnlockCursedDoubloons()
+    {
+        if (!HasProgression()) return;
+        if (progression.IsUnlocked(PlayerProgression.UnlockCursedDoubloonsId)) BuyCursedDoubloonsPowerUpgrade();
+        else UnlockCursedDoubloons();
+    }
 
     public void BuyGenericUnlock(string unlockId)
     {
@@ -566,16 +601,18 @@ public class ShipShopController : MonoBehaviour
         SetUpgradeButton(cannonDamageUpgrade, cannonUpgradeText, "Upgrade Base Cannonball Damage", PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage);
         SetUnlockButton(cannonballSizeUnlockButton, cannonballSizeUnlockText, "Unlock Cannonball Size", PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock);
         SetUnlockButton(cannonballSpeedUnlockButton, cannonballSpeedUnlockText, "Unlock Cannonball Speed", PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock);
-        SetUpgradeButton(cannonballSpeedUpgrade, cannonballSpeedUpgradeText, "Upgrade Base Cannonball Speed", PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId);
-        SetUnlockButton(explodingCannonballsUnlockButton, explodingCannonballsUnlockText, "Unlock Cannonball Explosion", PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock);
-        SetUpgradeButton(explosionPowerUpgradeButton, explosionPowerUpgradeText, "Upgrade Explosion Power", PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId);
-        SetUnlockButton(barnaclesUnlockButton, barnaclesUnlockText, "Unlock Barnacles", PlayerProgression.UnlockBarnaclesId, barnaclesUnlock);
-        SetUpgradeButton(barnaclePowerUpgradeButton, barnaclePowerUpgradeText, "Upgrade Barnacle Power", PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId);
+        SetButtonInteractable(cannonballSpeedUpgrade, false);
+        SetText(cannonballSpeedUpgrade, cannonballSpeedUpgradeText, progression.IsUnlocked(PlayerProgression.UnlockCannonballSpeedId) ? "Cannonball Speed: Unlocked" : "Unlock Cannonball Speed first");
+        SetUnlockOrUpgradeButton(explodingCannonballsUnlockButton, explodingCannonballsUnlockText, "Unlock Cannonball Explosion", "Upgrade Cannonball Explosion Damage", PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock, PlayerProgression.UpgradeExplosionPowerId, explosionPower);
+        SetUpgradeButton(explosionPowerUpgradeButton, explosionPowerUpgradeText, "Upgrade Cannonball Explosion Damage", PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId);
+        SetUnlockOrUpgradeButton(barnaclesUnlockButton, barnaclesUnlockText, "Unlock Barnacles", "Upgrade Barnacles Damage", PlayerProgression.UnlockBarnaclesId, barnaclesUnlock, PlayerProgression.UpgradeBarnaclePowerId, barnaclePower);
+        SetUpgradeButton(barnaclePowerUpgradeButton, barnaclePowerUpgradeText, "Upgrade Barnacles Damage", PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId);
         SetUnlockButton(cannonballPierceUnlockButton, cannonballPierceUnlockText, "Unlock Cannonball Pierce", PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock);
-        SetUnlockButton(magnetUnlockButton, magnetUnlockText, "Unlock Magnet Upgrades", PlayerProgression.UnlockMagnetId, magnetUnlock);
-        SetUpgradeButton(magnetUpgrade, magnetUpgradeText, "Upgrade Base Magnet Radius", PlayerProgression.UpgradeBaseMagnetRadiusId, baseMagnetRadius, PlayerProgression.UnlockMagnetId);
-        SetUnlockButton(forceFieldUnlockButton, forceFieldUnlockText, "Unlock Force Field", PlayerProgression.UnlockForceFieldId, forceFieldUnlock);
-        SetUnlockButton(cursedDoubloonsUnlockButton, cursedDoubloonsUnlockText, "Unlock Cursed Doubloons", PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock);
+        SetUnlockButton(magnetUnlockButton, magnetUnlockText, "Unlock Magnet", PlayerProgression.UnlockMagnetId, magnetUnlock);
+        SetButtonInteractable(magnetUpgrade, false);
+        SetText(magnetUpgrade, magnetUpgradeText, progression.IsUnlocked(PlayerProgression.UnlockMagnetId) ? "Magnet: Unlocked" : "Magnet upgrade locked");
+        SetUnlockOrUpgradeButton(forceFieldUnlockButton, forceFieldUnlockText, "Unlock Force Field", "Upgrade Force Field Damage", PlayerProgression.UnlockForceFieldId, forceFieldUnlock, PlayerProgression.UpgradeForceFieldPowerId, forceFieldPower);
+        SetUnlockOrUpgradeButton(cursedDoubloonsUnlockButton, cursedDoubloonsUnlockText, "Unlock Cursed Doubloons", "Upgrade Cursed Doubloons Damage", PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock, PlayerProgression.UpgradeCursedDoubloonsPowerId, cursedDoubloonsPower);
 
         if (cosmeticStatusText != null)
         {
@@ -649,6 +686,18 @@ public class ShipShopController : MonoBehaviour
         return canAfford ? "Available to hire" : "Not enough doubloons";
     }
 
+
+    private void SetUnlockOrUpgradeButton(MenuButtonReferences references, TMP_Text legacyText, string unlockLabel, string upgradeLabel, string unlockId, UnlockPurchaseConfig unlockConfig, string upgradeId, UpgradePurchaseConfig upgradeConfig)
+    {
+        if (!progression.IsUnlocked(unlockId))
+        {
+            SetUnlockButton(references, legacyText, unlockLabel, unlockId, unlockConfig);
+            return;
+        }
+
+        SetUpgradeButton(references, legacyText, upgradeLabel, upgradeId, upgradeConfig, unlockId);
+    }
+
     private void SetUpgradeButton(MenuButtonReferences references, TMP_Text legacyText, string label, string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId = null)
     {
         config ??= new UpgradePurchaseConfig();
@@ -667,7 +716,8 @@ public class ShipShopController : MonoBehaviour
     {
         bool unlocked = progression.IsUnlocked(unlockId);
         int cost = Mathf.Max(0, config != null ? config.cost : 0);
-        string text = unlocked ? $"{label}\nStatus: Unlocked" : $"{label}\nPrice: {cost}\nStatus: Locked";
+        string unlockedLabel = label.StartsWith("Unlock ", StringComparison.Ordinal) ? label.Substring("Unlock ".Length) : label;
+        string text = unlocked ? $"{unlockedLabel}: Unlocked" : $"{label}\nPrice: {cost}\nStatus: Locked";
 
         SetText(references, legacyText, text);
         SetButtonInteractable(references, !unlocked);
