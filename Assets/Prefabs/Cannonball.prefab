@@ -171,3 +171,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cannonball
   damage: 1
   lifetime: 3
+  rotateToVelocity: 0
+  rotationOffsetDegrees: 0
+  sizeMultiplier: 1
+  explosive: 0
+  explosionRadius: 2
+  explosionDamage: 1
+  explosionLayerMask:
+    serializedVersion: 2
+    m_Bits: 1011
