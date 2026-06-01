@@ -34,8 +34,8 @@ public class PlayerProgression : MonoBehaviour
     public const string UpgradeBaseMagnetRadiusId = "base_magnet_radius";
     public const string UpgradeExplosionPowerId = "explosion_power";
     public const string UpgradeBarnaclePowerId = "barnacle_power";
-    public const string UpgradeCursedDoubloonsPowerId = "cursed_doubloons_power";
-    public const string UpgradeForceFieldPowerId = "force_field_power";
+    public const string UpgradeCursedDoubloonsDamageId = "cursed_doubloons_damage";
+    public const string UpgradeForceFieldDamageId = "force_field_damage";
 
     public const string UnlockMagnetRadius = UnlockMagnetId;
     public const string UpgradeHealthId = UpgradeBaseHealthId;
@@ -95,8 +95,8 @@ public class PlayerProgression : MonoBehaviour
         UpgradeBaseCannonballSpeedId,
         UpgradeExplosionPowerId,
         UpgradeBarnaclePowerId,
-        UpgradeCursedDoubloonsPowerId,
-        UpgradeForceFieldPowerId
+        UpgradeCursedDoubloonsDamageId,
+        UpgradeForceFieldDamageId
     };
 
     private static PlayerProgression instance;
@@ -419,8 +419,8 @@ public class PlayerProgression : MonoBehaviour
     public int GetBaseMagnetRadiusLevel() => GetUpgradeLevel(UpgradeBaseMagnetRadiusId);
     public int GetExplosionPowerLevel() => GetUpgradeLevel(UpgradeExplosionPowerId);
     public int GetBarnaclePowerLevel() => GetUpgradeLevel(UpgradeBarnaclePowerId);
-    public int GetCursedDoubloonsPowerLevel() => GetUpgradeLevel(UpgradeCursedDoubloonsPowerId);
-    public int GetForceFieldPowerLevel() => GetUpgradeLevel(UpgradeForceFieldPowerId);
+    public int GetCursedDoubloonsDamageLevel() => GetUpgradeLevel(UpgradeCursedDoubloonsDamageId);
+    public int GetForceFieldDamageLevel() => GetUpgradeLevel(UpgradeForceFieldDamageId);
 
     public bool TryPurchaseUnlock(string id, int cost)
     {
@@ -970,6 +970,8 @@ public class PlayerProgression : MonoBehaviour
         MigrateLegacyGenericUpgradeId("speed", UpgradeBaseSpeedId);
         MigrateLegacyGenericUpgradeId("cannon_damage", UpgradeBaseCannonDamageId);
         MigrateLegacyGenericUpgradeId("magnet_radius", UpgradeBaseMagnetRadiusId);
+        MigrateLegacyGenericUpgradeId("cursed_doubloons_power", UpgradeCursedDoubloonsDamageId);
+        MigrateLegacyGenericUpgradeId("force_field_power", UpgradeForceFieldDamageId);
 
         permanentHealthLevel = Mathf.Max(permanentHealthLevel, GetUpgradeLevel(UpgradeHealthId));
         permanentSpeedLevel = Mathf.Max(permanentSpeedLevel, GetUpgradeLevel(UpgradeSpeedId));

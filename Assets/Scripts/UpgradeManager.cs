@@ -414,7 +414,7 @@ public class UpgradeManager : MonoBehaviour
         if (currentLevel <= 0 && !forceFieldController.ForceFieldUnlocked)
         {
             forceFieldController.UnlockForceField();
-            int shipShopDamageLevel = PlayerProgression.Instance != null ? PlayerProgression.Instance.GetForceFieldPowerLevel() : 0;
+            int shipShopDamageLevel = PlayerProgression.Instance != null ? PlayerProgression.Instance.GetForceFieldDamageLevel() : 0;
             if (shipShopDamageLevel > 0)
             {
                 forceFieldController.AddDamage(shipShopDamageLevel * forceFieldDamageUpgradeAmount);
