@@ -135,6 +135,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cannonball
   damage: 1
   lifetime: 3
+  rotateToVelocity: 1
+  rotationOffsetDegrees: 0
 --- !u!70 &-813242033350602648
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
