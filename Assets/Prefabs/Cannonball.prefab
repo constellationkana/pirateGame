@@ -177,6 +177,13 @@ MonoBehaviour:
   explosive: 0
   explosionRadius: 2
   explosionDamage: 1
-  explosionLayerMask:
+  explosionDamageMask:
     serializedVersion: 2
     m_Bits: 1011
+  explosionEffectPrefab: {fileID: 0}
+  explosionEffectLifetime: 0.5
+  createRuntimePlaceholderExplosion: 1
+  placeholderExplosionColor: {r: 1, g: 0.45, b: 0, a: 0.8}
+  placeholderExplosionScale: 1
+  damageDirectHitTargetOnlyOnce: 1
+  logExplosionDebug: 0
