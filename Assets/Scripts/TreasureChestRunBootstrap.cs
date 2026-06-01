@@ -37,6 +37,7 @@ public static class TreasureChestRunBootstrap
             GameObject crewManagerObject = new("Run Crew Manager");
             runCrewManager = crewManagerObject.AddComponent<RunCrewManager>();
             crewManagerObject.AddComponent<PaulCrewController>();
+            crewManagerObject.AddComponent<CleanUpCrewController>();
             Object.DontDestroyOnLoad(crewManagerObject);
         }
         else
@@ -51,6 +52,11 @@ public static class TreasureChestRunBootstrap
             if (runCrewManager.GetComponent<PaulCrewController>() == null)
             {
                 runCrewManager.gameObject.AddComponent<PaulCrewController>();
+            }
+
+            if (runCrewManager.GetComponent<CleanUpCrewController>() == null)
+            {
+                runCrewManager.gameObject.AddComponent<CleanUpCrewController>();
             }
         }
 

@@ -10,6 +10,8 @@ public class RunCrewManager : MonoBehaviour
     public const string PaulCannonMasterUpgradeId = "paul_cannon_master";
     public const string PaulVeteranGunnerUpgradeId = "paul_veteran_gunner";
     public const string PaulBroadsideExpertUpgradeId = "paul_broadside_expert";
+    public const string CleanUpCrewId = "cleanup_crew";
+    public const string CleanUpCrewFasterRepairsUpgradeId = "cleanup_crew_faster_repairs";
 
     [Serializable]
     public class CrewDefinition
@@ -35,7 +37,7 @@ public class RunCrewManager : MonoBehaviour
     [SerializeField] private CrewDefinition[] crewDefinitions =
     {
         new CrewDefinition { id = PaulCrewId, displayName = "Paul", joinDescription = "Recruit Paul for this run only. Paul automatically fires cannonballs at nearby enemies.", upgradeDescription = "Improve Paul's current-run cannon support." },
-        new CrewDefinition { id = "cleanup_crew", displayName = "Cleanup Crew", joinDescription = "Cleanup Crew joins for this run.", upgradeDescription = "Improve Cleanup Crew's current-run support. Placeholder only." },
+        new CrewDefinition { id = CleanUpCrewId, displayName = "Clean-Up Crew", joinDescription = "Recruit Clean-Up Crew for this run only. They automatically repair your ship over time using collected wood.", upgradeDescription = "Clean-Up Crew repairs happen more often for this run." },
         new CrewDefinition { id = "bird_boy", displayName = "Bird Boy", joinDescription = "Bird Boy joins for this run.", upgradeDescription = "Improve Bird Boy's current-run support. Placeholder only." },
         new CrewDefinition { id = "evil_bird_boy", displayName = "Evil Bird Boy", joinDescription = "Evil Bird Boy joins for this run.", upgradeDescription = "Improve Evil Bird Boy's current-run support. Placeholder only." },
         new CrewDefinition { id = "shipprick", displayName = "Shipprick", joinDescription = "Shipprick joins for this run.", upgradeDescription = "Improve Shipprick's current-run support. Placeholder only." },
@@ -56,17 +58,26 @@ public class RunCrewManager : MonoBehaviour
         new CrewUpgradeDefinition { id = PaulBroadsideExpertUpgradeId, crewId = PaulCrewId, displayName = "Paul: Broadside Expert", description = "Paul fires a 3-shot spread for this run.", maxLevel = 1 }
     };
 
+    [Header("Clean-Up Crew Upgrades")]
+    [SerializeField] private CrewUpgradeDefinition[] cleanUpCrewUpgradeDefinitions =
+    {
+        new CrewUpgradeDefinition { id = CleanUpCrewFasterRepairsUpgradeId, crewId = CleanUpCrewId, displayName = "Clean-Up Crew: Faster Repairs", description = "Clean-Up Crew repairs happen more often for this run, using wood faster.", maxLevel = 3 }
+    };
+
     private const int DefaultMaxCrewUpgradeLevel = 3;
 
     private readonly HashSet<string> activeCrewIds = new();
     private readonly Dictionary<string, int> currentRunCrewUpgradeLevels = new();
     private readonly Dictionary<string, int> currentRunPaulUpgradeLevels = new();
+    private readonly Dictionary<string, int> currentRunCleanUpCrewUpgradeLevels = new();
     private readonly Dictionary<string, CrewDefinition> definitionsById = new();
     private readonly Dictionary<string, CrewUpgradeDefinition> paulUpgradesById = new();
+    private readonly Dictionary<string, CrewUpgradeDefinition> cleanUpCrewUpgradesById = new();
 
     public IReadOnlyCollection<string> ActiveCrewIds => activeCrewIds;
     public IReadOnlyDictionary<string, int> CurrentRunCrewUpgradeLevels => currentRunCrewUpgradeLevels;
     public IReadOnlyDictionary<string, int> CurrentRunPaulUpgradeLevels => currentRunPaulUpgradeLevels;
+    public IReadOnlyDictionary<string, int> CurrentRunCleanUpCrewUpgradeLevels => currentRunCleanUpCrewUpgradeLevels;
 
     public event Action CrewStateChanged;
 
@@ -81,6 +92,7 @@ public class RunCrewManager : MonoBehaviour
         activeCrewIds.Clear();
         currentRunCrewUpgradeLevels.Clear();
         currentRunPaulUpgradeLevels.Clear();
+        currentRunCleanUpCrewUpgradeLevels.Clear();
         CrewStateChanged?.Invoke();
     }
 
@@ -142,6 +154,30 @@ public class RunCrewManager : MonoBehaviour
         return availableUpgrades;
     }
 
+    public List<CrewUpgradeDefinition> GetAvailableCleanUpCrewUpgrades()
+    {
+        List<CrewUpgradeDefinition> availableUpgrades = new();
+        if (!IsCrewActive(CleanUpCrewId))
+        {
+            return availableUpgrades;
+        }
+
+        if (cleanUpCrewUpgradesById.Count == 0)
+        {
+            RebuildDefinitionLookup();
+        }
+
+        foreach (CrewUpgradeDefinition definition in cleanUpCrewUpgradesById.Values)
+        {
+            if (definition != null && IsCleanUpCrewUpgradeAvailable(definition.id))
+            {
+                availableUpgrades.Add(definition);
+            }
+        }
+
+        return availableUpgrades;
+    }
+
     public bool IsCrewActive(string crewId)
     {
         string normalizedId = NormalizeId(crewId);
@@ -172,6 +208,12 @@ public class RunCrewManager : MonoBehaviour
             return;
         }
 
+        if (normalizedCrewId == CleanUpCrewId && !string.IsNullOrEmpty(normalizedUpgradeId))
+        {
+            ApplyCleanUpCrewUpgrade(normalizedUpgradeId);
+            return;
+        }
+
         if (!IsCrewUpgradeAvailable(normalizedCrewId))
         {
             return;
@@ -190,6 +232,7 @@ public class RunCrewManager : MonoBehaviour
         return !string.IsNullOrEmpty(normalizedId)
             && activeCrewIds.Contains(normalizedId)
             && normalizedId != PaulCrewId
+            && normalizedId != CleanUpCrewId
             && GetCrewUpgradeLevel(normalizedId) < GetMaxCrewUpgradeLevel(normalizedId);
     }
 
@@ -199,6 +242,14 @@ public class RunCrewManager : MonoBehaviour
         return IsCrewActive(PaulCrewId)
             && !string.IsNullOrEmpty(normalizedUpgradeId)
             && GetPaulUpgradeLevel(normalizedUpgradeId) < GetMaxPaulUpgradeLevel(normalizedUpgradeId);
+    }
+
+    public bool IsCleanUpCrewUpgradeAvailable(string upgradeId)
+    {
+        string normalizedUpgradeId = NormalizeId(upgradeId);
+        return IsCrewActive(CleanUpCrewId)
+            && !string.IsNullOrEmpty(normalizedUpgradeId)
+            && GetCleanUpCrewUpgradeLevel(normalizedUpgradeId) < GetMaxCleanUpCrewUpgradeLevel(normalizedUpgradeId);
     }
 
     public int GetMaxCrewUpgradeLevel(string crewId)
@@ -219,6 +270,12 @@ public class RunCrewManager : MonoBehaviour
         return !string.IsNullOrEmpty(normalizedUpgradeId) && currentRunPaulUpgradeLevels.TryGetValue(normalizedUpgradeId, out int level) ? level : 0;
     }
 
+    public int GetCleanUpCrewUpgradeLevel(string upgradeId)
+    {
+        string normalizedUpgradeId = NormalizeId(upgradeId);
+        return !string.IsNullOrEmpty(normalizedUpgradeId) && currentRunCleanUpCrewUpgradeLevels.TryGetValue(normalizedUpgradeId, out int level) ? level : 0;
+    }
+
     public int GetMaxPaulUpgradeLevel(string upgradeId)
     {
         CrewUpgradeDefinition definition = GetPaulUpgradeDefinition(upgradeId);
@@ -234,6 +291,23 @@ public class RunCrewManager : MonoBehaviour
         }
 
         return !string.IsNullOrEmpty(normalizedUpgradeId) && paulUpgradesById.TryGetValue(normalizedUpgradeId, out CrewUpgradeDefinition definition) ? definition : null;
+    }
+
+    public int GetMaxCleanUpCrewUpgradeLevel(string upgradeId)
+    {
+        CrewUpgradeDefinition definition = GetCleanUpCrewUpgradeDefinition(upgradeId);
+        return definition != null && definition.maxLevel > 0 ? definition.maxLevel : 1;
+    }
+
+    public CrewUpgradeDefinition GetCleanUpCrewUpgradeDefinition(string upgradeId)
+    {
+        string normalizedUpgradeId = NormalizeId(upgradeId);
+        if (cleanUpCrewUpgradesById.Count == 0)
+        {
+            RebuildDefinitionLookup();
+        }
+
+        return !string.IsNullOrEmpty(normalizedUpgradeId) && cleanUpCrewUpgradesById.TryGetValue(normalizedUpgradeId, out CrewUpgradeDefinition definition) ? definition : null;
     }
 
     public CrewDefinition GetDefinition(string crewId)
@@ -274,6 +348,20 @@ public class RunCrewManager : MonoBehaviour
         CrewStateChanged?.Invoke();
     }
 
+    private void ApplyCleanUpCrewUpgrade(string upgradeId)
+    {
+        if (!IsCleanUpCrewUpgradeAvailable(upgradeId))
+        {
+            return;
+        }
+
+        currentRunCleanUpCrewUpgradeLevels.TryGetValue(upgradeId, out int currentLevel);
+        currentRunCleanUpCrewUpgradeLevels[upgradeId] = currentLevel + 1;
+        CrewUpgradeDefinition definition = GetCleanUpCrewUpgradeDefinition(upgradeId);
+        Debug.Log($"{(definition == null ? ToDisplayName(upgradeId) : definition.displayName)} selected", this);
+        CrewStateChanged?.Invoke();
+    }
+
     private void RebuildDefinitionLookup()
     {
         definitionsById.Clear();
@@ -303,12 +391,20 @@ public class RunCrewManager : MonoBehaviour
         }
 
         paulUpgradesById.Clear();
-        if (paulUpgradeDefinitions == null)
+        RebuildUpgradeLookup(paulUpgradeDefinitions, PaulCrewId, paulUpgradesById);
+
+        cleanUpCrewUpgradesById.Clear();
+        RebuildUpgradeLookup(cleanUpCrewUpgradeDefinitions, CleanUpCrewId, cleanUpCrewUpgradesById);
+    }
+
+    private static void RebuildUpgradeLookup(CrewUpgradeDefinition[] sourceDefinitions, string defaultCrewId, Dictionary<string, CrewUpgradeDefinition> targetLookup)
+    {
+        if (sourceDefinitions == null || targetLookup == null)
         {
             return;
         }
 
-        foreach (CrewUpgradeDefinition definition in paulUpgradeDefinitions)
+        foreach (CrewUpgradeDefinition definition in sourceDefinitions)
         {
             if (definition == null)
             {
@@ -322,14 +418,14 @@ public class RunCrewManager : MonoBehaviour
             }
 
             definition.id = normalizedUpgradeId;
-            definition.crewId = NormalizeId(string.IsNullOrWhiteSpace(definition.crewId) ? PaulCrewId : definition.crewId);
+            definition.crewId = NormalizeId(string.IsNullOrWhiteSpace(definition.crewId) ? defaultCrewId : definition.crewId);
             definition.maxLevel = Mathf.Max(1, definition.maxLevel);
             if (string.IsNullOrWhiteSpace(definition.displayName))
             {
                 definition.displayName = ToDisplayName(normalizedUpgradeId);
             }
 
-            paulUpgradesById[normalizedUpgradeId] = definition;
+            targetLookup[normalizedUpgradeId] = definition;
         }
     }
 
