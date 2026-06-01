@@ -7,6 +7,10 @@ public class Cannonball : MonoBehaviour
     [SerializeField] private int damage = 1;
     [SerializeField] private float lifetime = 3f;
 
+    [Header("Visual Alignment")]
+    [SerializeField] private bool rotateToVelocity;
+    [SerializeField] private float rotationOffsetDegrees;
+
     private Rigidbody2D rb;
     private GameObject owner;
 
@@ -24,7 +28,21 @@ public class Cannonball : MonoBehaviour
     public void Initialize(Vector2 direction, float speed, GameObject ownerObject)
     {
         owner = ownerObject;
-        rb.linearVelocity = direction.normalized * speed;
+
+        Vector2 launchDirection = direction.normalized;
+        rb.linearVelocity = launchDirection * speed;
+        AlignToDirection(launchDirection);
+    }
+
+    private void AlignToDirection(Vector2 direction)
+    {
+        if (!rotateToVelocity || direction.sqrMagnitude < 0.001f)
+        {
+            return;
+        }
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffsetDegrees);
     }
 
     public void SetDamage(int newDamage)
