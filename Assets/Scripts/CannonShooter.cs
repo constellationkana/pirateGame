@@ -26,15 +26,24 @@ public class CannonShooter : MonoBehaviour
     private ShipController2D shipController;
     private float nextShootTime;
     private bool mouseFireQueued;
+    private float baseExplosionRadius;
+    private int baseExplosionDamage;
 
     private void Awake()
     {
+        baseExplosionRadius = explosionRadius;
+        baseExplosionDamage = explosionDamage;
         shipController = GetComponent<ShipController2D>();
 
         if (shipController == null)
         {
             Debug.LogWarning("CannonShooter: ShipController2D is missing on PlayerShip.", this);
         }
+    }
+
+    private void Start()
+    {
+        ApplyShipShopExplosionUnlock();
     }
 
     private void Update()
