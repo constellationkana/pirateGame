@@ -21,12 +21,21 @@ public class TreasureChestChoiceUI : MonoBehaviour
     [SerializeField] private ChoiceWidgets[] choices = new ChoiceWidgets[5];
     [SerializeField] private string title = "Treasure Chest";
 
+    private static readonly Color PanelColor = new(0.11f, 0.07f, 0.035f, 0.94f);
+    private static readonly Color GoldColor = new(0.93f, 0.68f, 0.22f, 1f);
+    private static readonly Color ButtonColor = new(0.82f, 0.56f, 0.16f, 1f);
+    private static readonly Color ButtonHighlightColor = new(1f, 0.76f, 0.28f, 1f);
+    private static readonly Color ButtonPressedColor = new(0.58f, 0.34f, 0.08f, 1f);
+    private static readonly Color ButtonDisabledColor = new(0.38f, 0.34f, 0.28f, 0.65f);
+    private static readonly Color ButtonTextColor = new(0.12f, 0.07f, 0.025f, 1f);
+
     private Action<TreasureChestChoice> onChoiceSelected;
     private float previousTimeScale = 1f;
 
     private void Awake()
     {
         EnsureRuntimeUI();
+        ApplyTreasureChestStyle();
         HidePanel(false);
     }
 
@@ -69,12 +78,12 @@ public class TreasureChestChoiceUI : MonoBehaviour
 
             if (widgets.nameText != null)
             {
-                widgets.nameText.text = option.Name;
+                widgets.nameText.text = FormatChoiceName(option);
             }
 
             if (widgets.descriptionText != null)
             {
-                widgets.descriptionText.text = option.Description;
+                widgets.descriptionText.text = FormatChoiceDescription(option);
             }
 
             if (widgets.typeText != null)
@@ -107,6 +116,7 @@ public class TreasureChestChoiceUI : MonoBehaviour
     {
         if (HasConfiguredChoices())
         {
+            ApplyTreasureChestStyle();
             return;
         }
 
@@ -127,23 +137,25 @@ public class TreasureChestChoiceUI : MonoBehaviour
         panelRoot = root;
 
         Image background = root.AddComponent<Image>();
-        background.color = new Color(0f, 0f, 0f, 0.78f);
+        background.color = PanelColor;
         RectTransform rootRect = root.GetComponent<RectTransform>();
-        rootRect.anchorMin = Vector2.zero;
-        rootRect.anchorMax = Vector2.one;
-        rootRect.offsetMin = Vector2.zero;
-        rootRect.offsetMax = Vector2.zero;
+        rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+        rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+        rootRect.anchoredPosition = Vector2.zero;
+        rootRect.sizeDelta = new Vector2(700f, 520f);
 
         VerticalLayoutGroup layout = root.AddComponent<VerticalLayoutGroup>();
-        layout.padding = new RectOffset(80, 80, 60, 60);
-        layout.spacing = 12f;
+        layout.padding = new RectOffset(50, 50, 30, 34);
+        layout.spacing = 10f;
         layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = true;
+        layout.childControlHeight = false;
         layout.childForceExpandWidth = true;
         layout.childForceExpandHeight = false;
 
-        TMP_Text titleText = CreateText("Title", root.transform, title, 42, TextAlignmentOptions.Center);
+        TMP_Text titleText = CreateText("Title", root.transform, "Choose Your Plunder", 42, TextAlignmentOptions.Center);
         LayoutElement titleLayout = titleText.gameObject.AddComponent<LayoutElement>();
-        titleLayout.preferredHeight = 58f;
+        titleLayout.preferredHeight = 64f;
 
         choices = new ChoiceWidgets[5];
         for (int i = 0; i < choices.Length; i++)
@@ -176,26 +188,26 @@ public class TreasureChestChoiceUI : MonoBehaviour
         buttonObject.transform.SetParent(parent, false);
 
         Image image = buttonObject.AddComponent<Image>();
-        image.color = new Color(0.2f, 0.13f, 0.05f, 0.96f);
+        image.color = ButtonColor;
 
         Button button = buttonObject.AddComponent<Button>();
-        ColorBlock colors = button.colors;
-        colors.highlightedColor = new Color(0.55f, 0.36f, 0.1f, 1f);
-        colors.pressedColor = new Color(0.85f, 0.6f, 0.18f, 1f);
-        button.colors = colors;
+        ApplyButtonColors(button);
 
         LayoutElement layoutElement = buttonObject.AddComponent<LayoutElement>();
-        layoutElement.preferredHeight = 92f;
+        layoutElement.preferredHeight = 72f;
 
         VerticalLayoutGroup layout = buttonObject.AddComponent<VerticalLayoutGroup>();
-        layout.padding = new RectOffset(20, 20, 8, 8);
-        layout.spacing = 2f;
+        layout.padding = new RectOffset(22, 22, 6, 6);
+        layout.spacing = 0f;
         layout.childForceExpandWidth = true;
         layout.childForceExpandHeight = false;
 
-        TMP_Text typeText = CreateText("Type", buttonObject.transform, "Upgrade", 18, TextAlignmentOptions.Center);
-        TMP_Text nameText = CreateText("Name", buttonObject.transform, "Choice", 26, TextAlignmentOptions.Center);
-        TMP_Text descriptionText = CreateText("Description", buttonObject.transform, "Description", 18, TextAlignmentOptions.Center);
+        TMP_Text typeText = CreateText("Type", buttonObject.transform, "Upgrade", 14, TextAlignmentOptions.Center);
+        TMP_Text nameText = CreateText("Name", buttonObject.transform, "Choice", 22, TextAlignmentOptions.Center);
+        TMP_Text descriptionText = CreateText("Description", buttonObject.transform, "Description", 16, TextAlignmentOptions.Center);
+        StyleChoiceText(typeText, 14, ButtonTextColor, FontStyles.UpperCase);
+        StyleChoiceText(nameText, 22, ButtonTextColor, FontStyles.Bold);
+        StyleChoiceText(descriptionText, 16, ButtonTextColor, FontStyles.Normal);
 
         return new ChoiceWidgets
         {
@@ -215,7 +227,214 @@ public class TreasureChestChoiceUI : MonoBehaviour
         tmpText.fontSize = fontSize;
         tmpText.alignment = alignment;
         tmpText.color = Color.white;
+        tmpText.enableWordWrapping = true;
         return tmpText;
+    }
+
+    private void ApplyTreasureChestStyle()
+    {
+        if (panelRoot == null)
+        {
+            return;
+        }
+
+        RectTransform panelRect = panelRoot.GetComponent<RectTransform>();
+        if (panelRect != null)
+        {
+            panelRect.anchorMin = new Vector2(0.5f, 0.5f);
+            panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+            panelRect.anchoredPosition = Vector2.zero;
+            panelRect.sizeDelta = new Vector2(700f, 520f);
+            panelRect.pivot = new Vector2(0.5f, 0.5f);
+        }
+
+        if (panelRoot.TryGetComponent(out Image panelImage))
+        {
+            panelImage.color = PanelColor;
+        }
+
+        StyleDecorativeAccent();
+        StyleTitleText();
+
+        if (choices == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < choices.Length; i++)
+        {
+            StyleChoiceWidget(choices[i], i);
+        }
+    }
+
+    private void StyleDecorativeAccent()
+    {
+        foreach (Image image in panelRoot.GetComponentsInChildren<Image>(true))
+        {
+            if (image.gameObject == panelRoot || image.GetComponent<Button>() != null)
+            {
+                continue;
+            }
+
+            image.color = new Color(GoldColor.r, GoldColor.g, GoldColor.b, 0.35f);
+            image.raycastTarget = false;
+            if (image.transform is RectTransform rectTransform)
+            {
+                rectTransform.anchorMin = new Vector2(0.5f, 1f);
+                rectTransform.anchorMax = new Vector2(0.5f, 1f);
+                rectTransform.anchoredPosition = new Vector2(0f, -76f);
+                rectTransform.sizeDelta = new Vector2(600f, 4f);
+                rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            }
+
+            return;
+        }
+    }
+
+    private void StyleTitleText()
+    {
+        TMP_Text titleText = null;
+        foreach (TMP_Text textElement in panelRoot.GetComponentsInChildren<TMP_Text>(true))
+        {
+            if (textElement.gameObject.name.IndexOf("Title", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                titleText = textElement;
+                break;
+            }
+        }
+
+        if (titleText == null)
+        {
+            return;
+        }
+
+        titleText.text = string.IsNullOrWhiteSpace(title) ? "Choose Your Plunder" : title;
+        titleText.fontSize = 42f;
+        titleText.fontStyle = FontStyles.Bold;
+        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.color = GoldColor;
+        titleText.enableWordWrapping = false;
+
+        if (titleText.transform is RectTransform rectTransform)
+        {
+            rectTransform.anchorMin = new Vector2(0.5f, 1f);
+            rectTransform.anchorMax = new Vector2(0.5f, 1f);
+            rectTransform.anchoredPosition = new Vector2(0f, -42f);
+            rectTransform.sizeDelta = new Vector2(640f, 58f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        }
+    }
+
+    private void StyleChoiceWidget(ChoiceWidgets widgets, int index)
+    {
+        if (widgets == null || widgets.button == null)
+        {
+            return;
+        }
+
+        RectTransform buttonRect = widgets.button.GetComponent<RectTransform>();
+        if (buttonRect != null)
+        {
+            buttonRect.anchorMin = new Vector2(0.5f, 1f);
+            buttonRect.anchorMax = new Vector2(0.5f, 1f);
+            buttonRect.anchoredPosition = new Vector2(0f, -115f - (index * 78f));
+            buttonRect.sizeDelta = new Vector2(560f, 70f);
+            buttonRect.pivot = new Vector2(0.5f, 0.5f);
+        }
+
+        if (widgets.button.TryGetComponent(out Image buttonImage))
+        {
+            buttonImage.color = ButtonColor;
+        }
+
+        ApplyButtonColors(widgets.button);
+        PositionChoiceText(widgets.typeText, 14f, new Vector2(0f, 21f), new Vector2(520f, 18f), FontStyles.UpperCase);
+        PositionChoiceText(widgets.nameText, 22f, new Vector2(0f, 3f), new Vector2(520f, 26f), FontStyles.Bold);
+        PositionChoiceText(widgets.descriptionText, 16f, new Vector2(0f, -22f), new Vector2(520f, 22f), FontStyles.Normal);
+    }
+
+    private static void PositionChoiceText(TMP_Text text, float fontSize, Vector2 anchoredPosition, Vector2 sizeDelta, FontStyles fontStyle)
+    {
+        if (text == null)
+        {
+            return;
+        }
+
+        StyleChoiceText(text, fontSize, ButtonTextColor, fontStyle);
+
+        if (text.transform is RectTransform rectTransform)
+        {
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.anchoredPosition = anchoredPosition;
+            rectTransform.sizeDelta = sizeDelta;
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        }
+    }
+
+    private static void StyleChoiceText(TMP_Text text, float fontSize, Color color, FontStyles fontStyle)
+    {
+        if (text == null)
+        {
+            return;
+        }
+
+        text.fontSize = fontSize;
+        text.fontStyle = fontStyle;
+        text.alignment = TextAlignmentOptions.Center;
+        text.color = color;
+        text.enableWordWrapping = true;
+        text.overflowMode = TextOverflowModes.Ellipsis;
+    }
+
+    private static void ApplyButtonColors(Button button)
+    {
+        if (button == null)
+        {
+            return;
+        }
+
+        ColorBlock colors = button.colors;
+        colors.normalColor = ButtonColor;
+        colors.highlightedColor = ButtonHighlightColor;
+        colors.pressedColor = ButtonPressedColor;
+        colors.selectedColor = ButtonHighlightColor;
+        colors.disabledColor = ButtonDisabledColor;
+        colors.colorMultiplier = 1f;
+        colors.fadeDuration = 0.08f;
+        button.colors = colors;
+    }
+
+    private static string FormatChoiceName(TreasureChestChoice option)
+    {
+        if (option == null)
+        {
+            return string.Empty;
+        }
+
+        string name = string.IsNullOrWhiteSpace(option.Name) ? FormatChoiceType(option.Type) : option.Name.Trim();
+        return name switch
+        {
+            "Health Upgrade" => "Increase Max Health",
+            "Cannonball Damage" => "Increase Cannon Damage",
+            "Ship Speed" => "Increase Ship Movement Speed",
+            "Magnet Radius Upgrade" => "Increase Pickup Magnet Radius",
+            "Cannonball Speed" => "Increase Cannonball Speed",
+            "Dash Upgrade" => "Improve Dash",
+            "Force Field Upgrade" => "Improve Force Field",
+            _ => name
+        };
+    }
+
+    private static string FormatChoiceDescription(TreasureChestChoice option)
+    {
+        if (option == null || string.IsNullOrWhiteSpace(option.Description))
+        {
+            return string.Empty;
+        }
+
+        string description = option.Description.Trim();
+        return string.Equals(description, option.Name, StringComparison.OrdinalIgnoreCase) ? string.Empty : description;
     }
 
     private static void EnsureEventSystem()
