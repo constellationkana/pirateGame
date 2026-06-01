@@ -17,18 +17,39 @@ public class CannonShooter : MonoBehaviour
     [SerializeField] private float cannonballSpeed = 12f;
     [SerializeField] private int cannonballDamage = 1;
 
+    [Header("Projectile Upgrades")]
+    [SerializeField] private float cannonballSizeMultiplier = 1f;
+    [SerializeField] private bool explosiveCannonballs;
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private int explosionDamage = 1;
+    [SerializeField] private float explosionRadiusPerPowerLevel = 0.25f;
+    [SerializeField] private int explosionDamagePerPowerLevel = 1;
+    [SerializeField] private LayerMask explosionDamageMask = Physics2D.DefaultRaycastLayers;
+    [SerializeField] private GameObject explosionEffectPrefab;
+    [SerializeField] private float explosionEffectLifetime = 0.5f;
+    [SerializeField] private bool applyShipShopExplosionUnlock = true;
+
     private ShipController2D shipController;
     private float nextShootTime;
     private bool mouseFireQueued;
+    private float baseExplosionRadius;
+    private int baseExplosionDamage;
 
     private void Awake()
     {
+        baseExplosionRadius = explosionRadius;
+        baseExplosionDamage = explosionDamage;
         shipController = GetComponent<ShipController2D>();
 
         if (shipController == null)
         {
             Debug.LogWarning("CannonShooter: ShipController2D is missing on PlayerShip.", this);
         }
+    }
+
+    private void Start()
+    {
+        ApplyShipShopExplosionUnlock();
     }
 
     private void Update()
@@ -132,6 +153,11 @@ public class CannonShooter : MonoBehaviour
         }
 
         cannonball.SetDamage(cannonballDamage);
+        cannonball.SetFiredByPlayer(true);
+        cannonball.SetSizeMultiplier(cannonballSizeMultiplier);
+        cannonball.SetExplosion(explosiveCannonballs, explosionRadius, explosionDamage);
+        cannonball.SetExplosionEffect(explosionEffectPrefab, explosionEffectLifetime);
+        cannonball.SetExplosionDamageMask(explosionDamageMask);
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
         nextShootTime = Time.time + shootCooldown;
     }
@@ -171,6 +197,37 @@ public class CannonShooter : MonoBehaviour
     public void AddCannonballSpeed(float amount)
     {
         cannonballSpeed = Mathf.Max(0f, cannonballSpeed + amount);
+    }
+
+    public void SetCannonballSizeMultiplier(float multiplier)
+    {
+        cannonballSizeMultiplier = Mathf.Max(0.1f, multiplier);
+    }
+
+    public void EnableExplosiveCannonballs(float radius, int damage)
+    {
+        explosiveCannonballs = true;
+        explosionRadius = Mathf.Max(0f, radius);
+        explosionDamage = Mathf.Max(0, damage);
+    }
+
+    private void ApplyShipShopExplosionUnlock()
+    {
+        if (!applyShipShopExplosionUnlock || !PlayerProgression.HasActiveSaveSlot)
+        {
+            return;
+        }
+
+        PlayerProgression progression = PlayerProgression.Instance;
+        if (progression == null || !progression.IsUnlocked(PlayerProgression.UnlockCannonballExplosionId))
+        {
+            return;
+        }
+
+        int explosionPowerLevel = progression.GetExplosionPowerLevel();
+        float upgradedRadius = baseExplosionRadius + explosionRadiusPerPowerLevel * explosionPowerLevel;
+        int upgradedDamage = baseExplosionDamage + explosionDamagePerPowerLevel * explosionPowerLevel;
+        EnableExplosiveCannonballs(upgradedRadius, upgradedDamage);
     }
 
     private Transform GetSpawnPointForDirection(Vector2 direction)

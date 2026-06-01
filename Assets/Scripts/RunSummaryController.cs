@@ -5,6 +5,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum RunSummaryType
+{
+    Death,
+    StageComplete
+}
+
 [DisallowMultipleComponent]
 public class RunSummaryController : MonoBehaviour
 {
@@ -24,9 +30,14 @@ public class RunSummaryController : MonoBehaviour
     [SerializeField] private string mainMenuSceneName = "MainMenu";
     [SerializeField] private string retrySceneNameOverride = "";
 
-    [Header("Death Summary")]
+    [Header("Summary Behavior")]
     [SerializeField] private bool pauseTimeOnSummary = true;
     [SerializeField] private bool awardTimeBonusOnDeath = true;
+    [SerializeField] private bool showSummaryOnStageComplete = true;
+    [SerializeField] private bool awardTimeBonusOnStageComplete = true;
+    [SerializeField] private int stageCompleteBonusDoubloons = 0;
+    [SerializeField] private string deathTitle = "Run Over";
+    [SerializeField] private string stageCompleteTitle = "Stage Complete";
     [SerializeField] private float doubloonsPerMinuteSurvived = 10f;
     [SerializeField] private int minimumTimeBonus = 0;
     [SerializeField] private int maximumTimeBonus = 9999;
@@ -42,6 +53,8 @@ public class RunSummaryController : MonoBehaviour
 
     private bool summaryShown;
     private bool timeBonusAwarded;
+    private bool stageCompleteBonusAwarded;
+    private RunSummaryType currentSummaryType = RunSummaryType.Death;
 
     private void Awake()
     {
@@ -74,7 +87,23 @@ public class RunSummaryController : MonoBehaviour
             playerShipHealth = deadShip;
         }
 
-        ShowDeathSummary(deadShip);
+        ShowSummary(RunSummaryType.Death, deadShip);
+        return true;
+    }
+
+    public bool TryShowStageCompleteSummary(ShipHealth defeatedBoss)
+    {
+        if (!showSummaryOnStageComplete)
+        {
+            return false;
+        }
+
+        if (summaryShown)
+        {
+            return true;
+        }
+
+        ShowSummary(RunSummaryType.StageComplete, defeatedBoss);
         return true;
     }
 
@@ -83,9 +112,10 @@ public class RunSummaryController : MonoBehaviour
         TryShowDeathSummary(deadShip);
     }
 
-    private void ShowDeathSummary(ShipHealth deadShip)
+    private void ShowSummary(RunSummaryType summaryType, ShipHealth contextShip)
     {
         summaryShown = true;
+        currentSummaryType = summaryType;
         ResolveReferences();
         EnsureSummaryUiExists();
 
@@ -96,23 +126,25 @@ public class RunSummaryController : MonoBehaviour
 
         float elapsedSeconds = GetElapsedRunSeconds();
         int collectedDoubloons = playerInventory != null ? Mathf.Max(0, playerInventory.Doubloons) : 0;
-        int timeBonus = CalculateTimeBonus(elapsedSeconds);
-        int awardedBonus = AwardTimeBonus(timeBonus);
-        int totalAwarded = collectedDoubloons + awardedBonus;
+        int timeBonus = CalculateTimeBonus(elapsedSeconds, summaryType);
+        int awardedTimeBonus = AwardTimeBonus(timeBonus, summaryType);
+        int awardedStageBonus = AwardStageCompleteBonus(summaryType);
+        int totalBonusAwarded = awardedTimeBonus + awardedStageBonus;
+        int totalAwarded = collectedDoubloons + totalBonusAwarded;
 
         if (titleText != null)
         {
-            titleText.text = "Run Over";
+            titleText.text = GetTitle(summaryType);
         }
 
         if (summaryText != null)
         {
-            summaryText.text = BuildSummaryText(elapsedSeconds, collectedDoubloons, awardedBonus, totalAwarded);
+            summaryText.text = BuildSummaryText(elapsedSeconds, collectedDoubloons, awardedTimeBonus, awardedStageBonus, totalAwarded, summaryType);
         }
 
         if (bonusText != null)
         {
-            bonusText.text = $"Time Bonus: +{awardedBonus} Doubloons";
+            bonusText.text = BuildBonusText(awardedTimeBonus, awardedStageBonus, totalBonusAwarded);
         }
 
         if (summaryRoot != null)
@@ -122,8 +154,8 @@ public class RunSummaryController : MonoBehaviour
 
         if (showDebugLogs)
         {
-            string deadShipName = deadShip != null ? deadShip.name : "Unavailable";
-            Debug.Log($"RunSummaryController: Showing death summary for {deadShipName}. Time bonus={awardedBonus}, total awarded={totalAwarded}.", this);
+            string contextShipName = contextShip != null ? contextShip.name : "Unavailable";
+            Debug.Log($"RunSummaryController: Showing {summaryType} summary for {contextShipName}. Time bonus={awardedTimeBonus}, stage bonus={awardedStageBonus}, total awarded={totalAwarded}.", this);
         }
 
         if (pauseTimeOnSummary)
@@ -132,10 +164,11 @@ public class RunSummaryController : MonoBehaviour
         }
     }
 
-    private string BuildSummaryText(float elapsedSeconds, int collectedDoubloons, int awardedBonus, int totalAwarded)
+    private string BuildSummaryText(float elapsedSeconds, int collectedDoubloons, int awardedTimeBonus, int awardedStageBonus, int totalAwarded, RunSummaryType summaryType)
     {
         StringBuilder builder = new();
         builder.AppendLine($"Stage: {SceneManager.GetActiveScene().name}");
+        builder.AppendLine($"Result: {GetTitle(summaryType)}");
         builder.AppendLine($"Time Survived: {FormatSeconds(elapsedSeconds)}");
 
         if (playerLevelSystem != null)
@@ -153,15 +186,19 @@ public class RunSummaryController : MonoBehaviour
 
         builder.AppendLine(playerInventory != null ? $"Wood Collected: {playerInventory.Wood}" : "Wood Collected: Unavailable");
         builder.AppendLine(playerInventory != null ? $"Doubloons Collected: {collectedDoubloons}" : "Doubloons Collected: Unavailable");
-        builder.AppendLine($"Time Bonus: +{awardedBonus} Doubloons");
+        builder.AppendLine($"Time Bonus: +{awardedTimeBonus} Doubloons");
+        if (summaryType == RunSummaryType.StageComplete || awardedStageBonus > 0)
+        {
+            builder.AppendLine($"Stage Clear Bonus: +{awardedStageBonus} Doubloons");
+        }
         builder.AppendLine($"Total Awarded: {totalAwarded} Doubloons");
 
         return builder.ToString();
     }
 
-    private int AwardTimeBonus(int timeBonus)
+    private int AwardTimeBonus(int timeBonus, RunSummaryType summaryType)
     {
-        if (!awardTimeBonusOnDeath || timeBonus <= 0 || timeBonusAwarded)
+        if (!ShouldAwardTimeBonus(summaryType) || timeBonus <= 0 || timeBonusAwarded)
         {
             return 0;
         }
@@ -183,9 +220,9 @@ public class RunSummaryController : MonoBehaviour
         return timeBonus;
     }
 
-    private int CalculateTimeBonus(float elapsedSeconds)
+    private int CalculateTimeBonus(float elapsedSeconds, RunSummaryType summaryType)
     {
-        if (!awardTimeBonusOnDeath)
+        if (!ShouldAwardTimeBonus(summaryType))
         {
             return 0;
         }
@@ -196,6 +233,58 @@ public class RunSummaryController : MonoBehaviour
         int minBonus = Mathf.Max(0, minimumTimeBonus);
         int maxBonus = Mathf.Max(minBonus, maximumTimeBonus);
         return Mathf.Clamp(calculatedBonus, minBonus, maxBonus);
+    }
+
+
+    private int AwardStageCompleteBonus(RunSummaryType summaryType)
+    {
+        int clampedBonus = Mathf.Max(0, stageCompleteBonusDoubloons);
+        if (summaryType != RunSummaryType.StageComplete || clampedBonus <= 0 || stageCompleteBonusAwarded)
+        {
+            return 0;
+        }
+
+        if (playerProgression == null && PlayerProgression.HasActiveSaveSlot)
+        {
+            playerProgression = PlayerProgression.Instance;
+        }
+
+        if (playerProgression == null)
+        {
+            Debug.LogWarning("RunSummaryController: No active save slot is available, so the stage clear bonus was not awarded.", this);
+            return 0;
+        }
+
+        stageCompleteBonusAwarded = true;
+        playerProgression.AddDoubloons(clampedBonus);
+        PlayerProgression.SaveActiveSlot();
+        return clampedBonus;
+    }
+
+    private bool ShouldAwardTimeBonus(RunSummaryType summaryType)
+    {
+        return summaryType == RunSummaryType.StageComplete ? awardTimeBonusOnStageComplete : awardTimeBonusOnDeath;
+    }
+
+    private string GetTitle(RunSummaryType summaryType)
+    {
+        string configuredTitle = summaryType == RunSummaryType.StageComplete ? stageCompleteTitle : deathTitle;
+        if (!string.IsNullOrWhiteSpace(configuredTitle))
+        {
+            return configuredTitle;
+        }
+
+        return summaryType == RunSummaryType.StageComplete ? "Stage Complete" : "Run Over";
+    }
+
+    private static string BuildBonusText(int awardedTimeBonus, int awardedStageBonus, int totalBonusAwarded)
+    {
+        if (awardedStageBonus > 0)
+        {
+            return $"Time Bonus: +{awardedTimeBonus} | Stage Clear Bonus: +{awardedStageBonus} | Total Bonus: +{totalBonusAwarded} Doubloons";
+        }
+
+        return $"Time Bonus: +{awardedTimeBonus} Doubloons";
     }
 
     private float GetElapsedRunSeconds()
@@ -368,7 +457,7 @@ public class RunSummaryController : MonoBehaviour
         Image background = panel.GetComponent<Image>();
         background.color = new Color(0f, 0f, 0f, 0.85f);
 
-        titleText = CreateText(panel.transform, "TitleText", "Run Over", 42, TextAlignmentOptions.Center, new Vector2(0f, 205f), new Vector2(600f, 70f));
+        titleText = CreateText(panel.transform, "TitleText", GetTitle(RunSummaryType.Death), 42, TextAlignmentOptions.Center, new Vector2(0f, 205f), new Vector2(600f, 70f));
         summaryText = CreateText(panel.transform, "SummaryText", string.Empty, 26, TextAlignmentOptions.TopLeft, new Vector2(0f, 35f), new Vector2(560f, 290f));
         bonusText = CreateText(panel.transform, "BonusText", string.Empty, 30, TextAlignmentOptions.Center, new Vector2(0f, -145f), new Vector2(560f, 60f));
 
