@@ -22,12 +22,6 @@ public class CannonShooter : MonoBehaviour
     [SerializeField] private bool explosiveCannonballs;
     [SerializeField] private float explosionRadius = 2f;
     [SerializeField] private int explosionDamage = 1;
-    [SerializeField] private float explosionRadiusPerPowerLevel = 0.25f;
-    [SerializeField] private int explosionDamagePerPowerLevel = 1;
-    [SerializeField] private LayerMask explosionDamageMask = Physics2D.DefaultRaycastLayers;
-    [SerializeField] private GameObject explosionEffectPrefab;
-    [SerializeField] private float explosionEffectLifetime = 0.5f;
-    [SerializeField] private bool applyShipShopExplosionUnlock = true;
 
     private ShipController2D shipController;
     private float nextShootTime;
@@ -153,11 +147,8 @@ public class CannonShooter : MonoBehaviour
         }
 
         cannonball.SetDamage(cannonballDamage);
-        cannonball.SetFiredByPlayer(true);
         cannonball.SetSizeMultiplier(cannonballSizeMultiplier);
         cannonball.SetExplosion(explosiveCannonballs, explosionRadius, explosionDamage);
-        cannonball.SetExplosionEffect(explosionEffectPrefab, explosionEffectLifetime);
-        cannonball.SetExplosionDamageMask(explosionDamageMask);
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
         nextShootTime = Time.time + shootCooldown;
     }
@@ -209,25 +200,6 @@ public class CannonShooter : MonoBehaviour
         explosiveCannonballs = true;
         explosionRadius = Mathf.Max(0f, radius);
         explosionDamage = Mathf.Max(0, damage);
-    }
-
-    private void ApplyShipShopExplosionUnlock()
-    {
-        if (!applyShipShopExplosionUnlock || !PlayerProgression.HasActiveSaveSlot)
-        {
-            return;
-        }
-
-        PlayerProgression progression = PlayerProgression.Instance;
-        if (progression == null || !progression.IsUnlocked(PlayerProgression.UnlockCannonballExplosionId))
-        {
-            return;
-        }
-
-        int explosionPowerLevel = progression.GetExplosionPowerLevel();
-        float upgradedRadius = baseExplosionRadius + explosionRadiusPerPowerLevel * explosionPowerLevel;
-        int upgradedDamage = baseExplosionDamage + explosionDamagePerPowerLevel * explosionPowerLevel;
-        EnableExplosiveCannonballs(upgradedRadius, upgradedDamage);
     }
 
     private Transform GetSpawnPointForDirection(Vector2 direction)

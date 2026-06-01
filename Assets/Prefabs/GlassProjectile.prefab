@@ -137,6 +137,13 @@ MonoBehaviour:
   lifetime: 3
   rotateToVelocity: 1
   rotationOffsetDegrees: 0
+  sizeMultiplier: 1
+  explosive: 0
+  explosionRadius: 2
+  explosionDamage: 1
+  explosionLayerMask:
+    serializedVersion: 2
+    m_Bits: 1011
 --- !u!70 &-813242033350602648
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
