@@ -524,8 +524,8 @@ MonoBehaviour:
   targetShip: {fileID: 0}
   playerShipController: {fileID: 0}
   moveSpeed: 6
-  stoppingDistance: 5
-  rotationSpeed: 360
+  stoppingDistance: 7
+  rotationSpeed: 240
 --- !u!114 &7997933415139566310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,6 +580,10 @@ MonoBehaviour:
   minXPDrops: 3
   maxXPDrops: 6
   xpAmountPerPickup: 1
+  treasureChestPrefab: {fileID: 0}
+  minTreasureChestDrops: 0
+  maxTreasureChestDrops: 0
+  treasureChestDropChance: 0
   dropScatterRadius: 0.75
   logDrops: 0
 --- !u!1 &4999598627304264944
