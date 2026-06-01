@@ -29,7 +29,13 @@ public class TreasureChestChoiceUI : MonoBehaviour
     private static readonly Color ButtonDisabledColor = new(0.38f, 0.34f, 0.28f, 0.65f);
     private static readonly Color ButtonTextColor = new(0.12f, 0.07f, 0.025f, 1f);
 
+    private const int MaxChestSelections = 3;
+
+    private readonly HashSet<int> selectedChoiceIndexes = new();
     private Action<TreasureChestChoice> onChoiceSelected;
+    private Action onSelectionComplete;
+    private int requiredSelectionCount;
+    private int selectedChoiceCount;
     private float previousTimeScale = 1f;
 
     private void Awake()
@@ -41,6 +47,11 @@ public class TreasureChestChoiceUI : MonoBehaviour
 
     public void ShowChoices(List<TreasureChestChoice> options, Action<TreasureChestChoice> onChosen)
     {
+        ShowChoices(options, onChosen, null);
+    }
+
+    public void ShowChoices(List<TreasureChestChoice> options, Action<TreasureChestChoice> onChosen, Action onComplete)
+    {
         if (options == null || options.Count == 0)
         {
             return;
@@ -48,6 +59,11 @@ public class TreasureChestChoiceUI : MonoBehaviour
 
         EnsureRuntimeUI();
         onChoiceSelected = onChosen;
+        onSelectionComplete = onComplete;
+        selectedChoiceIndexes.Clear();
+        selectedChoiceCount = 0;
+        requiredSelectionCount = Mathf.Min(MaxChestSelections, options.Count);
+        UpdateTitleText();
 
         if (panelRoot != null)
         {
@@ -65,16 +81,18 @@ public class TreasureChestChoiceUI : MonoBehaviour
                 continue;
             }
 
+            widgets.button.onClick.RemoveAllListeners();
             if (i >= options.Count)
             {
                 widgets.button.gameObject.SetActive(false);
                 continue;
             }
 
+            int choiceIndex = i;
             TreasureChestChoice option = options[i];
             widgets.button.gameObject.SetActive(true);
-            widgets.button.onClick.RemoveAllListeners();
-            widgets.button.onClick.AddListener(() => SelectOption(option));
+            widgets.button.interactable = true;
+            widgets.button.onClick.AddListener(() => SelectOption(choiceIndex, option));
 
             if (widgets.nameText != null)
             {
@@ -90,13 +108,36 @@ public class TreasureChestChoiceUI : MonoBehaviour
             {
                 widgets.typeText.text = FormatChoiceType(option.Type);
             }
+
+            SetChoiceSelected(widgets, false);
         }
     }
 
-    private void SelectOption(TreasureChestChoice option)
+    private void SelectOption(int choiceIndex, TreasureChestChoice option)
     {
+        if (selectedChoiceIndexes.Contains(choiceIndex) || selectedChoiceCount >= requiredSelectionCount)
+        {
+            return;
+        }
+
+        selectedChoiceIndexes.Add(choiceIndex);
+        selectedChoiceCount++;
         onChoiceSelected?.Invoke(option);
-        HidePanel(true);
+
+        if (choices != null && choiceIndex >= 0 && choiceIndex < choices.Length)
+        {
+            SetChoiceSelected(choices[choiceIndex], true);
+        }
+
+        UpdateTitleText();
+
+        if (selectedChoiceCount >= requiredSelectionCount)
+        {
+            Action completed = onSelectionComplete;
+            onSelectionComplete = null;
+            HidePanel(true);
+            completed?.Invoke();
+        }
     }
 
     private void HidePanel(bool restoreTimeScale)
@@ -105,6 +146,10 @@ public class TreasureChestChoiceUI : MonoBehaviour
         {
             panelRoot.SetActive(false);
         }
+
+        selectedChoiceIndexes.Clear();
+        selectedChoiceCount = 0;
+        requiredSelectionCount = 0;
 
         if (restoreTimeScale)
         {
@@ -308,7 +353,7 @@ public class TreasureChestChoiceUI : MonoBehaviour
             return;
         }
 
-        titleText.text = string.IsNullOrWhiteSpace(title) ? "Choose Your Plunder" : title;
+        titleText.text = GetTitleText();
         titleText.fontSize = 42f;
         titleText.fontStyle = FontStyles.Bold;
         titleText.alignment = TextAlignmentOptions.Center;
@@ -385,6 +430,57 @@ public class TreasureChestChoiceUI : MonoBehaviour
         text.color = color;
         text.enableWordWrapping = true;
         text.overflowMode = TextOverflowModes.Ellipsis;
+    }
+
+    private void SetChoiceSelected(ChoiceWidgets widgets, bool isSelected)
+    {
+        if (widgets == null || widgets.button == null)
+        {
+            return;
+        }
+
+        widgets.button.interactable = !isSelected;
+
+        if (widgets.button.TryGetComponent(out Image buttonImage))
+        {
+            buttonImage.color = isSelected ? ButtonDisabledColor : ButtonColor;
+        }
+
+        if (isSelected)
+        {
+            if (widgets.typeText != null)
+            {
+                widgets.typeText.text = $"Selected {widgets.typeText.text}";
+            }
+
+            if (widgets.nameText != null && !widgets.nameText.text.StartsWith("✓ ", StringComparison.Ordinal))
+            {
+                widgets.nameText.text = $"✓ {widgets.nameText.text}";
+            }
+        }
+    }
+
+    private void UpdateTitleText()
+    {
+        if (panelRoot == null)
+        {
+            return;
+        }
+
+        foreach (TMP_Text textElement in panelRoot.GetComponentsInChildren<TMP_Text>(true))
+        {
+            if (textElement.gameObject.name.IndexOf("Title", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                textElement.text = GetTitleText();
+                return;
+            }
+        }
+    }
+
+    private string GetTitleText()
+    {
+        string baseTitle = string.IsNullOrWhiteSpace(title) ? "Choose Your Plunder" : title;
+        return requiredSelectionCount > 0 ? $"{baseTitle} ({selectedChoiceCount}/{requiredSelectionCount})" : baseTitle;
     }
 
     private static void ApplyButtonColors(Button button)

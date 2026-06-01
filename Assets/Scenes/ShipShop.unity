@@ -6037,7 +6037,7 @@ MonoBehaviour:
   description: Hire Paul to join your crew. Combat abilities are not implemented
     yet. A pirate obsessed with cannonballs.
   abilityDescription: Automatically fires cannonballs alongside the player.
-  price: 7000
+  price: 100
   crewSprite: {fileID: -8089562441598252974, guid: 0bc6aa827b9eb9d469415ccf98feaa04, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
