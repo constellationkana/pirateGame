@@ -3718,6 +3718,129 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &766876281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 766876283}
+  - component: {fileID: 766876282}
+  m_Layer: 0
+  m_Name: RunCrewManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &766876282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766876281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a978884ad63141d78133943629a673e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RunCrewManager
+  crewDefinitions:
+  - id: paul
+    displayName: Paul
+    joinDescription: Recruit Paul for this run only. Paul automatically fires cannonballs
+      at nearby enemies.
+    upgradeDescription: Improve Paul's current-run cannon support.
+    maxUpgradeLevel: 3
+  - id: cleanup_crew
+    displayName: Cleanup Crew
+    joinDescription: Cleanup Crew joins for this run.
+    upgradeDescription: Improve Cleanup Crew's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: bird_boy
+    displayName: Bird Boy
+    joinDescription: Bird Boy joins for this run.
+    upgradeDescription: Improve Bird Boy's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: evil_bird_boy
+    displayName: Evil Bird Boy
+    joinDescription: Evil Bird Boy joins for this run.
+    upgradeDescription: Improve Evil Bird Boy's current-run support. Placeholder
+      only.
+    maxUpgradeLevel: 3
+  - id: shipprick
+    displayName: Shipprick
+    joinDescription: Shipprick joins for this run.
+    upgradeDescription: Improve Shipprick's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: poseidon
+    displayName: Poseidon
+    joinDescription: Poseidon joins for this run.
+    upgradeDescription: Improve Poseidon's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: barrel_joe
+    displayName: Barrel Joe
+    joinDescription: Barrel Joe joins for this run.
+    upgradeDescription: Improve Barrel Joe's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: map_goblin
+    displayName: Map Goblin
+    joinDescription: Map Goblin joins for this run.
+    upgradeDescription: Improve Map Goblin's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: zeus
+    displayName: Zeus
+    joinDescription: Zeus joins for this run.
+    upgradeDescription: Improve Zeus's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  - id: carpenter
+    displayName: Carpenter
+    joinDescription: Carpenter joins for this run.
+    upgradeDescription: Improve Carpenter's current-run support. Placeholder only.
+    maxUpgradeLevel: 3
+  paulUpgradeDefinitions:
+  - id: paul_faster_firing
+    crewId: paul
+    displayName: 'Paul: Faster Firing'
+    description: Paul fires cannonballs more often for this run.
+    maxLevel: 3
+  - id: paul_stronger_cannonballs
+    crewId: paul
+    displayName: 'Paul: Stronger Cannonballs'
+    description: Paul's cannonballs deal more damage for this run.
+    maxLevel: 3
+  - id: paul_cannon_master
+    crewId: paul
+    displayName: 'Paul: Cannon Master'
+    description: Paul fires 2 cannonballs instead of 1 for this run.
+    maxLevel: 1
+  - id: paul_veteran_gunner
+    crewId: paul
+    displayName: 'Paul: Veteran Gunner'
+    description: Paul's cannonballs pierce 1 enemy for this run.
+    maxLevel: 1
+  - id: paul_broadside_expert
+    crewId: paul
+    displayName: 'Paul: Broadside Expert'
+    description: Paul fires a 3-shot spread for this run.
+    maxLevel: 1
+--- !u!4 &766876283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766876281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.98747, y: 0.77514, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &798652382
 GameObject:
   m_ObjectHideFlags: 0
@@ -6810,6 +6933,7 @@ GameObject:
   - component: {fileID: 1331628606}
   - component: {fileID: 1331628608}
   - component: {fileID: 1331628609}
+  - component: {fileID: 1331628610}
   m_Layer: 6
   m_Name: PlayerShip
   m_TagString: PlayerShip
@@ -7270,6 +7394,34 @@ MonoBehaviour:
   durationIncreasePerUpgrade: 0.5
   inactiveDelayReductionPerUpgrade: 0.25
   minimumInactiveDelay: 1
+--- !u!114 &1331628610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b29cc5c63784f449b0ffb1f18bdca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaulCrewController
+  runCrewManager: {fileID: 766876282}
+  playerTransform: {fileID: 1331628595}
+  paulFirePoint: {fileID: 438296907}
+  cannonballPrefab: {fileID: 5583544770070118670, guid: 3405451b100907845a1bfdf285d96ea7, type: 3}
+  paulBaseDamage: 1
+  paulBaseFireCooldown: 1.5
+  paulProjectileSpeed: 12
+  paulProjectileCount: 1
+  paulDetectionRadius: 8
+  fasterFiringCooldownReductionPerLevel: 0.2
+  strongerCannonballsDamageIncreasePerLevel: 1
+  broadsideSpreadAngle: 18
+  veteranGunnerPierceCount: 1
+  enemyDetectionMask:
+    serializedVersion: 2
+    m_Bits: 499
 --- !u!1 &1347083638
 GameObject:
   m_ObjectHideFlags: 0
@@ -14611,3 +14763,4 @@ SceneRoots:
   - {fileID: 910000000000000001}
   - {fileID: 239843267}
   - {fileID: 426649357}
+  - {fileID: 766876283}
