@@ -543,12 +543,12 @@ MonoBehaviour:
   targetShipHealth: {fileID: 0}
   attackRange: 15
   useCannonAttack: 1
-  useFruitAttack: 1
+  useFruitAttack: 0
   logAttacks: 1
   cannonballPrefab: {fileID: 5583544770070118670, guid: 3405451b100907845a1bfdf285d96ea7, type: 3}
   cannonFirePoint: {fileID: 5925488098560481139}
   cannonFirePoints: []
-  cannonDamage: 5
+  cannonDamage: 2
   cannonballSpeed: 7
   cannonShootInterval: 3
   fruitProjectilePrefab: {fileID: 0}
