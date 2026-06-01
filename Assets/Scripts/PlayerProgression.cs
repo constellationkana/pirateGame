@@ -21,6 +21,7 @@ public class PlayerProgression : MonoBehaviour
     public const string UnlockForceFieldId = "force_field";
     public const string UnlockCannonballSizeId = "cannonball_size";
     public const string UnlockCannonballSpeedId = "cannonball_speed";
+    public const string UnlockCannonballShootRateId = "cannonball_shoot_rate";
     public const string UnlockCannonballExplosionId = "cannonball_explosion";
     public const string UnlockCannonballPierceId = "cannonball_pierce";
     public const string UnlockBarnaclesId = "barnacles";
@@ -33,6 +34,8 @@ public class PlayerProgression : MonoBehaviour
     public const string UpgradeBaseMagnetRadiusId = "base_magnet_radius";
     public const string UpgradeExplosionPowerId = "explosion_power";
     public const string UpgradeBarnaclePowerId = "barnacle_power";
+    public const string UpgradeCursedDoubloonsDamageId = "cursed_doubloons_damage";
+    public const string UpgradeForceFieldDamageId = "force_field_damage";
 
     public const string UnlockMagnetRadius = UnlockMagnetId;
     public const string UpgradeHealthId = UpgradeBaseHealthId;
@@ -76,6 +79,7 @@ public class PlayerProgression : MonoBehaviour
         UnlockHealthRegenId,
         UnlockCannonballSizeId,
         UnlockCannonballSpeedId,
+        UnlockCannonballShootRateId,
         UnlockCannonballPierceId,
         UnlockCannonballExplosionId,
         UnlockBarnaclesId,
@@ -90,7 +94,9 @@ public class PlayerProgression : MonoBehaviour
         UpgradeCannonDamageId,
         UpgradeBaseCannonballSpeedId,
         UpgradeExplosionPowerId,
-        UpgradeBarnaclePowerId
+        UpgradeBarnaclePowerId,
+        UpgradeCursedDoubloonsDamageId,
+        UpgradeForceFieldDamageId
     };
 
     private static PlayerProgression instance;
@@ -413,6 +419,8 @@ public class PlayerProgression : MonoBehaviour
     public int GetBaseMagnetRadiusLevel() => GetUpgradeLevel(UpgradeBaseMagnetRadiusId);
     public int GetExplosionPowerLevel() => GetUpgradeLevel(UpgradeExplosionPowerId);
     public int GetBarnaclePowerLevel() => GetUpgradeLevel(UpgradeBarnaclePowerId);
+    public int GetCursedDoubloonsDamageLevel() => GetUpgradeLevel(UpgradeCursedDoubloonsDamageId);
+    public int GetForceFieldDamageLevel() => GetUpgradeLevel(UpgradeForceFieldDamageId);
 
     public bool TryPurchaseUnlock(string id, int cost)
     {
@@ -962,6 +970,8 @@ public class PlayerProgression : MonoBehaviour
         MigrateLegacyGenericUpgradeId("speed", UpgradeBaseSpeedId);
         MigrateLegacyGenericUpgradeId("cannon_damage", UpgradeBaseCannonDamageId);
         MigrateLegacyGenericUpgradeId("magnet_radius", UpgradeBaseMagnetRadiusId);
+        MigrateLegacyGenericUpgradeId("cursed_doubloons_power", UpgradeCursedDoubloonsDamageId);
+        MigrateLegacyGenericUpgradeId("force_field_power", UpgradeForceFieldDamageId);
 
         permanentHealthLevel = Mathf.Max(permanentHealthLevel, GetUpgradeLevel(UpgradeHealthId));
         permanentSpeedLevel = Mathf.Max(permanentSpeedLevel, GetUpgradeLevel(UpgradeSpeedId));
