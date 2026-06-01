@@ -408,8 +408,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1198814145
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -757980071958821059, guid: 56434aa4edf20e149911f42210576a0c, type: 3}
@@ -511,6 +511,9 @@ MonoBehaviour:
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
+  healthRegenerationEnabled: 0
+  regenerationAmount: 1
+  regenerationInterval: 5
 --- !u!114 &2983384552859054284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,9 +631,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossDefeatHandler
   bossHealth: {fileID: 1651053312815103476}
   victoryMessageText: {fileID: 0}
+  runSummaryController: {fileID: 0}
   victoryMessage: 'Boss defeated! '
+  completeStageOnVictory: 1
+  completedStageNumber: 1
+  requiredSceneName: MainSea
   pauseGameOnVictory: 0
   logVictory: 1
+  showStageCompleteSummary: 1
+  hideVictoryMessageWhenSummaryShows: 1
 --- !u!1 &4999598627304264944
 GameObject:
   m_ObjectHideFlags: 0

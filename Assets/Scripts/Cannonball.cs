@@ -14,6 +14,7 @@ public class Cannonball : MonoBehaviour
 
     [Header("Upgrade Effects")]
     [SerializeField] private float sizeMultiplier = 1f;
+    [SerializeField] private int pierceCount;
 
     [Header("Explosion")]
     [SerializeField] private bool explosive;
@@ -35,6 +36,7 @@ public class Cannonball : MonoBehaviour
     private Vector3 baseScale;
     private bool firedByPlayer;
     private bool explosionTriggered;
+    private readonly HashSet<ShipHealth> piercedTargets = new();
 
     private void Awake()
     {
@@ -84,6 +86,12 @@ public class Cannonball : MonoBehaviour
     public void SetFiredByPlayer(bool playerOwned)
     {
         firedByPlayer = playerOwned;
+    }
+
+    public void SetPierceCount(int count)
+    {
+        pierceCount = Mathf.Max(0, count);
+        piercedTargets.Clear();
     }
 
     public void SetExplosion(bool enabled, float radius, int damageAmount)
@@ -267,8 +275,21 @@ public class Cannonball : MonoBehaviour
 
         if (health != null)
         {
+            if (piercedTargets.Contains(health))
+            {
+                return;
+            }
+
+            piercedTargets.Add(health);
             health.TakeDamage(damage);
             TriggerExplosion(health);
+
+            if (pierceCount > 0)
+            {
+                pierceCount--;
+                return;
+            }
+
             Destroy(gameObject);
             return;
         }

@@ -406,8 +406,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1198814145
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6179922785515110131, guid: a460924e77d855a4f868e60079ef34ed, type: 3}
@@ -509,6 +509,9 @@ MonoBehaviour:
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
+  healthRegenerationEnabled: 0
+  regenerationAmount: 1
+  regenerationInterval: 5
 --- !u!114 &2983384552859054284
 MonoBehaviour:
   m_ObjectHideFlags: 0

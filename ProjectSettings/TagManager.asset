@@ -55,6 +55,24 @@ TagManager:
   - name: New Layer 4
     uniqueID: 2366689079
     locked: 0
+  - name: ForceField
+    uniqueID: 4238428209
+    locked: 0
+  - name: PlayerShip
+    uniqueID: 167948411
+    locked: 0
+  - name: Player
+    uniqueID: 3371492901
+    locked: 0
+  - name: EnemyShip
+    uniqueID: 3096153151
+    locked: 0
+  - name: Projectiles
+    uniqueID: 2023079091
+    locked: 0
+  - name: Probably something else
+    uniqueID: 65570429
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []
