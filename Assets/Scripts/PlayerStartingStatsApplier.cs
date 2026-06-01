@@ -8,6 +8,13 @@ public class PlayerStartingStatsApplier : MonoBehaviour
     [SerializeField] private float magnetRadiusPerLevel = 0.5f;
     [SerializeField] private int cannonDamagePerLevel = 1;
     [SerializeField] private float cannonballSpeedPerLevel = 1f;
+    [SerializeField] private float cannonballSizeMultiplierOnUnlock = 1.5f;
+    [SerializeField] private int healthRegenerationAmount = 1;
+    [SerializeField] private float healthRegenerationInterval = 5f;
+    [SerializeField] private float baseExplosionRadius = 2f;
+    [SerializeField] private float explosionRadiusPerPowerLevel = 0.25f;
+    [SerializeField] private int baseExplosionDamage = 1;
+    [SerializeField] private int explosionDamagePerPowerLevel = 1;
 
     [Header("References")]
     [SerializeField] private ShipHealth shipHealth;
@@ -55,6 +62,24 @@ public class PlayerStartingStatsApplier : MonoBehaviour
         if (cannonShooter != null && progression.IsUnlocked(PlayerProgression.UnlockCannonballSpeedId) && cannonballSpeedBonus > 0f)
         {
             cannonShooter.AddCannonballSpeed(cannonballSpeedBonus);
+        }
+
+        if (cannonShooter != null && progression.IsUnlocked(PlayerProgression.UnlockCannonballSizeId))
+        {
+            cannonShooter.SetCannonballSizeMultiplier(cannonballSizeMultiplierOnUnlock);
+        }
+
+        if (cannonShooter != null && progression.IsUnlocked(PlayerProgression.UnlockCannonballExplosionId))
+        {
+            int explosionPowerLevel = progression.GetExplosionPowerLevel();
+            float radius = baseExplosionRadius + explosionRadiusPerPowerLevel * explosionPowerLevel;
+            int damage = baseExplosionDamage + explosionDamagePerPowerLevel * explosionPowerLevel;
+            cannonShooter.EnableExplosiveCannonballs(radius, damage);
+        }
+
+        if (shipHealth != null && progression.IsUnlocked(PlayerProgression.UnlockHealthRegenId))
+        {
+            shipHealth.EnableHealthRegeneration(healthRegenerationAmount, healthRegenerationInterval);
         }
     }
 }
