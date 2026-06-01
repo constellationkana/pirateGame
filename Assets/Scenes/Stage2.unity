@@ -4773,6 +4773,7 @@ GameObject:
   - component: {fileID: 1331628607}
   - component: {fileID: 1331628606}
   - component: {fileID: 1331628608}
+  - component: {fileID: 1331628609}
   m_Layer: 6
   m_Name: PlayerShip
   m_TagString: PlayerShip
@@ -5074,6 +5075,7 @@ MonoBehaviour:
   pickupMagnetController: {fileID: 1331628605}
   dashController: {fileID: 0}
   forceFieldController: {fileID: 0}
+  cursedDoubloonsController: {fileID: 1331628609}
   healthIncreasePerUpgrade: 2
   speedIncreasePerUpgrade: 0.5
   magnetRadiusUpgradeAmount: 1
@@ -5171,6 +5173,31 @@ MonoBehaviour:
   shipController: {fileID: 0}
   pickupMagnetController: {fileID: 0}
   cannonShooter: {fileID: 0}
+--- !u!114 &1331628609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5b546f2d9e4e35a94a639a90fae46c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::CursedDoubloonsController
+  doubloonPrefab: {fileID: 6201677647806777943, guid: 1024b82832b8c5d49a158a59422883d7, type: 3}
+  player: {fileID: 1331628595}
+  orbitRadius: 2
+  spinSpeed: 180
+  activeDuration: 8
+  inactiveDelay: 4
+  startingDoubloonCount: 2
+  maxDoubloonCount: 8
+  damage: 1
+  enemyDamageCooldown: 0.5
+  durationIncreasePerUpgrade: 0.5
+  inactiveDelayReductionPerUpgrade: 0.25
+  minimumInactiveDelay: 1
 --- !u!1 &1358974480
 GameObject:
   m_ObjectHideFlags: 0

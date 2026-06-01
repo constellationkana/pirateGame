@@ -38,6 +38,8 @@ public class Cannonball : MonoBehaviour
     private bool explosionTriggered;
     private readonly HashSet<ShipHealth> piercedTargets = new();
 
+    public bool FiredByPlayer => firedByPlayer;
+
     private void Awake()
     {
         baseScale = transform.localScale;
