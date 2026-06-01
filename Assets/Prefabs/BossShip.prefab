@@ -582,6 +582,10 @@ MonoBehaviour:
   minXPDrops: 1
   maxXPDrops: 3
   xpAmountPerPickup: 1
+  treasureChestPrefab: {fileID: 8135790231907914464, guid: de71b581701aeb84fa067ae949126539, type: 3}
+  minTreasureChestDrops: 1
+  maxTreasureChestDrops: 2
+  treasureChestDropChance: 1
   dropScatterRadius: 0.75
   logDrops: 0
 --- !u!114 &-3759868629997817729
