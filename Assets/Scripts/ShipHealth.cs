@@ -80,6 +80,18 @@ public class ShipHealth : MonoBehaviour
         regenerationTimer = 0f;
     }
 
+    public void ImproveHealthRegeneration(int amountIncrease, float intervalReduction)
+    {
+        if (!healthRegenerationEnabled)
+        {
+            EnableHealthRegeneration(Mathf.Max(1, amountIncrease), regenerationInterval);
+            return;
+        }
+
+        regenerationAmount = Mathf.Max(1, regenerationAmount + amountIncrease);
+        regenerationInterval = Mathf.Max(0.1f, regenerationInterval - intervalReduction);
+    }
+
     private void TickHealthRegeneration()
     {
         if (!healthRegenerationEnabled || isDead || currentHealth >= maxHealth)

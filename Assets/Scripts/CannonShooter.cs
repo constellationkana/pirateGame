@@ -27,7 +27,8 @@ public class CannonShooter : MonoBehaviour
     [SerializeField] private LayerMask explosionDamageMask = Physics2D.DefaultRaycastLayers;
     [SerializeField] private GameObject explosionEffectPrefab;
     [SerializeField] private float explosionEffectLifetime = 0.5f;
-    [SerializeField] private bool applyShipShopExplosionUnlock = true;
+    [SerializeField, Tooltip("Legacy compatibility only. Keep false so ShipShop unlocks do not activate explosions at run start.")] private bool applyShipShopExplosionUnlock = false;
+    [SerializeField] private int cannonballPierceCount;
 
     private ShipController2D shipController;
     private float nextShootTime;
@@ -158,6 +159,7 @@ public class CannonShooter : MonoBehaviour
         cannonball.SetExplosion(explosiveCannonballs, explosionRadius, explosionDamage);
         cannonball.SetExplosionEffect(explosionEffectPrefab, explosionEffectLifetime);
         cannonball.SetExplosionDamageMask(explosionDamageMask);
+        cannonball.SetPierceCount(cannonballPierceCount);
         cannonball.Initialize(direction, cannonballSpeed, gameObject);
         nextShootTime = Time.time + shootCooldown;
     }
@@ -202,6 +204,26 @@ public class CannonShooter : MonoBehaviour
     public void SetCannonballSizeMultiplier(float multiplier)
     {
         cannonballSizeMultiplier = Mathf.Max(0.1f, multiplier);
+    }
+
+    public void AddCannonballSizeMultiplier(float amount)
+    {
+        cannonballSizeMultiplier = Mathf.Max(0.1f, cannonballSizeMultiplier + amount);
+    }
+
+    public void ReduceShootCooldown(float amount)
+    {
+        shootCooldown = Mathf.Max(0.05f, shootCooldown - amount);
+    }
+
+    public void SetCannonballPierceCount(int pierceCount)
+    {
+        cannonballPierceCount = Mathf.Max(0, pierceCount);
+    }
+
+    public void AddCannonballPierce(int amount)
+    {
+        cannonballPierceCount = Mathf.Max(0, cannonballPierceCount + amount);
     }
 
     public void EnableExplosiveCannonballs(float radius, int damage)
