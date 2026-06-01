@@ -31,6 +31,8 @@ public class CannonShooter : MonoBehaviour
     private float nextShootTime;
     private bool mouseFireQueued;
 
+    public GameObject CannonballPrefab => cannonballPrefab;
+
     private void Awake()
     {
         shipController = GetComponent<ShipController2D>();

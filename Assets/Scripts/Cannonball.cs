@@ -277,6 +277,11 @@ public class Cannonball : MonoBehaviour
 
         if (health != null)
         {
+            if (firedByPlayer && health.CompareTag("PlayerShip"))
+            {
+                return;
+            }
+
             if (piercedTargets.Contains(health))
             {
                 return;
