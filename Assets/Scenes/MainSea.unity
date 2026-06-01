@@ -1040,10 +1040,10 @@ MonoBehaviour:
   chestPrefab: {fileID: 8135790231907914464, guid: de71b581701aeb84fa067ae949126539, type: 3}
   playerTransform: {fileID: 1331628595}
   spawnInterval: 0.5
-  spawnRadiusMin: 8
+  spawnRadiusMin: 5
   spawnRadiusMax: 14
-  maxActiveChests: 3
-  spawnChance: 0.001
+  maxActiveChests: 10
+  spawnChance: 0.768
 --- !u!4 &239843267
 Transform:
   m_ObjectHideFlags: 0
