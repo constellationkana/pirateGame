@@ -1018,6 +1018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 239843267}
   - component: {fileID: 239843266}
+  - component: {fileID: 239843268}
   m_Layer: 0
   m_Name: TreasureChestSpawner
   m_TagString: Untagged
