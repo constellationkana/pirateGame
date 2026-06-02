@@ -80,8 +80,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2023079091
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6981223073280842641, guid: 4d8ae1ac2013e84478919bc62f1f77b8, type: 3}
@@ -174,6 +174,7 @@ MonoBehaviour:
   rotateToVelocity: 0
   rotationOffsetDegrees: 0
   sizeMultiplier: 1
+  pierceCount: 0
   explosive: 0
   explosionRadius: 2
   explosionDamage: 1
