@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac39022e4aa941f995a85bcbc228e255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
-  maxHealth: 75
+  maxHealth: 125
   currentHealth: 0
   destroyOnDeath: 1
   disableOnDeath: 0
@@ -529,6 +529,7 @@ MonoBehaviour:
   moveSpeed: 2
   stoppingDistance: 3
   rotationSpeed: 360
+  slowSpeedMultiplier: 0.5
 --- !u!114 &7997933415139566310
 MonoBehaviour:
   m_ObjectHideFlags: 0
