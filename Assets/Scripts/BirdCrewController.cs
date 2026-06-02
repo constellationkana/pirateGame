@@ -16,9 +16,14 @@ public class BirdCrewController : MonoBehaviour
 
     [Header("Parrot Visuals")]
     [SerializeField] private GameObject parrotPrefab;
-    [SerializeField] private float orbitRadius = 1.6f;
-    [SerializeField] private float orbitSpeed = 120f;
     [SerializeField] private int parrotCount = 2;
+
+    [Header("Parrot Movement")]
+    [SerializeField] private float flyRadius = 1.6f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float positionChangeIntervalMin = 0.35f;
+    [SerializeField] private float positionChangeIntervalMax = 1f;
+    [SerializeField] private float jitterAmount = 0.25f;
 
     [Header("Projectile")]
     [SerializeField] private GameObject projectilePrefab;
@@ -42,8 +47,8 @@ public class BirdCrewController : MonoBehaviour
     [SerializeField] private LayerMask enemyDetectionMask = Physics2D.DefaultRaycastLayers;
 
     private readonly List<Transform> parrots = new();
+    private readonly List<ParrotMovementState> parrotMovementStates = new();
     private float nextFireTime;
-    private float orbitAngleOffset;
     private static Sprite birdBoyProjectileSprite;
     private static Sprite evilBirdBoyProjectileSprite;
     private static Sprite parrotPlaceholderSprite;
@@ -101,7 +106,7 @@ public class BirdCrewController : MonoBehaviour
         }
 
         EnsureParrots();
-        UpdateParrotOrbit();
+        UpdateParrotMovement();
 
         if (Time.time < nextFireTime)
         {
@@ -213,17 +218,34 @@ public class BirdCrewController : MonoBehaviour
         while (parrots.Count < desiredCount)
         {
             Transform parent = playerTransform != null ? playerTransform : transform;
-            GameObject parrotObject = parrotPrefab != null
-                ? Instantiate(parrotPrefab, parent.position, Quaternion.identity, parent)
-                : CreateRuntimeParrotObject(parent.position, parent);
+            GameObject parrotObject;
+            if (parrotPrefab != null)
+            {
+                Debug.Log("Using assigned parrot prefab");
+                parrotObject = Instantiate(parrotPrefab, parent.position, Quaternion.identity, parent);
+            }
+            else
+            {
+                Debug.Log("Using placeholder parrot");
+                parrotObject = CreateRuntimeParrotObject(parent.position, parent);
+            }
+
             parrotObject.name = crewType == BirdCrewType.BirdBoy ? "Bird-Boy Parrot" : "Evil-Bird-Boy Parrot";
             parrots.Add(parrotObject.transform);
+            ParrotMovementState movementState = new();
+            parrotMovementStates.Add(movementState);
+            PickNewParrotTarget(movementState);
         }
 
         while (parrots.Count > desiredCount)
         {
-            Transform parrot = parrots[parrots.Count - 1];
-            parrots.RemoveAt(parrots.Count - 1);
+            int lastIndex = parrots.Count - 1;
+            Transform parrot = parrots[lastIndex];
+            parrots.RemoveAt(lastIndex);
+            if (lastIndex < parrotMovementStates.Count)
+            {
+                parrotMovementStates.RemoveAt(lastIndex);
+            }
             if (parrot != null)
             {
                 Destroy(parrot.gameObject);
@@ -231,15 +253,14 @@ public class BirdCrewController : MonoBehaviour
         }
     }
 
-    private void UpdateParrotOrbit()
+    private void UpdateParrotMovement()
     {
         if (playerTransform == null || parrots.Count == 0)
         {
             return;
         }
 
-        orbitAngleOffset += orbitSpeed * Time.deltaTime;
-        float spacing = 360f / parrots.Count;
+        EnsureParrotMovementStateCount();
         for (int i = 0; i < parrots.Count; i++)
         {
             Transform parrot = parrots[i];
@@ -248,16 +269,68 @@ public class BirdCrewController : MonoBehaviour
                 continue;
             }
 
-            float angle = (orbitAngleOffset + spacing * i) * Mathf.Deg2Rad;
-            Vector3 offset = new(Mathf.Cos(angle), Mathf.Sin(angle), 0f);
-            parrot.position = playerTransform.position + offset * orbitRadius;
-
-            Vector3 tangent = new(-Mathf.Sin(angle), Mathf.Cos(angle), 0f);
-            if (tangent.sqrMagnitude > 0.001f)
+            ParrotMovementState movementState = parrotMovementStates[i];
+            Vector3 playerPosition = playerTransform.position;
+            Vector3 targetPosition = GetParrotTargetPosition(movementState);
+            float distanceToPlayer = Vector3.Distance(parrot.position, playerPosition);
+            if (!movementState.HasTarget || Time.time >= movementState.NextTargetTime || IsNearCurrentTarget(parrot, targetPosition) || IsTooFarFromPlayer(distanceToPlayer))
             {
-                parrot.up = tangent.normalized;
+                PickNewParrotTarget(movementState);
+                targetPosition = GetParrotTargetPosition(movementState);
+            }
+
+            Vector2 jitterOffset = Random.insideUnitCircle * Mathf.Max(0f, jitterAmount);
+            Vector3 desiredPosition = targetPosition + new Vector3(jitterOffset.x, jitterOffset.y, 0f);
+            float speedMultiplier = IsTooFarFromPlayer(distanceToPlayer) ? 1.75f : 1f;
+            Vector3 previousPosition = parrot.position;
+            parrot.position = Vector3.MoveTowards(parrot.position, desiredPosition, Mathf.Max(0f, moveSpeed) * speedMultiplier * Time.deltaTime);
+
+            Vector3 travelDirection = parrot.position - previousPosition;
+            if (travelDirection.sqrMagnitude > 0.001f)
+            {
+                parrot.up = travelDirection.normalized;
             }
         }
+    }
+
+    private void EnsureParrotMovementStateCount()
+    {
+        while (parrotMovementStates.Count < parrots.Count)
+        {
+            ParrotMovementState movementState = new();
+            parrotMovementStates.Add(movementState);
+            PickNewParrotTarget(movementState);
+        }
+
+        while (parrotMovementStates.Count > parrots.Count)
+        {
+            parrotMovementStates.RemoveAt(parrotMovementStates.Count - 1);
+        }
+    }
+
+    private bool IsNearCurrentTarget(Transform parrot, Vector3 targetPosition)
+    {
+        return Vector3.SqrMagnitude(parrot.position - targetPosition) <= 0.12f * 0.12f;
+    }
+
+    private bool IsTooFarFromPlayer(float distanceToPlayer)
+    {
+        return distanceToPlayer > Mathf.Max(0.1f, flyRadius) * 1.5f;
+    }
+
+    private void PickNewParrotTarget(ParrotMovementState movementState)
+    {
+        movementState.TargetOffset = Random.insideUnitCircle * Mathf.Max(0.1f, flyRadius);
+        movementState.NextTargetTime = Time.time + Random.Range(
+            Mathf.Max(0.01f, positionChangeIntervalMin),
+            Mathf.Max(Mathf.Max(0.01f, positionChangeIntervalMin), positionChangeIntervalMax));
+        movementState.HasTarget = true;
+    }
+
+    private Vector3 GetParrotTargetPosition(ParrotMovementState movementState)
+    {
+        Transform targetTransform = playerTransform != null ? playerTransform : transform;
+        return targetTransform.position + new Vector3(movementState.TargetOffset.x, movementState.TargetOffset.y, 0f);
     }
 
     private void ClearParrots()
@@ -271,6 +344,7 @@ public class BirdCrewController : MonoBehaviour
         }
 
         parrots.Clear();
+        parrotMovementStates.Clear();
     }
 
     private Transform GetFirePoint()
@@ -352,6 +426,13 @@ public class BirdCrewController : MonoBehaviour
         spriteRenderer.color = crewType == BirdCrewType.BirdBoy ? new Color(0.2f, 0.8f, 0.25f, 1f) : new Color(0.35f, 0.1f, 0.45f, 1f);
         spriteRenderer.sortingOrder = 15;
         return parrot;
+    }
+
+    private sealed class ParrotMovementState
+    {
+        public Vector2 TargetOffset;
+        public float NextTargetTime;
+        public bool HasTarget;
     }
 
     private static Sprite GetBirdBoyProjectileSprite()
