@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Shows sprite flash feedback when a ship health component takes damage.
+/// </summary>
 [DisallowMultipleComponent]
 public class DamageFlashFeedback : MonoBehaviour
 {

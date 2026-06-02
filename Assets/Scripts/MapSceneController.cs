@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handles map scene buttons, stage lock state, and scene navigation.
+/// </summary>
 public class MapSceneController : MonoBehaviour
 {
     [Header("Stage Scene Names")]
@@ -43,22 +46,52 @@ public class MapSceneController : MonoBehaviour
         RefreshStageButtons();
     }
 
+    /// <summary>
+    /// Loads Stage 1 when it is available.
+    /// </summary>
     public void LoadStage1() => LoadStage(1, stage1SceneName, nameof(stage1SceneName));
+    /// <summary>
+    /// Loads Stage 2 when it is available.
+    /// </summary>
     public void LoadStage2() => LoadStage(2, stage2SceneName, nameof(stage2SceneName));
+    /// <summary>
+    /// Loads Stage 3 when it is available.
+    /// </summary>
     public void LoadStage3() => LoadStage(3, stage3SceneName, nameof(stage3SceneName));
 
+    /// <summary>
+    /// Loads the configured Stage 1/MainSea scene path when available.
+    /// </summary>
     public void LoadStageMainSea() => LoadStage1();
 
+    /// <summary>
+    /// Marks the configured current stage complete for testing or UI buttons.
+    /// </summary>
     public void CompleteCurrentStage() => CompleteStage(currentStageNumber);
+    /// <summary>
+    /// Marks Stage 1 complete for testing or UI buttons.
+    /// </summary>
     public void CompleteStage1() => CompleteStage(1);
+    /// <summary>
+    /// Marks Stage 2 complete for testing or UI buttons.
+    /// </summary>
     public void CompleteStage2() => CompleteStage(2);
+    /// <summary>
+    /// Marks Stage 3 complete for testing or UI buttons.
+    /// </summary>
     public void CompleteStage3() => CompleteStage(3);
 
+    /// <summary>
+    /// Loads the configured ship shop scene from the map.
+    /// </summary>
     public void GoToShipShop()
     {
         LoadScene(shipShopSceneName, nameof(shipShopSceneName));
     }
 
+    /// <summary>
+    /// Loads the configured main menu scene.
+    /// </summary>
     public void GoToMainMenu()
     {
         LoadScene(mainMenuSceneName, nameof(mainMenuSceneName));

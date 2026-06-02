@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Pulls nearby resource pickups toward the player when magnet upgrades are active.
+/// </summary>
 public class PickupMagnetController : MonoBehaviour
 {
     [Header("Magnet Settings")]
@@ -10,8 +13,15 @@ public class PickupMagnetController : MonoBehaviour
 
     private readonly Collider2D[] overlapResults = new Collider2D[128];
 
+    /// <summary>
+    /// Gets the current pickup magnet radius.
+    /// </summary>
     public float MagnetRadius => magnetRadius;
 
+    /// <summary>
+    /// Adds to the magnet radius value.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void AddMagnetRadius(float amount)
     {
         magnetRadius = Mathf.Max(0f, magnetRadius + amount);

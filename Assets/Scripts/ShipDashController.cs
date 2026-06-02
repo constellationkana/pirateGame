@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles the ship dash ability, cooldown, duration, and unlock state.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class ShipDashController : MonoBehaviour
 {
@@ -21,7 +24,13 @@ public class ShipDashController : MonoBehaviour
     private float dashTimeRemaining;
     private Vector2 dashDirection = Vector2.up;
 
+    /// <summary>
+    /// Gets whether dash is unlocked for this ship.
+    /// </summary>
     public bool DashUnlocked => dashUnlocked;
+    /// <summary>
+    /// Checks whether dashing.
+    /// </summary>
     public bool IsDashing => isDashing;
 
     private void Awake()
@@ -122,21 +131,36 @@ public class ShipDashController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Unlocks dash for this ship.
+    /// </summary>
     public void UnlockDash()
     {
         dashUnlocked = true;
     }
 
+    /// <summary>
+    /// Adds to the dash speed value.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void AddDashSpeed(float amount)
     {
         dashSpeed = Mathf.Max(0f, dashSpeed + amount);
     }
 
+    /// <summary>
+    /// Reduces the dash cooldown value.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void ReduceDashCooldown(float amount)
     {
         dashCooldown = Mathf.Max(0.1f, dashCooldown - amount);
     }
 
+    /// <summary>
+    /// Adds to the dash duration value.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void AddDashDuration(float amount)
     {
         dashDuration = Mathf.Max(0.05f, dashDuration + amount);

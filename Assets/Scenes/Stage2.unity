@@ -11317,6 +11317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 239843267}
   - component: {fileID: 239843266}
+  - component: {fileID: 239843268}
   m_Layer: 0
   m_Name: TreasureChestSpawner
   m_TagString: Untagged
@@ -11343,6 +11344,19 @@ MonoBehaviour:
   spawnRadiusMax: 14
   maxActiveChests: 3
   spawnChance: 0.001
+--- !u!114 &239843268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239843265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d800cba5720b49249ccb442a0ea00a50, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::DebugTreasureChestMenu
+  treasureChestSpawner: {fileID: 239843266}
 --- !u!4 &239843267
 Transform:
   m_ObjectHideFlags: 0

@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handles pause-menu behavior and navigation inside the ship shop scene.
+/// </summary>
 public class ShipShopPauseMenu : MonoBehaviour
 {
     [Header("UI")]
@@ -48,6 +51,9 @@ public class ShipShopPauseMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggles this pause or shop menu between open and closed states.
+    /// </summary>
     public void ToggleMenu()
     {
         if (isOpen)
@@ -60,6 +66,9 @@ public class ShipShopPauseMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens this menu and applies its pause behavior.
+    /// </summary>
     public void OpenMenu()
     {
         if (isOpen)
@@ -82,6 +91,9 @@ public class ShipShopPauseMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Closes this menu and resumes gameplay time when appropriate.
+    /// </summary>
     public void Resume()
     {
         isOpen = false;
@@ -93,18 +105,27 @@ public class ShipShopPauseMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads the configured map scene.
+    /// </summary>
     public void GoToMap()
     {
         SaveActiveSlotIfAvailable();
         LoadScene(mapSceneName, nameof(mapSceneName));
     }
 
+    /// <summary>
+    /// Loads the configured main menu scene.
+    /// </summary>
     public void GoToMainMenu()
     {
         SaveActiveSlotIfAvailable();
         LoadScene(mainMenuSceneName, nameof(mainMenuSceneName));
     }
 
+    /// <summary>
+    /// Refreshes displayed UI values from the current game state.
+    /// </summary>
     public void Refresh()
     {
         if (PlayerProgression.HasActiveSaveSlot)

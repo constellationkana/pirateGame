@@ -1,11 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls a hired bird crew companion, including movement, attacks, prefab setup, and upgrade scaling.
+/// </summary>
 public class BirdCrewController : MonoBehaviour
 {
+    /// <summary>
+    /// Identifies the supported bird crew companion types.
+    /// </summary>
     public enum BirdCrewType
     {
+        /// <summary>
+        /// Represents the bird boy option.
+        /// </summary>
         BirdBoy,
+        /// <summary>
+        /// Represents the evil bird boy option.
+        /// </summary>
         EvilBirdBoy
     }
 
@@ -55,19 +67,34 @@ public class BirdCrewController : MonoBehaviour
     private static Sprite evilBirdBoyProjectileSprite;
     private static Sprite parrotPlaceholderSprite;
 
+    /// <summary>
+    /// Gets or stores the bird crew type represented by this object.
+    /// </summary>
     public BirdCrewType CrewType => crewType;
+    /// <summary>
+    /// Gets whether this crew controller has at least one prefab reference assigned.
+    /// </summary>
     public bool HasAssignedPrefabs => parrotPrefab != null || projectilePrefab != null;
 
     private string CrewId => crewType == BirdCrewType.BirdBoy ? RunCrewManager.BirdBoyCrewId : RunCrewManager.EvilBirdBoyCrewId;
     private string DamageUpgradeId => crewType == BirdCrewType.BirdBoy ? RunCrewManager.BirdBoyDamageUpgradeId : RunCrewManager.EvilBirdBoyDamageUpgradeId;
     private string CooldownUpgradeId => crewType == BirdCrewType.BirdBoy ? RunCrewManager.BirdBoyCooldownUpgradeId : RunCrewManager.EvilBirdBoyCooldownUpgradeId;
 
+    /// <summary>
+    /// Sets the bird crew type used by this controller.
+    /// </summary>
+    /// <param name="type">Crew type to assign.</param>
     public void SetCrewType(BirdCrewType type)
     {
         crewType = type;
         RefreshActiveState();
     }
 
+    /// <summary>
+    /// Assigns runtime references required by the bird crew controller.
+    /// </summary>
+    /// <param name="newRunCrewManager">Run crew manager to use for runtime coordination.</param>
+    /// <param name="newPlayerTransform">Player transform to follow or target.</param>
     public void ConfigureRuntimeReferences(RunCrewManager newRunCrewManager, Transform newPlayerTransform)
     {
         if (newRunCrewManager != null && runCrewManager != newRunCrewManager)
@@ -84,6 +111,12 @@ public class BirdCrewController : MonoBehaviour
         RefreshActiveState();
     }
 
+    /// <summary>
+    /// Assigns missing prefab references without replacing existing assignments.
+    /// </summary>
+    /// <param name="newParrotPrefab">Parrot prefab to assign when missing.</param>
+    /// <param name="newProjectilePrefab">Projectile prefab to assign when missing.</param>
+    /// <returns>True when the condition is met; otherwise false.</returns>
     public bool ConfigurePrefabsIfMissing(GameObject newParrotPrefab, GameObject newProjectilePrefab)
     {
         bool changed = false;
@@ -107,18 +140,34 @@ public class BirdCrewController : MonoBehaviour
         return changed;
     }
 
+    /// <summary>
+    /// Checks whether the controller is using the provided prefab references.
+    /// </summary>
+    /// <param name="assignedParrotPrefab">Parrot prefab reference to compare.</param>
+    /// <param name="assignedProjectilePrefab">Projectile prefab reference to compare.</param>
+    /// <returns>True when the condition is met; otherwise false.</returns>
     public bool HasAssignedPrefsFrom(GameObject assignedParrotPrefab, GameObject assignedProjectilePrefab)
     {
         return (assignedParrotPrefab != null && parrotPrefab == assignedParrotPrefab)
             || (assignedProjectilePrefab != null && projectilePrefab == assignedProjectilePrefab);
     }
 
+    /// <summary>
+    /// Logs where this controller received its prefab references from.
+    /// </summary>
+    /// <param name="source">Description of the assignment source to log.</param>
     public void LogPrefabAssignmentSource(string source)
     {
         Debug.Log($"[BirdCrewController] {GetControllerDebugName()} using {source}. Parrot prefab: {GetPrefabName(parrotPrefab)}. Projectile prefab: {GetPrefabName(projectilePrefab)}.", this);
     }
 
+    /// <summary>
+    /// Gets the maximum allowed damage upgrade level.
+    /// </summary>
     public int MaxDamageUpgradeLevel => Mathf.Max(1, maxDamageUpgradeLevel);
+    /// <summary>
+    /// Gets the maximum allowed cooldown upgrade level.
+    /// </summary>
     public int MaxCooldownUpgradeLevel => Mathf.Max(1, maxCooldownUpgradeLevel);
 
     private void Awake()
@@ -612,14 +661,29 @@ public class BirdCrewController : MonoBehaviour
 
     private sealed class ParrotMovementState
     {
+        /// <summary>
+        /// Stores the current offset from the follow target.
+        /// </summary>
         public Vector2 TargetOffset;
+        /// <summary>
+        /// Stores the next time a new target offset should be selected.
+        /// </summary>
         public float NextTargetTime;
+        /// <summary>
+        /// Stores whether this follower currently has a valid target.
+        /// </summary>
         public bool HasTarget;
     }
 
     private sealed class ParrotVisualMarker : MonoBehaviour
     {
+        /// <summary>
+        /// Stores the bird crew controller that owns this runtime helper.
+        /// </summary>
         public BirdCrewController Owner;
+        /// <summary>
+        /// Gets or stores the bird crew type represented by this object.
+        /// </summary>
         public BirdCrewType CrewType;
     }
 

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Moves the camera to follow a configured 2D target.
+/// </summary>
 public class CameraFollow2D : MonoBehaviour
 {
     [Header("Follow Target")]
@@ -29,6 +32,10 @@ public class CameraFollow2D : MonoBehaviour
         );
     }
 
+    /// <summary>
+    /// Assigns the target this component should follow.
+    /// </summary>
+    /// <param name="newTarget">Target transform to assign.</param>
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;

@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays the player level and experience progress on the HUD.
+/// </summary>
 public class XPBarUI : MonoBehaviour
 {
     [SerializeField] private PlayerLevelSystem playerLevelSystem;
