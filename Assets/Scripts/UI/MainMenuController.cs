@@ -53,14 +53,23 @@ public class MainMenuController : MonoBehaviour
         RefreshContinueState();
     }
 
+    /// <summary>
+    /// Creates a new save slot and loads the map scene.
+    /// </summary>
     public void OnPlayPressed()
     {
         PlayerProgression.CreateNewSaveSlot();
         LoadMap();
     }
 
+    /// <summary>
+    /// Compatibility entry point for new-game buttons; starts a new save.
+    /// </summary>
     public void OnNewGamePressed() => OnPlayPressed();
 
+    /// <summary>
+    /// Opens save selection when saves exist, or displays the no-save message.
+    /// </summary>
     public void OnContinuePressed()
     {
         if (!PlayerProgression.HasSaveFile())
@@ -73,6 +82,9 @@ public class MainMenuController : MonoBehaviour
         OpenSaveSelectPanel();
     }
 
+    /// <summary>
+    /// Shows the save-select panel and refreshes its list.
+    /// </summary>
     public void OpenSaveSelectPanel()
     {
         mainButtonsPanel?.SetActive(false);
@@ -82,12 +94,19 @@ public class MainMenuController : MonoBehaviour
         RefreshSaveSelectList();
     }
 
+    /// <summary>
+    /// Hides the save-select panel and returns to the main buttons.
+    /// </summary>
     public void CloseSaveSelectPanel()
     {
         saveSelectPanel?.SetActive(false);
         ShowMainButtons();
     }
 
+    /// <summary>
+    /// Loads a selected save slot and opens the map when successful.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
     public void LoadSaveSlot(int slotId)
     {
         if (PlayerProgression.SetActiveSaveSlot(slotId))
@@ -96,6 +115,10 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Selects a save slot for renaming and focuses the rename input field.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
     public void BeginRenameSaveSlot(int slotId)
     {
         selectedRenameSlotId = slotId;
@@ -111,6 +134,9 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Renames the currently selected save slot using the rename input field.
+    /// </summary>
     public void RenameSelectedSaveSlot()
     {
         if (selectedRenameSlotId < 0)
@@ -134,12 +160,20 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Renames an existing save slot.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
     public void RenameSaveSlot(int slotId)
     {
         selectedRenameSlotId = slotId;
         RenameSelectedSaveSlot();
     }
 
+    /// <summary>
+    /// Deletes an existing save slot and selects another slot when needed.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
     public void DeleteSaveSlot(int slotId)
     {
         if (PlayerProgression.DeleteSaveSlot(slotId))
@@ -153,6 +187,9 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the settings panel and hides other menu panels.
+    /// </summary>
     public void OnSettingsPressed()
     {
         mainButtonsPanel?.SetActive(false);
@@ -161,6 +198,9 @@ public class MainMenuController : MonoBehaviour
         saveSelectPanel?.SetActive(false);
     }
 
+    /// <summary>
+    /// Shows the credits panel and hides other menu panels.
+    /// </summary>
     public void OnCreditsPressed()
     {
         mainButtonsPanel?.SetActive(false);
@@ -169,6 +209,9 @@ public class MainMenuController : MonoBehaviour
         saveSelectPanel?.SetActive(false);
     }
 
+    /// <summary>
+    /// Shows the main button panel and hides secondary panels.
+    /// </summary>
     public void ShowMainButtons()
     {
         mainButtonsPanel?.SetActive(true);
@@ -177,6 +220,9 @@ public class MainMenuController : MonoBehaviour
         saveSelectPanel?.SetActive(false);
     }
 
+    /// <summary>
+    /// Quits the application in builds or logs the quit request in the editor.
+    /// </summary>
     public void OnQuitPressed()
     {
 #if UNITY_EDITOR
@@ -186,6 +232,9 @@ public class MainMenuController : MonoBehaviour
 #endif
     }
 
+    /// <summary>
+    /// Rebuilds the save-select UI list from saved progression summaries.
+    /// </summary>
     public void RefreshSaveSelectList()
     {
         ClearSpawnedSaveEntries();

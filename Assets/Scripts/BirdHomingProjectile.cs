@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Moves a bird projectile toward a target and applies configured damage or slowing effects on impact.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 public class BirdHomingProjectile : MonoBehaviour
@@ -59,6 +62,17 @@ public class BirdHomingProjectile : MonoBehaviour
         AlignToDirection(desiredDirection);
     }
 
+    /// <summary>
+    /// Initializes this component with runtime references and configuration values.
+    /// </summary>
+    /// <param name="newTarget">Target transform to assign.</param>
+    /// <param name="fallbackDirection">Direction used when no target is available.</param>
+    /// <param name="projectileSpeed">Projectile movement speed.</param>
+    /// <param name="turnSpeed">Projectile turn speed.</param>
+    /// <param name="projectileDamage">Damage dealt by the projectile.</param>
+    /// <param name="projectileSlowChance">Chance that the projectile applies a slow effect.</param>
+    /// <param name="projectileSlowDuration">Duration of the slow effect in seconds.</param>
+    /// <param name="ownerObject">Object that owns or fired this projectile.</param>
     public void Initialize(Transform newTarget, Vector2 fallbackDirection, float projectileSpeed, float turnSpeed, int projectileDamage, float projectileSlowChance, float projectileSlowDuration, GameObject ownerObject)
     {
         target = newTarget;
@@ -74,6 +88,10 @@ public class BirdHomingProjectile : MonoBehaviour
         AlignToDirection(launchDirection);
     }
 
+    /// <summary>
+    /// Sets whether this projectile should be treated as player-fired.
+    /// </summary>
+    /// <param name="playerOwned">True when the projectile belongs to the player.</param>
     public void SetFiredByPlayer(bool playerOwned)
     {
         firedByPlayer = playerOwned;

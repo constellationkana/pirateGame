@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Handles boarding and unboarding interactions between the walking player and the ship.
+/// </summary>
 public class BoardShipTrigger : MonoBehaviour
 {
     [Header("References")]
@@ -116,11 +119,17 @@ public class BoardShipTrigger : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Forces the player into the boarded ship state.
+    /// </summary>
     public void ForceBoardPlayer()
     {
         BoardPlayer();
     }
 
+    /// <summary>
+    /// Forces the player out of the boarded ship state.
+    /// </summary>
     public void ForceUnboardPlayer()
     {
         UnboardPlayer();

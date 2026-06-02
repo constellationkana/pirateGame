@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays the saved doubloon total in the ship shop UI.
+/// </summary>
 public class ShipShopCurrencyHUD : MonoBehaviour
 {
     [SerializeField] private TMP_Text doubloonText;
@@ -35,6 +38,9 @@ public class ShipShopCurrencyHUD : MonoBehaviour
         nextRefreshTime = Time.unscaledTime + Mathf.Max(0.05f, refreshInterval);
     }
 
+    /// <summary>
+    /// Refreshes displayed UI values from the current game state.
+    /// </summary>
     public void Refresh()
     {
         if (doubloonText == null)

@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Tracks player experience, level-ups, and upgrade-choice events for a run.
+/// </summary>
 public class PlayerLevelSystem : MonoBehaviour
 {
     [SerializeField] private int startingXPRequired = 10;
@@ -12,12 +15,30 @@ public class PlayerLevelSystem : MonoBehaviour
 
     private int pendingLevelUps;
 
+    /// <summary>
+    /// Raised when the current XP value changes.
+    /// </summary>
     public event Action OnXPChanged;
+    /// <summary>
+    /// Raised when the player gains a level.
+    /// </summary>
     public event Action<int> OnLevelUp;
 
+    /// <summary>
+    /// Gets the current level value.
+    /// </summary>
     public int CurrentLevel => currentLevel;
+    /// <summary>
+    /// Gets the current XP value.
+    /// </summary>
     public int CurrentXP => currentXP;
+    /// <summary>
+    /// Gets the XP required to reach the next level.
+    /// </summary>
     public int XPRequiredForNextLevel => xpRequiredForNextLevel;
+    /// <summary>
+    /// Gets the current XP progress as a 0-to-1 percentage.
+    /// </summary>
     public float XPPercent => xpRequiredForNextLevel <= 0 ? 0f : (float)currentXP / xpRequiredForNextLevel;
 
     private void Awake()
@@ -32,6 +53,10 @@ public class PlayerLevelSystem : MonoBehaviour
         OnXPChanged?.Invoke();
     }
 
+    /// <summary>
+    /// Adds to the XP value.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void AddXP(int amount)
     {
         if (amount <= 0)
@@ -50,6 +75,9 @@ public class PlayerLevelSystem : MonoBehaviour
         OnXPChanged?.Invoke();
     }
 
+    /// <summary>
+    /// Notifies listeners that level up choice completed occurred.
+    /// </summary>
     public void NotifyLevelUpChoiceCompleted()
     {
         if (pendingLevelUps > 0)

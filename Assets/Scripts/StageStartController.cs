@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the stage start-run button, boarding state, run timer start, and helper UI visibility.
+/// </summary>
 [DisallowMultipleComponent]
 public class StageStartController : MonoBehaviour
 {
@@ -63,6 +66,9 @@ public class StageStartController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts run flow for this controller.
+    /// </summary>
     public void StartRun()
     {
         ResolveReferences();

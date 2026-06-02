@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Applies damage when this object contacts a ship health target.
+/// </summary>
 public class ContactShipDamage : MonoBehaviour
 {
     [SerializeField] private int damage = 1;

@@ -7,28 +7,52 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+/// <summary>
+/// Drives the ship shop UI for upgrades, unlocks, cosmetics, crew hiring, prompts, and run navigation.
+/// </summary>
 public class ShipShopController : MonoBehaviour
 {
     [Serializable]
     private class UpgradePurchaseConfig
     {
+        /// <summary>
+        /// Starting cost for the first purchase level.
+        /// </summary>
         public int baseCost = 50;
+        /// <summary>
+        /// Additional cost added per purchased level.
+        /// </summary>
         public int costIncreasePerLevel = 50;
+        /// <summary>
+        /// Maximum allowed purchase level; zero means uncapped.
+        /// </summary>
         [Tooltip("0 means uncapped.")]
         public int maxLevel = 10;
+        /// <summary>
+        /// Stat increase applied for each purchased level.
+        /// </summary>
         public float statIncreasePerLevel = 1f;
     }
 
     [Serializable]
     private class UnlockPurchaseConfig
     {
+        /// <summary>
+        /// Doubloon cost for this unlock.
+        /// </summary>
         public int cost = 100;
     }
 
     [Serializable]
     private class MenuButtonReferences
     {
+        /// <summary>
+        /// Text label associated with this UI button reference.
+        /// </summary>
         public TMP_Text labelText;
+        /// <summary>
+        /// UI Button reference used by this entry.
+        /// </summary>
         public Button button;
     }
 
@@ -196,6 +220,7 @@ public class ShipShopController : MonoBehaviour
 
     private void EnsureButtonListener(Button button, UnityAction action, string methodName)
     {
+        // Runtime listeners are added only when the same persistent UnityEvent method is not already wired in the scene.
         if (button == null || action == null)
         {
             return;
@@ -228,11 +253,26 @@ public class ShipShopController : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Opens only the health upgrade menu panel.
+    /// </summary>
     public void OpenHealthMenu() => OpenOnlyMenu(healthMenuPanel, "Health Menu");
+    /// <summary>
+    /// Opens only the speed upgrade menu panel.
+    /// </summary>
     public void OpenSpeedMenu() => OpenOnlyMenu(speedMenuPanel, "Speed Menu");
+    /// <summary>
+    /// Opens only the arsenal upgrade menu panel.
+    /// </summary>
     public void OpenArsenalMenu() => OpenOnlyMenu(arsenalMenuPanel, "Arsenal Menu");
+    /// <summary>
+    /// Opens only the abilities upgrade menu panel.
+    /// </summary>
     public void OpenAbilitiesMenu() => OpenOnlyMenu(abilitiesMenuPanel, "Abilities Menu");
 
+    /// <summary>
+    /// Closes all shop category and crew menu panels.
+    /// </summary>
     public void CloseAllMenus()
     {
         SetMenuActive(healthMenuPanel, false);
@@ -242,13 +282,37 @@ public class ShipShopController : MonoBehaviour
         SetMenuActive(crewMenuPanel, false);
     }
 
+    /// <summary>
+    /// Attempts to purchase one base health upgrade level.
+    /// </summary>
     public void BuyHealthUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseHealthId, baseHealth, null, "Base health upgraded!");
+    /// <summary>
+    /// Attempts to unlock health regeneration rewards.
+    /// </summary>
     public void UnlockHealthRegeneration() => TryBuyUnlock(PlayerProgression.UnlockHealthRegenId, healthRegenUnlock, "Health regeneration unlocked for level-up choices!");
+    /// <summary>
+    /// Attempts to purchase one base speed upgrade level.
+    /// </summary>
     public void BuySpeedUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseSpeedId, baseSpeed, null, "Base ship speed upgraded!");
+    /// <summary>
+    /// Unlocks dash and saves the progression state.
+    /// </summary>
     public void UnlockDash() => TryBuyUnlock(PlayerProgression.UnlockDashId, dashUnlock, "Dash unlocked for level-up choices!");
+    /// <summary>
+    /// Compatibility entry point that purchases the dash unlock.
+    /// </summary>
     public void BuyDashUnlock() => UnlockDash();
+    /// <summary>
+    /// Attempts to purchase one base cannon-damage upgrade level.
+    /// </summary>
     public void BuyCannonDamageUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseCannonDamageId, baseCannonDamage, null, "Base cannonball damage upgraded!");
+    /// <summary>
+    /// Attempts to unlock cannonball size rewards.
+    /// </summary>
     public void UnlockCannonballSizeUpgrade() => TryBuyUnlock(PlayerProgression.UnlockCannonballSizeId, cannonballSizeUnlock, "Cannonball size upgrades unlocked!");
+    /// <summary>
+    /// Attempts to unlock cannonball speed rewards and the linked shoot-rate unlock.
+    /// </summary>
     public void UnlockCannonballSpeedUpgrade()
     {
         TryBuyUnlock(PlayerProgression.UnlockCannonballSpeedId, cannonballSpeedUnlock, "Cannonball speed and shoot-rate upgrades unlocked!");
@@ -257,36 +321,84 @@ public class ShipShopController : MonoBehaviour
             progression.Unlock(PlayerProgression.UnlockCannonballShootRateId);
         }
     }
+    /// <summary>
+    /// Attempts to purchase one base cannonball-speed upgrade level.
+    /// </summary>
     public void BuyBaseCannonballSpeedUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBaseCannonballSpeedId, baseCannonballSpeed, PlayerProgression.UnlockCannonballSpeedId, "Base cannonball speed upgraded!");
+    /// <summary>
+    /// Attempts to unlock exploding cannonball rewards.
+    /// </summary>
     public void UnlockExplodingCannonballs() => TryBuyUnlock(PlayerProgression.UnlockCannonballExplosionId, explodingCannonballsUnlock, "Exploding cannonballs unlocked for level-up choices!");
+    /// <summary>
+    /// Attempts to purchase one explosion-power upgrade level.
+    /// </summary>
     public void BuyExplosionPowerUpgrade() => TryBuyLevel(PlayerProgression.UpgradeExplosionPowerId, explosionPower, PlayerProgression.UnlockCannonballExplosionId, "Explosion damage upgraded!");
+    /// <summary>
+    /// Buys explosion power when unlocked, otherwise attempts to unlock exploding cannonballs.
+    /// </summary>
     public void BuyOrUnlockExplodingCannonballs()
     {
         if (!HasProgression()) return;
         if (progression.IsUnlocked(PlayerProgression.UnlockCannonballExplosionId)) BuyExplosionPowerUpgrade();
         else UnlockExplodingCannonballs();
     }
+    /// <summary>
+    /// Attempts to unlock barnacle rewards.
+    /// </summary>
     public void UnlockBarnacles() => TryBuyUnlock(PlayerProgression.UnlockBarnaclesId, barnaclesUnlock, "Barnacles unlocked for level-up choices!");
+    /// <summary>
+    /// Attempts to purchase one barnacle-power upgrade level.
+    /// </summary>
     public void BuyBarnaclesUpgrade() => TryBuyLevel(PlayerProgression.UpgradeBarnaclePowerId, barnaclePower, PlayerProgression.UnlockBarnaclesId, "Barnacles damage upgraded!");
+    /// <summary>
+    /// Buys barnacle power when unlocked, otherwise attempts to unlock barnacles.
+    /// </summary>
     public void BuyOrUnlockBarnacles()
     {
         if (!HasProgression()) return;
         if (progression.IsUnlocked(PlayerProgression.UnlockBarnaclesId)) BuyBarnaclesUpgrade();
         else UnlockBarnacles();
     }
+    /// <summary>
+    /// Attempts to unlock cannonball pierce rewards.
+    /// </summary>
     public void UnlockCannonballPierce() => TryBuyUnlock(PlayerProgression.UnlockCannonballPierceId, cannonballPierceUnlock, "Cannonball pierce unlocked!");
+    /// <summary>
+    /// Attempts to unlock magnet rewards.
+    /// </summary>
     public void UnlockMagnetUpgrades() => TryBuyUnlock(PlayerProgression.UnlockMagnetId, magnetUnlock, "Magnet unlocked for level-up choices!");
+    /// <summary>
+    /// Unlocks force field and saves the progression state.
+    /// </summary>
     public void UnlockForceField() => TryBuyUnlock(PlayerProgression.UnlockForceFieldId, forceFieldUnlock, "Force field unlocked for level-up choices!");
+    /// <summary>
+    /// Compatibility entry point that purchases the force-field unlock.
+    /// </summary>
     public void BuyForceFieldUnlock() => UnlockForceField();
+    /// <summary>
+    /// Attempts to purchase one force-field damage upgrade level.
+    /// </summary>
     public void BuyForceFieldDamageUpgrade() => TryBuyLevel(PlayerProgression.UpgradeForceFieldDamageId, forceFieldDamage, PlayerProgression.UnlockForceFieldId, "Force field damage upgraded!");
+    /// <summary>
+    /// Buys force-field damage when unlocked, otherwise attempts to unlock force field.
+    /// </summary>
     public void BuyOrUnlockForceField()
     {
         if (!HasProgression()) return;
         if (progression.IsUnlocked(PlayerProgression.UnlockForceFieldId)) BuyForceFieldDamageUpgrade();
         else UnlockForceField();
     }
+    /// <summary>
+    /// Attempts to unlock cursed-doubloons rewards.
+    /// </summary>
     public void UnlockCursedDoubloons() => TryBuyUnlock(PlayerProgression.UnlockCursedDoubloonsId, cursedDoubloonsUnlock, "Cursed doubloons unlocked for level-up choices!");
+    /// <summary>
+    /// Attempts to purchase one cursed-doubloons damage upgrade level.
+    /// </summary>
     public void BuyCursedDoubloonsDamageUpgrade() => TryBuyLevel(PlayerProgression.UpgradeCursedDoubloonsDamageId, cursedDoubloonsDamage, PlayerProgression.UnlockCursedDoubloonsId, "Cursed doubloons damage upgraded!");
+    /// <summary>
+    /// Buys cursed-doubloons damage when unlocked, otherwise attempts to unlock cursed doubloons.
+    /// </summary>
     public void BuyOrUnlockCursedDoubloons()
     {
         if (!HasProgression()) return;
@@ -294,12 +406,20 @@ public class ShipShopController : MonoBehaviour
         else UnlockCursedDoubloons();
     }
 
+    /// <summary>
+    /// Attempts to purchase a configured generic unlock by id.
+    /// </summary>
+    /// <param name="unlockId">Unlock identifier.</param>
     public void BuyGenericUnlock(string unlockId)
     {
         if (string.IsNullOrWhiteSpace(unlockId)) return;
         TryBuyUnlock(unlockId, GetUnlockConfig(unlockId), $"Unlocked: {unlockId}");
     }
 
+    /// <summary>
+    /// Purchases a cosmetic if needed, then selects it.
+    /// </summary>
+    /// <param name="index">Configured array index.</param>
     public void BuyOrSelectCosmetic(int index)
     {
         if (!HasProgression()) return;
@@ -320,6 +440,9 @@ public class ShipShopController : MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>
+    /// Selects or buys the current cosmetic and advances to the next configured cosmetic.
+    /// </summary>
     public void CycleCosmetic()
     {
         if (cosmeticIds == null || cosmeticIds.Length == 0)
@@ -332,8 +455,15 @@ public class ShipShopController : MonoBehaviour
         currentCosmeticIndex = (currentCosmeticIndex + 1) % cosmeticIds.Length;
     }
 
+    /// <summary>
+    /// Compatibility entry point that cycles cosmetics.
+    /// </summary>
     public void OpenCosmeticShop() => CycleCosmetic();
 
+    /// <summary>
+    /// Opens the crew hiring menu for a selected crew interaction.
+    /// </summary>
+    /// <param name="crew">Crew interaction to display.</param>
     public void OpenCrewMenu(CrewNPCInteraction crew)
     {
         if (crew == null)
@@ -358,6 +488,9 @@ public class ShipShopController : MonoBehaviour
         SetMessage($"Talking to {selectedCrew.CrewName}");
     }
 
+    /// <summary>
+    /// Attempts to spend doubloons and unlock the currently selected crew member.
+    /// </summary>
     public void HireSelectedCrew()
     {
         if (selectedCrew == null)
@@ -403,12 +536,19 @@ public class ShipShopController : MonoBehaviour
         RefreshCrewMenu();
     }
 
+    /// <summary>
+    /// Closes the crew menu and clears the selected crew.
+    /// </summary>
     public void CloseCrewMenu()
     {
         SetMenuActive(crewMenuPanel, false);
         selectedCrew = null;
     }
 
+    /// <summary>
+    /// Updates the global shop prompt text when assigned.
+    /// </summary>
+    /// <param name="prompt">Prompt message to display.</param>
     public void SetGlobalPrompt(string prompt)
     {
         if (promptText != null)
@@ -417,6 +557,9 @@ public class ShipShopController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts run flow for this controller.
+    /// </summary>
     public void StartRun()
     {
         if (logSceneTransitions)
@@ -485,6 +628,7 @@ public class ShipShopController : MonoBehaviour
 
     private void TryBuyLevel(string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId, string successMessage)
     {
+        // All permanent upgrade purchases flow through this shared guard so UI buttons stay consistent.
         if (!CanAttemptPurchase()) return;
         if (!string.IsNullOrWhiteSpace(requiredUnlockId) && !progression.IsUnlocked(requiredUnlockId))
         {

@@ -1,15 +1,36 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Handles player interaction with a shop stand and routes to the matching shop menu.
+/// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class ShopStandInteraction : MonoBehaviour
 {
+    /// <summary>
+    /// Identifies the type of shop stand interaction.
+    /// </summary>
     public enum ShopStandType
     {
+        /// <summary>
+        /// Represents the health menu option.
+        /// </summary>
         HealthMenu,
+        /// <summary>
+        /// Represents the speed menu option.
+        /// </summary>
         SpeedMenu,
+        /// <summary>
+        /// Represents the arsenal menu option.
+        /// </summary>
         ArsenalMenu,
+        /// <summary>
+        /// Represents the abilities menu option.
+        /// </summary>
         AbilitiesMenu,
+        /// <summary>
+        /// Represents the start run option.
+        /// </summary>
         StartRun
     }
 

@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Handles boss death by marking stage completion and optionally showing victory UI or run summaries.
+/// </summary>
 [DisallowMultipleComponent]
 public class BossDefeatHandler : MonoBehaviour
 {
@@ -50,6 +53,10 @@ public class BossDefeatHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Assigns the UI text used for victory messages.
+    /// </summary>
+    /// <param name="text">Text component to assign.</param>
     public void SetVictoryMessageText(TMP_Text text)
     {
         victoryMessageText = text;
