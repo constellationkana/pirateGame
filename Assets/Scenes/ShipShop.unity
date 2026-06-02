@@ -354,9 +354,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CrewNPCInteraction
   crewId: evil_bird_boy
   crewName: Evil Bird-Boy
-  description: Hire Bird-Boy to join your crew. Combat abilities are not implemented
-    yet. A darker version of Bird-Boy with much worse manners.
-  abilityDescription: Summons birds that shoot eggs at enemy ships.
+  description: Hire Evil Bird-Boy to join your crew. A darker version of Bird-Boy
+    with much worse manners.
+  abilityDescription: "Summons birds that throw poop at enemy ships.\r\n Poop shots
+    can slow enemies.\r\n"
   price: 5000
   crewSprite: {fileID: 7443152337332035106, guid: a8c68cbc1d3def84db883f5030d0b118, type: 3}
   hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
@@ -8425,10 +8426,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CrewNPCInteraction
   crewId: barrel_joe
   crewName: Barrel Joe
-  description: Hire Bird-Boy to join your crew. Combat abilities are not implemented
-    yet. Carries explosive barrels everywhere and definitely should not be trusted.
-    manners.
-  abilityDescription: Summons birds that shoot eggs at enemy ships.
+  description: Carries explosive barrels everywhere and definitely should not be
+    trusted
+  abilityDescription: 'Drops floating explosive barrels behind your ship.
+
+    Enemy
+    ships that touch them explode.
+
+
+'
   price: 8000
   crewSprite: {fileID: 4324719897817041111, guid: e16c5b2a73f6feb46aac634c179638c2, type: 3}
   hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
