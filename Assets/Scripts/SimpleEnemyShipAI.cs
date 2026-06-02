@@ -12,7 +12,11 @@ public class SimpleEnemyShipAI : MonoBehaviour
     [SerializeField] private float stoppingDistance = 3f;
     [SerializeField] private float rotationSpeed = 360f;
 
+    [Header("Status Effects")]
+    [SerializeField, Range(0.05f, 1f)] private float slowSpeedMultiplier = 0.5f;
+
     private Rigidbody2D rb;
+    private float slowTimer;
 
     private void Awake()
     {
@@ -35,6 +39,24 @@ public class SimpleEnemyShipAI : MonoBehaviour
     {
         targetShip = newTargetShip;
         playerShipController = newPlayerShipController;
+    }
+
+    public void ApplySlow(float duration)
+    {
+        if (duration <= 0f)
+        {
+            return;
+        }
+
+        slowTimer = Mathf.Max(slowTimer, duration);
+    }
+
+    private void Update()
+    {
+        if (slowTimer > 0f)
+        {
+            slowTimer = Mathf.Max(0f, slowTimer - Time.deltaTime);
+        }
     }
 
     private void FixedUpdate()
@@ -60,7 +82,8 @@ public class SimpleEnemyShipAI : MonoBehaviour
             return;
         }
 
-        rb.linearVelocity = toTarget.normalized * moveSpeed;
+        float currentMoveSpeed = slowTimer > 0f ? moveSpeed * slowSpeedMultiplier : moveSpeed;
+        rb.linearVelocity = toTarget.normalized * currentMoveSpeed;
         rb.angularVelocity = 0f;
     }
 
