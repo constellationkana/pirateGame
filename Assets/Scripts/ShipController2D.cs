@@ -91,7 +91,7 @@ public class ShipController2D : MonoBehaviour
     /// <summary>
     /// Gets the ship forward direction based on movement or transform orientation.
     /// </summary>
-    /// <returns>A normalized 2D direction vector for the ship.</returns>
+    /// <returns>The requested direction vector.</returns>
     public Vector2 GetForwardDirection()
     {
         Vector2 fromMove = LastMoveDirection.sqrMagnitude > 0.001f ? LastMoveDirection : Vector2.zero;
