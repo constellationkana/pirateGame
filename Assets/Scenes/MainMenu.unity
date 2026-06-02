@@ -7998,7 +7998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
   musicSource: {fileID: 2200000004}
-  defaultMusic: {fileID: 8300000, guid: 40bbcf3b5dac76b41b6ea4476544ac3e, type: 3}
+  defaultMusic: {fileID: 8300000, guid: 2c05225404dc2aa4d8e06d6716ce888e, type: 3}
   defaultVolume: 0.6
   volumePrefsKey: MusicVolume
 --- !u!82 &2200000004
