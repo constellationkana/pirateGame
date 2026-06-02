@@ -55,6 +55,7 @@ public class BirdCrewController : MonoBehaviour
     private static Sprite parrotPlaceholderSprite;
 
     public BirdCrewType CrewType => crewType;
+    public bool HasAssignedPrefabs => parrotPrefab != null || projectilePrefab != null;
 
     private string CrewId => crewType == BirdCrewType.BirdBoy ? RunCrewManager.BirdBoyCrewId : RunCrewManager.EvilBirdBoyCrewId;
     private string DamageUpgradeId => crewType == BirdCrewType.BirdBoy ? RunCrewManager.BirdBoyDamageUpgradeId : RunCrewManager.EvilBirdBoyDamageUpgradeId;
@@ -64,6 +65,40 @@ public class BirdCrewController : MonoBehaviour
     {
         crewType = type;
         RefreshActiveState();
+    }
+
+    public bool ConfigurePrefabsIfMissing(GameObject newParrotPrefab, GameObject newProjectilePrefab)
+    {
+        bool changed = false;
+        if (parrotPrefab == null && newParrotPrefab != null)
+        {
+            parrotPrefab = newParrotPrefab;
+            changed = true;
+        }
+
+        if (projectilePrefab == null && newProjectilePrefab != null)
+        {
+            projectilePrefab = newProjectilePrefab;
+            changed = true;
+        }
+
+        if (changed)
+        {
+            RefreshActiveState();
+        }
+
+        return changed;
+    }
+
+    public bool HasAssignedPrefsFrom(GameObject assignedParrotPrefab, GameObject assignedProjectilePrefab)
+    {
+        return (assignedParrotPrefab != null && parrotPrefab == assignedParrotPrefab)
+            || (assignedProjectilePrefab != null && projectilePrefab == assignedProjectilePrefab);
+    }
+
+    public void LogPrefabAssignmentSource(string source)
+    {
+        Debug.Log($"[BirdCrewController] {GetControllerDebugName()} using {source}. Parrot prefab: {GetPrefabName(parrotPrefab)}. Projectile prefab: {GetPrefabName(projectilePrefab)}.", this);
     }
 
     public int MaxDamageUpgradeLevel => Mathf.Max(1, maxDamageUpgradeLevel);
@@ -503,6 +538,11 @@ public class BirdCrewController : MonoBehaviour
     {
         string managerName = runCrewManager != null ? runCrewManager.name : "no RunCrewManager";
         return $"{GetCrewDisplayName()} controller '{name}' (id {GetInstanceID()}, manager {managerName}, parrotCount {Mathf.Max(0, parrotCount)})";
+    }
+
+    private static string GetPrefabName(GameObject prefab)
+    {
+        return prefab != null ? prefab.name : "none";
     }
 
     private GameObject CreateRuntimeProjectileObject(Vector3 position)
