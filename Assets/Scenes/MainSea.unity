@@ -12475,7 +12475,7 @@ MonoBehaviour:
   stageCompleteBonusDoubloons: 1000
   deathTitle: Run Over
   stageCompleteTitle: Stage Complete
-  doubloonsPerMinuteSurvived: 100
+  doubloonsPerMinuteSurvived: 150
   minimumTimeBonus: 0
   maximumTimeBonus: 9999
   roundBonusToWholeNumber: 1
