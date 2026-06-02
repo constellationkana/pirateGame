@@ -531,6 +531,7 @@ MonoBehaviour:
   moveSpeed: 1.1
   stoppingDistance: 7
   rotationSpeed: 180
+  slowSpeedMultiplier: 0.5
 --- !u!114 &7997933415139566310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,12 +556,12 @@ MonoBehaviour:
   cannonFirePoints: []
   cannonDamage: 2
   cannonballSpeed: 20
-  cannonShootInterval: 0.5
+  cannonShootInterval: 0.3
   fruitProjectilePrefab: {fileID: 6844348078964051180, guid: 8b62b02fc13105e48910b0a7cb3f422a, type: 3}
   fruitFirePoint: {fileID: 1785004718316856830}
   fruitFirePoints: []
   fruitDamage: 1
-  fruitSpeed: 15
+  fruitSpeed: 17
   fruitThrowInterval: 0.2
 --- !u!114 &7173086663069711293
 MonoBehaviour:

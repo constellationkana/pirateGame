@@ -12,13 +12,11 @@ public class DebugTreasureChestMenu : MonoBehaviour
 {
     [SerializeField] private TreasureChestSpawner treasureChestSpawner;
 
-    private Canvas debugCanvas;
     private GameObject panelRoot;
     private TMP_Text statusText;
 
     private void Awake()
     {
-        Debug.Log("DebugTreasureChestMenu Awake", this);
         ResolveSpawner();
         EnsureRuntimeUI();
         SetMenuVisible(false);
@@ -26,9 +24,8 @@ public class DebugTreasureChestMenu : MonoBehaviour
 
     private void Update()
     {
-        if (WasTogglePressedThisFrame())
+        if (WasShiftUToggled())
         {
-            Debug.Log("Shift+U detected", this);
             ToggleMenu();
         }
 
@@ -48,17 +45,15 @@ public class DebugTreasureChestMenu : MonoBehaviour
         SetMenuVisible(panelRoot == null || !panelRoot.activeSelf);
     }
 
-    private static bool WasTogglePressedThisFrame()
+    private static bool WasShiftUToggled()
     {
         Keyboard keyboard = Keyboard.current;
-        if (keyboard != null)
+        if (keyboard == null || !keyboard.uKey.wasPressedThisFrame)
         {
-            bool shiftHeld = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
-            return shiftHeld && keyboard.uKey.wasPressedThisFrame;
+            return false;
         }
 
-        bool legacyShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        return legacyShiftHeld && Input.GetKeyDown(KeyCode.U);
+        return keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
     }
 
     private void ResolveSpawner()
@@ -76,25 +71,24 @@ public class DebugTreasureChestMenu : MonoBehaviour
             return;
         }
 
-        GameObject canvasObject = new("Treasure Chest Debug Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-        debugCanvas = canvasObject.GetComponent<Canvas>();
-        debugCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        debugCanvas.sortingOrder = 32767;
-
-        CanvasScaler canvasScaler = canvasObject.GetComponent<CanvasScaler>();
-        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        canvasScaler.referenceResolution = new Vector2(1920f, 1080f);
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        if (canvas == null)
+        {
+            GameObject canvasObject = new("Treasure Chest Debug Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            canvas = canvasObject.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
 
         EnsureEventSystem();
 
         panelRoot = new GameObject("Treasure Chest Debug Panel", typeof(RectTransform), typeof(Image));
-        panelRoot.transform.SetParent(debugCanvas.transform, false);
+        panelRoot.transform.SetParent(canvas.transform, false);
 
         RectTransform panelRect = panelRoot.GetComponent<RectTransform>();
-        panelRect.anchorMin = new Vector2(0.5f, 0.5f);
-        panelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        panelRect.pivot = new Vector2(0.5f, 0.5f);
-        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.anchorMin = new Vector2(0f, 1f);
+        panelRect.anchorMax = new Vector2(0f, 1f);
+        panelRect.pivot = new Vector2(0f, 1f);
+        panelRect.anchoredPosition = new Vector2(20f, -20f);
         panelRect.sizeDelta = new Vector2(360f, 460f);
 
         Image panelImage = panelRoot.GetComponent<Image>();

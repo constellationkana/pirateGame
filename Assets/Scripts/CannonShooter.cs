@@ -235,7 +235,7 @@ public class CannonShooter : MonoBehaviour
     /// <summary>
     /// Sets how many additional targets spawned cannonballs may pierce.
     /// </summary>
-    /// <param name="pierceCount">Value used by this method.</param>
+    /// <param name="pierceCount">Parameter used by this method.</param>
     public void SetCannonballPierceCount(int pierceCount)
     {
         cannonballPierceCount = Mathf.Max(0, pierceCount);
