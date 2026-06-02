@@ -49,7 +49,8 @@ public class BirdHomingProjectile : MonoBehaviour
                 Vector2 toTarget = (Vector2)target.position - rb.position;
                 if (toTarget.sqrMagnitude > 0.001f)
                 {
-                    desiredDirection = Vector2.RotateTowards(desiredDirection, toTarget.normalized, homingTurnSpeed * Mathf.Deg2Rad * Time.fixedDeltaTime, 0f);
+                    Vector3 newDirection = Vector3.RotateTowards(desiredDirection, toTarget.normalized, homingTurnSpeed * Mathf.Deg2Rad * Time.fixedDeltaTime, 0f);
+                    desiredDirection = new Vector2(newDirection.x, newDirection.y);
                 }
             }
         }
