@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles player collection of a treasure chest pickup.
+/// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class TreasureChestPickup : MonoBehaviour
 {
@@ -20,6 +23,10 @@ public class TreasureChestPickup : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes this component with runtime references and configuration values.
+    /// </summary>
+    /// <param name="owner">Spawner that owns this pickup.</param>
     public void Initialize(TreasureChestSpawner owner)
     {
         spawner = owner;

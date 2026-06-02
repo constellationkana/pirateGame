@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Connects player ship death to run-end summary behavior.
+/// </summary>
 [DisallowMultipleComponent]
 public class PlayerShipDefeatHandler : MonoBehaviour
 {

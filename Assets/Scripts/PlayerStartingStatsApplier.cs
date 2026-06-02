@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Applies permanent progression upgrades to the player ship at the start of a run.
+/// </summary>
 public class PlayerStartingStatsApplier : MonoBehaviour
 {
     [Header("Upgrade Values Per Level")]

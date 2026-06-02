@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Repairs the ship by spending configured inventory resources.
+/// </summary>
 public class ShipRepairController : MonoBehaviour
 {
     [SerializeField] private ShipHealth shipHealth;

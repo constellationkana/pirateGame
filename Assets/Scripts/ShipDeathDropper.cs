@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Drops configured resources when a ship health component dies.
+/// </summary>
 public class ShipDeathDropper : MonoBehaviour
 {
     [Header("Dependencies")]

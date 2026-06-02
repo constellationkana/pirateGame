@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Updates the boss health bar UI for a tracked boss ship.
+/// </summary>
 public class BossHealthBarUI : MonoBehaviour
 {
     [Header("References")]
@@ -54,6 +57,11 @@ public class BossHealthBarUI : MonoBehaviour
         UnsubscribeFromBoss();
     }
 
+    /// <summary>
+    /// Assigns the boss health target and display name used by the UI.
+    /// </summary>
+    /// <param name="newBossHealth">Boss health component to display.</param>
+    /// <param name="bossName">Display name for the boss.</param>
     public void SetBoss(ShipHealth newBossHealth, string bossName)
     {
         UnsubscribeFromBoss();

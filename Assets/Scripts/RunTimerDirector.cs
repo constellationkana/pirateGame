@@ -2,25 +2,67 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Starts and tracks run time, timed spawner phases, boss spawning, and run event messages.
+/// </summary>
 public class RunTimerDirector : MonoBehaviour
 {
+    /// <summary>
+    /// Defines when the run timer and normal spawners should begin.
+    /// </summary>
     public enum RunStartMode
     {
+        /// <summary>
+        /// Starts after the player ship reports that the player is onboard.
+        /// </summary>
         StartWhenPlayerBoards,
+        /// <summary>
+        /// Waits for StartRun or StartTimer to be called by UI or another script.
+        /// </summary>
         StartFromButton,
+        /// <summary>
+        /// Starts as soon as the director initializes.
+        /// </summary>
         StartImmediately
     }
 
+    /// <summary>
+    /// Configures spawner objects and components to toggle at a run-time threshold.
+    /// </summary>
     [System.Serializable]
     public class TimedSpawnerEvent
     {
+        /// <summary>
+        /// Display/debug name for this timed spawner event.
+        /// </summary>
         public string eventName;
+        /// <summary>
+        /// Elapsed run time required before this event triggers.
+        /// </summary>
         public float triggerTimeSeconds;
+        /// <summary>
+        /// Spawner GameObjects enabled when this event triggers.
+        /// </summary>
         public GameObject[] spawnerObjectsToEnable;
+        /// <summary>
+        /// Spawner components enabled when this event triggers.
+        /// </summary>
         public MonoBehaviour[] spawnerComponentsToEnable;
+        /// <summary>
+        /// Spawner GameObjects disabled when this event triggers.
+        /// </summary>
         public GameObject[] spawnerObjectsToDisable;
+        /// <summary>
+        /// Spawner components disabled when this event triggers.
+        /// </summary>
         public MonoBehaviour[] spawnerComponentsToDisable;
+        /// <summary>
+        /// Message shown when this timed event triggers.
+        /// </summary>
         public string eventMessage;
+        /// <summary>
+        /// Tracks whether this event has already fired during the current run.
+        /// </summary>
         [HideInInspector] public bool triggered;
     }
 
@@ -68,8 +110,17 @@ public class RunTimerDirector : MonoBehaviour
     private bool timerRunning;
     private float nextDebugLogTime;
 
+    /// <summary>
+    /// Gets the current elapsed run time in seconds.
+    /// </summary>
     public float ElapsedTime => elapsedTime;
+    /// <summary>
+    /// Gets the configured run start mode.
+    /// </summary>
     public RunStartMode CurrentRunStartMode => runStartMode;
+    /// <summary>
+    /// Gets whether the run has started.
+    /// </summary>
     public bool RunStarted => runStarted;
 
     private void Awake()
@@ -141,6 +192,9 @@ public class RunTimerDirector : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts run flow for this controller.
+    /// </summary>
     public void StartRun()
     {
         if (runStarted)
@@ -159,7 +213,13 @@ public class RunTimerDirector : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Compatibility wrapper that starts the run timer.
+    /// </summary>
     public void StartTimer() => StartRun();
+    /// <summary>
+    /// Stops elapsed-time counting without clearing the run-started state.
+    /// </summary>
     public void StopTimer() => timerRunning = false;
 
     private void InitializeRunState()
@@ -228,6 +288,7 @@ public class RunTimerDirector : MonoBehaviour
 
     private void CheckTimedSpawnerEvents()
     {
+        // Prefer configured timed events; fall back to the older one-minute spawner hook for existing scenes.
         if (timedSpawnerEvents == null || timedSpawnerEvents.Length == 0)
         {
             CheckLegacySecondSpawnerEvent();
@@ -398,6 +459,7 @@ public class RunTimerDirector : MonoBehaviour
 
     private void SpawnBoss()
     {
+        // Boss prefabs can vary by scene, so references are resolved defensively after instantiation.
         if (bossShipPrefab == null)
         {
             Debug.LogWarning("RunTimerDirector: Boss ship prefab is not assigned.", this);

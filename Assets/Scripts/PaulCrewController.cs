@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls the Paul crew companion behavior and projectile attacks.
+/// </summary>
 public class PaulCrewController : MonoBehaviour
 {
     [Header("References")]

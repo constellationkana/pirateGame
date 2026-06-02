@@ -1,12 +1,27 @@
 using UnityEngine;
 
+/// <summary>
+/// Represents a collectible resource pickup and applies it to the player inventory.
+/// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class ResourcePickup : MonoBehaviour
 {
+    /// <summary>
+    /// Defines resource type options.
+    /// </summary>
     public enum ResourceType
     {
+        /// <summary>
+        /// Represents the wood option.
+        /// </summary>
         Wood,
+        /// <summary>
+        /// Represents the doubloon option.
+        /// </summary>
         Doubloon,
+        /// <summary>
+        /// Represents the xp option.
+        /// </summary>
         XP
     }
 
@@ -31,6 +46,10 @@ public class ResourcePickup : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the amount value.
+    /// </summary>
+    /// <param name="newAmount">New amount value used by this method.</param>
     public void SetAmount(int newAmount)
     {
         amount = Mathf.Max(1, newAmount);

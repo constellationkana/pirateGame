@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns boss minions using the configured player ship target references.
+/// </summary>
 [DisallowMultipleComponent]
 public class BossMinionSummoner : MonoBehaviour
 {
@@ -29,6 +32,12 @@ public class BossMinionSummoner : MonoBehaviour
         nextSummonTime = Time.time + Mathf.Max(0.1f, summonInterval);
     }
 
+    /// <summary>
+    /// Initializes this component with runtime references and configuration values.
+    /// </summary>
+    /// <param name="newPlayerShip">Player ship transform to target.</param>
+    /// <param name="newPlayerShipController">Player ship controller reference.</param>
+    /// <param name="newPlayerShipHealth">Player ship health reference.</param>
     public void Initialize(Transform newPlayerShip, ShipController2D newPlayerShipController, ShipHealth newPlayerShipHealth)
     {
         playerShip = newPlayerShip;

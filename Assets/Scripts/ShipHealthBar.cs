@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Updates a ship health bar UI from a ShipHealth component.
+/// </summary>
 public class ShipHealthBar : MonoBehaviour
 {
     [SerializeField] private ShipHealth shipHealth;
