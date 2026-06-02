@@ -7513,9 +7513,12 @@ MonoBehaviour:
   runCrewManager: {fileID: 766876282}
   playerTransform: {fileID: 1331628595}
   parrotPrefab: {fileID: 6288803801949133849, guid: fa1f47776c65bf64e938a5d6fd920d5e, type: 3}
-  orbitRadius: 1.6
-  orbitSpeed: 120
-  parrotCount: 2
+  parrotCount: 1
+  flyRadius: 5
+  moveSpeed: 5
+  positionChangeIntervalMin: 0.35
+  positionChangeIntervalMax: 1
+  jitterAmount: 0.25
   projectilePrefab: {fileID: 6364319900914590261, guid: 9f95dd952ed47af4abb330662259b8e1, type: 3}
   projectileSpeed: 8
   baseDamage: 1
@@ -7549,9 +7552,12 @@ MonoBehaviour:
   runCrewManager: {fileID: 766876282}
   playerTransform: {fileID: 1331628595}
   parrotPrefab: {fileID: 5327056619004534245, guid: fd61c443fc5f4d94b9e9ceb48c9adfba, type: 3}
-  orbitRadius: 1.6
-  orbitSpeed: 120
-  parrotCount: 2
+  parrotCount: 1
+  flyRadius: 5
+  moveSpeed: 5
+  positionChangeIntervalMin: 0.35
+  positionChangeIntervalMax: 1
+  jitterAmount: 0.25
   projectilePrefab: {fileID: 7647643754018381715, guid: 0da224c95a200e74e8a8be5b2474453c, type: 3}
   projectileSpeed: 8
   baseDamage: 10
