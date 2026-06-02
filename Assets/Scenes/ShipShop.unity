@@ -357,7 +357,7 @@ MonoBehaviour:
   description: Hire Bird-Boy to join your crew. Combat abilities are not implemented
     yet. A darker version of Bird-Boy with much worse manners.
   abilityDescription: Summons birds that shoot eggs at enemy ships.
-  price: 5000
+  price: 100
   crewSprite: {fileID: 7443152337332035106, guid: a8c68cbc1d3def84db883f5030d0b118, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
@@ -6037,7 +6037,7 @@ MonoBehaviour:
   description: Hire Paul to join your crew. Combat abilities are not implemented
     yet. A pirate obsessed with cannonballs.
   abilityDescription: Automatically fires cannonballs alongside the player.
-  price: 100
+  price: 7000
   crewSprite: {fileID: -8089562441598252974, guid: 0bc6aa827b9eb9d469415ccf98feaa04, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
@@ -6197,7 +6197,8 @@ MonoBehaviour:
   crewId: cleanup_crew
   crewName: Clean-Up Crew
   description: A group of middle-aged dock workers with too much free time.
-  abilityDescription: Automatically repairs the player ship over time using collected wood.
+  abilityDescription: Automatically repairs the player ship over time using collected
+    wood.
   price: 3500
   crewSprite: {fileID: 21300000, guid: 391f01a2fe2aef147a29c4fbd10ccc16, type: 3}
   shopController: {fileID: 1398161182}
@@ -6360,7 +6361,7 @@ MonoBehaviour:
   description: Hire Bird-Boy to join your crew. Combat abilities are not implemented
     yet. A strange kid who trained parrots in the art of warfare.
   abilityDescription: Summons birds that shoot eggs at enemy ships.
-  price: 5000
+  price: 100
   crewSprite: {fileID: -6120868022549596203, guid: 234eb5fd926f2034bbc41b17b702ea8a, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
@@ -8422,7 +8423,7 @@ MonoBehaviour:
     yet. Carries explosive barrels everywhere and definitely should not be trusted.
     manners.
   abilityDescription: Summons birds that shoot eggs at enemy ships.
-  price: 5000
+  price: 100
   crewSprite: {fileID: 4324719897817041111, guid: e16c5b2a73f6feb46aac634c179638c2, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}

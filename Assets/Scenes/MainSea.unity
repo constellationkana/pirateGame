@@ -3757,8 +3757,8 @@ MonoBehaviour:
     maxUpgradeLevel: 3
   - id: cleanup_crew
     displayName: Clean-Up Crew
-    joinDescription: Recruit Clean-Up Crew for this run only. They automatically repair your
-      ship over time using collected wood.
+    joinDescription: Recruit Clean-Up Crew for this run only. They automatically
+      repair your ship over time using collected wood.
     upgradeDescription: Clean-Up Crew repairs happen more often for this run.
     maxUpgradeLevel: 3
   - id: bird_boy
@@ -3832,29 +3832,9 @@ MonoBehaviour:
   - id: cleanup_crew_faster_repairs
     crewId: cleanup_crew
     displayName: 'Clean-Up Crew: Faster Repairs'
-    description: Clean-Up Crew repairs happen more often for this run, using wood faster.
+    description: Clean-Up Crew repairs happen more often for this run, using wood
+      faster.
     maxLevel: 3
---- !u!114 &766876284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766876281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0fed3aa47f4d6f87f25832aa0cd7dc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::CleanUpCrewController
-  runCrewManager: {fileID: 766876282}
-  playerInventory: {fileID: 1331628598}
-  shipHealth: {fileID: 1331628600}
-  repairInterval: 5
-  woodCostPerRepair: 1
-  healthRepairedPerRepair: 2
-  repairIntervalReductionPerLevel: 0.5
-  minimumRepairInterval: 1.5
-  maxFasterRepairLevel: 3
 --- !u!4 &766876283
 Transform:
   m_ObjectHideFlags: 0
@@ -3870,6 +3850,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &766876284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766876281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0fed3aa47f4d6f87f25832aa0cd7dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CleanUpCrewController
+  runCrewManager: {fileID: 766876282}
+  playerInventory: {fileID: 1331628598}
+  shipHealth: {fileID: 1331628600}
+  repairInterval: 5
+  woodCostPerRepair: 1
+  healthRepairedPerRepair: 2
+  repairIntervalReductionPerLevel: 0.5
+  minimumRepairInterval: 1.5
+  maxFasterRepairLevel: 3
 --- !u!1 &798652382
 GameObject:
   m_ObjectHideFlags: 0
@@ -6963,6 +6964,7 @@ GameObject:
   - component: {fileID: 1331628608}
   - component: {fileID: 1331628609}
   - component: {fileID: 1331628610}
+  - component: {fileID: 1331628611}
   m_Layer: 6
   m_Name: PlayerShip
   m_TagString: PlayerShip
@@ -7451,6 +7453,27 @@ MonoBehaviour:
   enemyDetectionMask:
     serializedVersion: 2
     m_Bits: 499
+--- !u!114 &1331628611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0fed3aa47f4d6f87f25832aa0cd7dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CleanUpCrewController
+  runCrewManager: {fileID: 766876282}
+  playerInventory: {fileID: 1331628598}
+  shipHealth: {fileID: 1331628600}
+  repairInterval: 5
+  woodCostPerRepair: 1
+  healthRepairedPerRepair: 2
+  repairIntervalReductionPerLevel: 0.5
+  minimumRepairInterval: 1.5
+  maxFasterRepairLevel: 3
 --- !u!1 &1347083638
 GameObject:
   m_ObjectHideFlags: 0
