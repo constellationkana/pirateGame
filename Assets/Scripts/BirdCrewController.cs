@@ -50,6 +50,7 @@ public class BirdCrewController : MonoBehaviour
     private readonly List<ParrotMovementState> parrotMovementStates = new();
     private float nextFireTime;
     private bool loggedDuplicateSuppression;
+    private RunCrewManager subscribedRunCrewManager;
     private static Sprite birdBoyProjectileSprite;
     private static Sprite evilBirdBoyProjectileSprite;
     private static Sprite parrotPlaceholderSprite;
@@ -64,6 +65,22 @@ public class BirdCrewController : MonoBehaviour
     public void SetCrewType(BirdCrewType type)
     {
         crewType = type;
+        RefreshActiveState();
+    }
+
+    public void ConfigureRuntimeReferences(RunCrewManager newRunCrewManager, Transform newPlayerTransform)
+    {
+        if (newRunCrewManager != null && runCrewManager != newRunCrewManager)
+        {
+            runCrewManager = newRunCrewManager;
+        }
+
+        if (newPlayerTransform != null && playerTransform != newPlayerTransform)
+        {
+            playerTransform = newPlayerTransform;
+        }
+
+        EnsureReferences();
         RefreshActiveState();
     }
 
@@ -113,22 +130,12 @@ public class BirdCrewController : MonoBehaviour
     private void OnEnable()
     {
         EnsureReferences();
-        if (runCrewManager != null)
-        {
-            runCrewManager.SetBirdCrewUpgradeMaxLevels(CrewId, maxDamageUpgradeLevel, maxCooldownUpgradeLevel);
-            runCrewManager.CrewStateChanged += HandleCrewStateChanged;
-        }
-
         RefreshActiveState();
     }
 
     private void OnDisable()
     {
-        if (runCrewManager != null)
-        {
-            runCrewManager.CrewStateChanged -= HandleCrewStateChanged;
-        }
-
+        UnsubscribeFromRunCrewManager();
         ClearParrots();
     }
 
@@ -229,6 +236,7 @@ public class BirdCrewController : MonoBehaviour
             : Vector2.up;
         projectile.SetFiredByPlayer(true);
         projectile.Initialize(target.transform, direction, projectileSpeed, homingTurnSpeed, GetCurrentDamage(), slowChance, slowDuration, GetOwnerObject());
+        Debug.Log($"[BirdCrewController] {GetControllerDebugName()} missile fired at {target.name} using {(projectilePrefab != null ? "assigned projectile prefab" : "placeholder projectile")}.", this);
     }
 
     private ShipHealth PickRandomEnemyInRange()
@@ -482,10 +490,7 @@ public class BirdCrewController : MonoBehaviour
             runCrewManager = FindFirstObjectByType<RunCrewManager>();
         }
 
-        if (runCrewManager != null)
-        {
-            runCrewManager.SetBirdCrewUpgradeMaxLevels(CrewId, maxDamageUpgradeLevel, maxCooldownUpgradeLevel);
-        }
+        SyncRunCrewManagerSubscription();
 
         if (playerTransform == null)
         {
@@ -495,6 +500,39 @@ public class BirdCrewController : MonoBehaviour
                 playerTransform = shipController.transform;
             }
         }
+    }
+
+    private void SyncRunCrewManagerSubscription()
+    {
+        if (subscribedRunCrewManager != null && subscribedRunCrewManager != runCrewManager)
+        {
+            subscribedRunCrewManager.CrewStateChanged -= HandleCrewStateChanged;
+            subscribedRunCrewManager = null;
+        }
+
+        if (runCrewManager == null)
+        {
+            return;
+        }
+
+        runCrewManager.SetBirdCrewUpgradeMaxLevels(CrewId, maxDamageUpgradeLevel, maxCooldownUpgradeLevel);
+        if (subscribedRunCrewManager == null && isActiveAndEnabled)
+        {
+            runCrewManager.CrewStateChanged += HandleCrewStateChanged;
+            subscribedRunCrewManager = runCrewManager;
+            Debug.Log($"[BirdCrewController] {GetControllerDebugName()} registered with RunCrewManager '{runCrewManager.name}'.", this);
+        }
+    }
+
+    private void UnsubscribeFromRunCrewManager()
+    {
+        if (subscribedRunCrewManager == null)
+        {
+            return;
+        }
+
+        subscribedRunCrewManager.CrewStateChanged -= HandleCrewStateChanged;
+        subscribedRunCrewManager = null;
     }
 
     private bool IsPrimaryControllerForCrew()

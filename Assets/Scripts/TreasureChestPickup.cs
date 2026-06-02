@@ -287,21 +287,10 @@ public class TreasureChestPickup : MonoBehaviour
             upgradeManager = FindFirstObjectByType<UpgradeManager>();
         }
 
+        runCrewManager = TreasureChestRunBootstrap.EnsureActiveRunSceneServices();
         if (runCrewManager == null)
         {
             runCrewManager = FindFirstObjectByType<RunCrewManager>();
-        }
-
-        if (runCrewManager == null)
-        {
-            GameObject managerObject = new("Run Crew Manager");
-            runCrewManager = managerObject.AddComponent<RunCrewManager>();
-            managerObject.AddComponent<PaulCrewController>();
-            managerObject.AddComponent<CleanUpCrewController>();
-            BirdCrewController birdBoyController = managerObject.AddComponent<BirdCrewController>();
-            birdBoyController.SetCrewType(BirdCrewController.BirdCrewType.BirdBoy);
-            BirdCrewController evilBirdBoyController = managerObject.AddComponent<BirdCrewController>();
-            evilBirdBoyController.SetCrewType(BirdCrewController.BirdCrewType.EvilBirdBoy);
         }
 
         if (choiceUI == null)

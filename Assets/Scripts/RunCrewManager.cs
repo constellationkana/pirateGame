@@ -239,6 +239,15 @@ public class RunCrewManager : MonoBehaviour
         activeCrewIds.Add(normalizedId);
         CrewDefinition definition = GetDefinition(normalizedId);
         Debug.Log($"{definition.displayName} joined the crew", this);
+        if (normalizedId == BirdBoyCrewId)
+        {
+            Debug.Log("[RunCrewManager] Bird-Boy recruited.", this);
+        }
+        else if (normalizedId == EvilBirdBoyCrewId)
+        {
+            Debug.Log("[RunCrewManager] Evil-Bird-Boy recruited.", this);
+        }
+
         CrewStateChanged?.Invoke();
     }
 

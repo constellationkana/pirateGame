@@ -5,6 +5,7 @@ public class TreasureChestRunBootstrap : MonoBehaviour
 {
     private static readonly string[] RunSceneNames = { "MainSea", "Stage2", "Stage3" };
     private static bool wasInRunScene;
+    private static RunCrewManager currentRunCrewManager;
 
     [Header("Bird-Boy Prefabs")]
     [SerializeField] private GameObject birdBoyParrotPrefab;
@@ -27,52 +28,51 @@ public class TreasureChestRunBootstrap : MonoBehaviour
         EnsureRunSceneServices(scene);
     }
 
-    private static void EnsureRunSceneServices(Scene scene)
+    public static RunCrewManager EnsureActiveRunSceneServices()
+    {
+        return EnsureRunSceneServices(SceneManager.GetActiveScene());
+    }
+
+    private static RunCrewManager EnsureRunSceneServices(Scene scene)
     {
         bool isRunScene = IsRunScene(scene.name);
         if (!isRunScene)
         {
             wasInRunScene = false;
-            return;
+            return currentRunCrewManager;
         }
 
         bool startsNewRun = !wasInRunScene;
         wasInRunScene = true;
 
         TreasureChestRunBootstrap bootstrap = FindBootstrap();
-        RunCrewManager runCrewManager = Object.FindFirstObjectByType<RunCrewManager>();
+        Transform playerTransform = FindPlayerTransform();
+        Debug.Log($"[TreasureChestRunBootstrap] Scene '{scene.name}' loaded; bootstrap ran. Starts new run: {startsNewRun}. Bootstrap prefab source: {(bootstrap != null ? bootstrap.name : "none")}. Player transform: {(playerTransform != null ? playerTransform.name : "none")}");
+
+        RunCrewManager runCrewManager = FindRunCrewManager();
         if (runCrewManager == null)
         {
             GameObject crewManagerObject = new("Run Crew Manager");
             runCrewManager = crewManagerObject.AddComponent<RunCrewManager>();
-            crewManagerObject.AddComponent<PaulCrewController>();
-            crewManagerObject.AddComponent<CleanUpCrewController>();
-            EnsureBirdCrewController(crewManagerObject, BirdCrewController.BirdCrewType.BirdBoy, bootstrap);
-            EnsureBirdCrewController(crewManagerObject, BirdCrewController.BirdCrewType.EvilBirdBoy, bootstrap);
-            Object.DontDestroyOnLoad(crewManagerObject);
+            Debug.Log($"[TreasureChestRunBootstrap] RunCrewManager created for scene '{scene.name}'.", runCrewManager);
         }
         else
         {
-            Object.DontDestroyOnLoad(runCrewManager.gameObject);
-
-            if (startsNewRun)
-            {
-                runCrewManager.ResetRunCrew();
-            }
-
-            if (runCrewManager.GetComponent<PaulCrewController>() == null)
-            {
-                runCrewManager.gameObject.AddComponent<PaulCrewController>();
-            }
-
-            if (runCrewManager.GetComponent<CleanUpCrewController>() == null)
-            {
-                runCrewManager.gameObject.AddComponent<CleanUpCrewController>();
-            }
-
-            EnsureBirdCrewController(runCrewManager.gameObject, BirdCrewController.BirdCrewType.BirdBoy, bootstrap);
-            EnsureBirdCrewController(runCrewManager.gameObject, BirdCrewController.BirdCrewType.EvilBirdBoy, bootstrap);
+            Debug.Log($"[TreasureChestRunBootstrap] RunCrewManager found: '{runCrewManager.name}' in scene '{scene.name}'.", runCrewManager);
         }
+
+        currentRunCrewManager = runCrewManager;
+        Object.DontDestroyOnLoad(runCrewManager.gameObject);
+
+        if (startsNewRun)
+        {
+            runCrewManager.ResetRunCrew();
+        }
+
+        EnsureSupportController<PaulCrewController>(runCrewManager.gameObject, "PaulCrewController");
+        EnsureSupportController<CleanUpCrewController>(runCrewManager.gameObject, "CleanUpCrewController");
+        EnsureBirdCrewController(runCrewManager, BirdCrewController.BirdCrewType.BirdBoy, bootstrap, playerTransform);
+        EnsureBirdCrewController(runCrewManager, BirdCrewController.BirdCrewType.EvilBirdBoy, bootstrap, playerTransform);
 
         if (Object.FindFirstObjectByType<TreasureChestChoiceUI>() == null)
         {
@@ -85,6 +85,8 @@ public class TreasureChestRunBootstrap : MonoBehaviour
             GameObject spawnerObject = new("Treasure Chest Spawner");
             spawnerObject.AddComponent<TreasureChestSpawner>();
         }
+
+        return runCrewManager;
     }
 
     private static TreasureChestRunBootstrap FindBootstrap()
@@ -92,36 +94,53 @@ public class TreasureChestRunBootstrap : MonoBehaviour
         return Object.FindFirstObjectByType<TreasureChestRunBootstrap>();
     }
 
-    private static void EnsureBirdCrewController(GameObject owner, BirdCrewController.BirdCrewType crewType, TreasureChestRunBootstrap bootstrap)
+    private static RunCrewManager FindRunCrewManager()
     {
-        if (owner == null)
+        if (currentRunCrewManager != null)
         {
-            return;
+            return currentRunCrewManager;
         }
 
-        BirdCrewController configuredSceneController = FindConfiguredSceneController(crewType);
-        if (configuredSceneController != null)
+        return Object.FindFirstObjectByType<RunCrewManager>();
+    }
+
+    private static T EnsureSupportController<T>(GameObject owner, string controllerName) where T : Component
+    {
+        T controller = owner.GetComponent<T>();
+        if (controller != null)
         {
-            ApplyBootstrapPrefabs(configuredSceneController, crewType, bootstrap);
-            return;
+            Debug.Log($"[TreasureChestRunBootstrap] {controllerName} found on '{owner.name}'.", owner);
+            return controller;
         }
 
-        BirdCrewController playerShipController = FindPlayerShipController(crewType);
-        if (playerShipController != null)
+        controller = owner.AddComponent<T>();
+        Debug.Log($"[TreasureChestRunBootstrap] {controllerName} created on '{owner.name}'.", owner);
+        return controller;
+    }
+
+    private static BirdCrewController EnsureBirdCrewController(RunCrewManager runCrewManager, BirdCrewController.BirdCrewType crewType, TreasureChestRunBootstrap bootstrap, Transform playerTransform)
+    {
+        if (runCrewManager == null)
         {
-            ApplyBootstrapPrefabs(playerShipController, crewType, bootstrap);
-            return;
+            return null;
         }
 
-        BirdCrewController ownerController = FindControllerOnOwner(owner, crewType);
-        if (ownerController != null)
+        BirdCrewController controller = FindConfiguredSceneController(crewType)
+            ?? FindPlayerShipController(crewType)
+            ?? FindControllerOnOwner(runCrewManager.gameObject, crewType);
+
+        if (controller == null)
         {
-            ApplyBootstrapPrefabs(ownerController, crewType, bootstrap);
-            return;
+            controller = AddBirdCrewController(runCrewManager.gameObject, crewType);
+            Debug.Log($"[TreasureChestRunBootstrap] {GetCrewDisplayName(crewType)} BirdCrewController created on '{runCrewManager.name}'.", controller);
+        }
+        else
+        {
+            Debug.Log($"[TreasureChestRunBootstrap] {GetCrewDisplayName(crewType)} BirdCrewController found on '{controller.name}'.", controller);
         }
 
-        BirdCrewController controller = AddBirdCrewController(owner, crewType);
-        ApplyBootstrapPrefabs(controller, crewType, bootstrap);
+        ConfigureBirdCrewController(controller, runCrewManager, playerTransform, crewType, bootstrap);
+        return controller;
     }
 
     private static BirdCrewController FindConfiguredSceneController(BirdCrewController.BirdCrewType crewType)
@@ -185,6 +204,17 @@ public class TreasureChestRunBootstrap : MonoBehaviour
         return controller;
     }
 
+    private static void ConfigureBirdCrewController(BirdCrewController controller, RunCrewManager runCrewManager, Transform playerTransform, BirdCrewController.BirdCrewType crewType, TreasureChestRunBootstrap bootstrap)
+    {
+        if (controller == null)
+        {
+            return;
+        }
+
+        controller.ConfigureRuntimeReferences(runCrewManager, playerTransform);
+        ApplyBootstrapPrefabs(controller, crewType, bootstrap);
+    }
+
     private static void ApplyBootstrapPrefabs(BirdCrewController controller, BirdCrewController.BirdCrewType crewType, TreasureChestRunBootstrap bootstrap)
     {
         if (controller == null)
@@ -236,6 +266,28 @@ public class TreasureChestRunBootstrap : MonoBehaviour
         }
 
         return GameObject.Find("PlayerShip");
+    }
+
+    private static Transform FindPlayerTransform()
+    {
+        GameObject playerShip = FindPlayerShip();
+        if (playerShip != null)
+        {
+            return playerShip.transform;
+        }
+
+        ShipController2D shipController = Object.FindFirstObjectByType<ShipController2D>();
+        if (shipController != null)
+        {
+            return shipController.transform;
+        }
+
+        return null;
+    }
+
+    private static string GetCrewDisplayName(BirdCrewController.BirdCrewType crewType)
+    {
+        return crewType == BirdCrewController.BirdCrewType.BirdBoy ? "Bird-Boy" : "Evil-Bird-Boy";
     }
 
     private static bool IsRunScene(string sceneName)
