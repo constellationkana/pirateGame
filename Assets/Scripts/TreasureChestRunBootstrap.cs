@@ -38,6 +38,8 @@ public static class TreasureChestRunBootstrap
             runCrewManager = crewManagerObject.AddComponent<RunCrewManager>();
             crewManagerObject.AddComponent<PaulCrewController>();
             crewManagerObject.AddComponent<CleanUpCrewController>();
+            AddBirdCrewController(crewManagerObject, BirdCrewController.BirdCrewType.BirdBoy);
+            AddBirdCrewController(crewManagerObject, BirdCrewController.BirdCrewType.EvilBirdBoy);
             Object.DontDestroyOnLoad(crewManagerObject);
         }
         else
@@ -58,6 +60,9 @@ public static class TreasureChestRunBootstrap
             {
                 runCrewManager.gameObject.AddComponent<CleanUpCrewController>();
             }
+
+            EnsureBirdCrewController(runCrewManager.gameObject, BirdCrewController.BirdCrewType.BirdBoy);
+            EnsureBirdCrewController(runCrewManager.gameObject, BirdCrewController.BirdCrewType.EvilBirdBoy);
         }
 
         if (Object.FindFirstObjectByType<TreasureChestChoiceUI>() == null)
@@ -71,6 +76,31 @@ public static class TreasureChestRunBootstrap
             GameObject spawnerObject = new("Treasure Chest Spawner");
             spawnerObject.AddComponent<TreasureChestSpawner>();
         }
+    }
+
+    private static void EnsureBirdCrewController(GameObject owner, BirdCrewController.BirdCrewType crewType)
+    {
+        if (owner == null)
+        {
+            return;
+        }
+
+        BirdCrewController[] controllers = owner.GetComponents<BirdCrewController>();
+        foreach (BirdCrewController controller in controllers)
+        {
+            if (controller != null && controller.CrewType == crewType)
+            {
+                return;
+            }
+        }
+
+        AddBirdCrewController(owner, crewType);
+    }
+
+    private static void AddBirdCrewController(GameObject owner, BirdCrewController.BirdCrewType crewType)
+    {
+        BirdCrewController controller = owner.AddComponent<BirdCrewController>();
+        controller.SetCrewType(crewType);
     }
 
     private static bool IsRunScene(string sceneName)

@@ -12,6 +12,12 @@ public class RunCrewManager : MonoBehaviour
     public const string PaulBroadsideExpertUpgradeId = "paul_broadside_expert";
     public const string CleanUpCrewId = "cleanup_crew";
     public const string CleanUpCrewFasterRepairsUpgradeId = "cleanup_crew_faster_repairs";
+    public const string BirdBoyCrewId = "bird_boy";
+    public const string BirdBoyDamageUpgradeId = "bird_boy_damage";
+    public const string BirdBoyCooldownUpgradeId = "bird_boy_cooldown";
+    public const string EvilBirdBoyCrewId = "evil_bird_boy";
+    public const string EvilBirdBoyDamageUpgradeId = "evil_bird_boy_damage";
+    public const string EvilBirdBoyCooldownUpgradeId = "evil_bird_boy_cooldown";
 
     [Serializable]
     public class CrewDefinition
@@ -38,8 +44,8 @@ public class RunCrewManager : MonoBehaviour
     {
         new CrewDefinition { id = PaulCrewId, displayName = "Paul", joinDescription = "Recruit Paul for this run only. Paul automatically fires cannonballs at nearby enemies.", upgradeDescription = "Improve Paul's current-run cannon support." },
         new CrewDefinition { id = CleanUpCrewId, displayName = "Clean-Up Crew", joinDescription = "Recruit Clean-Up Crew for this run only. They automatically repair your ship over time using collected wood.", upgradeDescription = "Clean-Up Crew repairs happen more often for this run." },
-        new CrewDefinition { id = "bird_boy", displayName = "Bird Boy", joinDescription = "Bird Boy joins for this run.", upgradeDescription = "Improve Bird Boy's current-run support. Placeholder only." },
-        new CrewDefinition { id = "evil_bird_boy", displayName = "Evil Bird Boy", joinDescription = "Evil Bird Boy joins for this run.", upgradeDescription = "Improve Evil Bird Boy's current-run support. Placeholder only." },
+        new CrewDefinition { id = BirdBoyCrewId, displayName = "Bird-Boy", joinDescription = "A strange pirate who trained parrots in the art of warfare. Summons parrots that fire egg missiles at enemy ships for this run only.", upgradeDescription = "Improve Bird-Boy's egg missiles for this run only." },
+        new CrewDefinition { id = EvilBirdBoyCrewId, displayName = "Evil-Bird-Boy", joinDescription = "A darker version of Bird-Boy with disgusting tactics and overfed birds. Summons parrots that fire poop missiles at enemy ships for this run only.", upgradeDescription = "Improve Evil-Bird-Boy's poop missiles for this run only." },
         new CrewDefinition { id = "shipprick", displayName = "Shipprick", joinDescription = "Shipprick joins for this run.", upgradeDescription = "Improve Shipprick's current-run support. Placeholder only." },
         new CrewDefinition { id = "poseidon", displayName = "Poseidon", joinDescription = "Poseidon joins for this run.", upgradeDescription = "Improve Poseidon's current-run support. Placeholder only." },
         new CrewDefinition { id = "barrel_joe", displayName = "Barrel Joe", joinDescription = "Barrel Joe joins for this run.", upgradeDescription = "Improve Barrel Joe's current-run support. Placeholder only." },
@@ -64,20 +70,32 @@ public class RunCrewManager : MonoBehaviour
         new CrewUpgradeDefinition { id = CleanUpCrewFasterRepairsUpgradeId, crewId = CleanUpCrewId, displayName = "Clean-Up Crew: Faster Repairs", description = "Clean-Up Crew repairs happen more often for this run, using wood faster.", maxLevel = 3 }
     };
 
+    [Header("Bird Crew Upgrades")]
+    [SerializeField] private CrewUpgradeDefinition[] birdCrewUpgradeDefinitions =
+    {
+        new CrewUpgradeDefinition { id = BirdBoyDamageUpgradeId, crewId = BirdBoyCrewId, displayName = "Bird-Boy: Increase Bird Damage", description = "Egg missiles deal more damage for this run.", maxLevel = 3 },
+        new CrewUpgradeDefinition { id = BirdBoyCooldownUpgradeId, crewId = BirdBoyCrewId, displayName = "Bird-Boy: Reduce Bird Cooldown", description = "Parrots shoot egg missiles faster for this run.", maxLevel = 3 },
+        new CrewUpgradeDefinition { id = EvilBirdBoyDamageUpgradeId, crewId = EvilBirdBoyCrewId, displayName = "Evil-Bird-Boy: Increase Damage", description = "Poop missiles deal more damage for this run.", maxLevel = 3 },
+        new CrewUpgradeDefinition { id = EvilBirdBoyCooldownUpgradeId, crewId = EvilBirdBoyCrewId, displayName = "Evil-Bird-Boy: Reduce Cooldown", description = "Parrots throw poop missiles faster for this run.", maxLevel = 3 }
+    };
+
     private const int DefaultMaxCrewUpgradeLevel = 3;
 
     private readonly HashSet<string> activeCrewIds = new();
     private readonly Dictionary<string, int> currentRunCrewUpgradeLevels = new();
     private readonly Dictionary<string, int> currentRunPaulUpgradeLevels = new();
     private readonly Dictionary<string, int> currentRunCleanUpCrewUpgradeLevels = new();
+    private readonly Dictionary<string, int> currentRunBirdCrewUpgradeLevels = new();
     private readonly Dictionary<string, CrewDefinition> definitionsById = new();
     private readonly Dictionary<string, CrewUpgradeDefinition> paulUpgradesById = new();
     private readonly Dictionary<string, CrewUpgradeDefinition> cleanUpCrewUpgradesById = new();
+    private readonly Dictionary<string, CrewUpgradeDefinition> birdCrewUpgradesById = new();
 
     public IReadOnlyCollection<string> ActiveCrewIds => activeCrewIds;
     public IReadOnlyDictionary<string, int> CurrentRunCrewUpgradeLevels => currentRunCrewUpgradeLevels;
     public IReadOnlyDictionary<string, int> CurrentRunPaulUpgradeLevels => currentRunPaulUpgradeLevels;
     public IReadOnlyDictionary<string, int> CurrentRunCleanUpCrewUpgradeLevels => currentRunCleanUpCrewUpgradeLevels;
+    public IReadOnlyDictionary<string, int> CurrentRunBirdCrewUpgradeLevels => currentRunBirdCrewUpgradeLevels;
 
     public event Action CrewStateChanged;
 
@@ -93,6 +111,7 @@ public class RunCrewManager : MonoBehaviour
         currentRunCrewUpgradeLevels.Clear();
         currentRunPaulUpgradeLevels.Clear();
         currentRunCleanUpCrewUpgradeLevels.Clear();
+        currentRunBirdCrewUpgradeLevels.Clear();
         CrewStateChanged?.Invoke();
     }
 
@@ -178,6 +197,31 @@ public class RunCrewManager : MonoBehaviour
         return availableUpgrades;
     }
 
+    public List<CrewUpgradeDefinition> GetAvailableBirdCrewUpgrades(string crewId)
+    {
+        List<CrewUpgradeDefinition> availableUpgrades = new();
+        string normalizedCrewId = NormalizeId(crewId);
+        if (!IsBirdCrewId(normalizedCrewId) || !IsCrewActive(normalizedCrewId))
+        {
+            return availableUpgrades;
+        }
+
+        if (birdCrewUpgradesById.Count == 0)
+        {
+            RebuildDefinitionLookup();
+        }
+
+        foreach (CrewUpgradeDefinition definition in birdCrewUpgradesById.Values)
+        {
+            if (definition != null && definition.crewId == normalizedCrewId && IsBirdCrewUpgradeAvailable(definition.id))
+            {
+                availableUpgrades.Add(definition);
+            }
+        }
+
+        return availableUpgrades;
+    }
+
     public bool IsCrewActive(string crewId)
     {
         string normalizedId = NormalizeId(crewId);
@@ -214,6 +258,12 @@ public class RunCrewManager : MonoBehaviour
             return;
         }
 
+        if (IsBirdCrewId(normalizedCrewId) && !string.IsNullOrEmpty(normalizedUpgradeId))
+        {
+            ApplyBirdCrewUpgrade(normalizedUpgradeId);
+            return;
+        }
+
         if (!IsCrewUpgradeAvailable(normalizedCrewId))
         {
             return;
@@ -233,6 +283,7 @@ public class RunCrewManager : MonoBehaviour
             && activeCrewIds.Contains(normalizedId)
             && normalizedId != PaulCrewId
             && normalizedId != CleanUpCrewId
+            && !IsBirdCrewId(normalizedId)
             && GetCrewUpgradeLevel(normalizedId) < GetMaxCrewUpgradeLevel(normalizedId);
     }
 
@@ -250,6 +301,15 @@ public class RunCrewManager : MonoBehaviour
         return IsCrewActive(CleanUpCrewId)
             && !string.IsNullOrEmpty(normalizedUpgradeId)
             && GetCleanUpCrewUpgradeLevel(normalizedUpgradeId) < GetMaxCleanUpCrewUpgradeLevel(normalizedUpgradeId);
+    }
+
+    public bool IsBirdCrewUpgradeAvailable(string upgradeId)
+    {
+        string normalizedUpgradeId = NormalizeId(upgradeId);
+        CrewUpgradeDefinition definition = GetBirdCrewUpgradeDefinition(normalizedUpgradeId);
+        return definition != null
+            && IsCrewActive(definition.crewId)
+            && GetBirdCrewUpgradeLevel(normalizedUpgradeId) < GetMaxBirdCrewUpgradeLevel(normalizedUpgradeId);
     }
 
     public int GetMaxCrewUpgradeLevel(string crewId)
@@ -274,6 +334,12 @@ public class RunCrewManager : MonoBehaviour
     {
         string normalizedUpgradeId = NormalizeId(upgradeId);
         return !string.IsNullOrEmpty(normalizedUpgradeId) && currentRunCleanUpCrewUpgradeLevels.TryGetValue(normalizedUpgradeId, out int level) ? level : 0;
+    }
+
+    public int GetBirdCrewUpgradeLevel(string upgradeId)
+    {
+        string normalizedUpgradeId = NormalizeId(upgradeId);
+        return !string.IsNullOrEmpty(normalizedUpgradeId) && currentRunBirdCrewUpgradeLevels.TryGetValue(normalizedUpgradeId, out int level) ? level : 0;
     }
 
     public int GetMaxPaulUpgradeLevel(string upgradeId)
@@ -308,6 +374,49 @@ public class RunCrewManager : MonoBehaviour
         }
 
         return !string.IsNullOrEmpty(normalizedUpgradeId) && cleanUpCrewUpgradesById.TryGetValue(normalizedUpgradeId, out CrewUpgradeDefinition definition) ? definition : null;
+    }
+
+    public int GetMaxBirdCrewUpgradeLevel(string upgradeId)
+    {
+        CrewUpgradeDefinition definition = GetBirdCrewUpgradeDefinition(upgradeId);
+        return definition != null && definition.maxLevel > 0 ? definition.maxLevel : 1;
+    }
+
+    public CrewUpgradeDefinition GetBirdCrewUpgradeDefinition(string upgradeId)
+    {
+        string normalizedUpgradeId = NormalizeId(upgradeId);
+        if (birdCrewUpgradesById.Count == 0)
+        {
+            RebuildDefinitionLookup();
+        }
+
+        return !string.IsNullOrEmpty(normalizedUpgradeId) && birdCrewUpgradesById.TryGetValue(normalizedUpgradeId, out CrewUpgradeDefinition definition) ? definition : null;
+    }
+
+    public void SetBirdCrewUpgradeMaxLevels(string crewId, int damageMaxLevel, int cooldownMaxLevel)
+    {
+        string normalizedCrewId = NormalizeId(crewId);
+        if (!IsBirdCrewId(normalizedCrewId))
+        {
+            return;
+        }
+
+        if (birdCrewUpgradesById.Count == 0)
+        {
+            RebuildDefinitionLookup();
+        }
+
+        string damageUpgradeId = normalizedCrewId == BirdBoyCrewId ? BirdBoyDamageUpgradeId : EvilBirdBoyDamageUpgradeId;
+        string cooldownUpgradeId = normalizedCrewId == BirdBoyCrewId ? BirdBoyCooldownUpgradeId : EvilBirdBoyCooldownUpgradeId;
+        if (birdCrewUpgradesById.TryGetValue(damageUpgradeId, out CrewUpgradeDefinition damageDefinition))
+        {
+            damageDefinition.maxLevel = Mathf.Max(1, damageMaxLevel);
+        }
+
+        if (birdCrewUpgradesById.TryGetValue(cooldownUpgradeId, out CrewUpgradeDefinition cooldownDefinition))
+        {
+            cooldownDefinition.maxLevel = Mathf.Max(1, cooldownMaxLevel);
+        }
     }
 
     public CrewDefinition GetDefinition(string crewId)
@@ -362,6 +471,20 @@ public class RunCrewManager : MonoBehaviour
         CrewStateChanged?.Invoke();
     }
 
+    private void ApplyBirdCrewUpgrade(string upgradeId)
+    {
+        if (!IsBirdCrewUpgradeAvailable(upgradeId))
+        {
+            return;
+        }
+
+        currentRunBirdCrewUpgradeLevels.TryGetValue(upgradeId, out int currentLevel);
+        currentRunBirdCrewUpgradeLevels[upgradeId] = currentLevel + 1;
+        CrewUpgradeDefinition definition = GetBirdCrewUpgradeDefinition(upgradeId);
+        Debug.Log($"{(definition == null ? ToDisplayName(upgradeId) : definition.displayName)} selected", this);
+        CrewStateChanged?.Invoke();
+    }
+
     private void RebuildDefinitionLookup()
     {
         definitionsById.Clear();
@@ -395,6 +518,9 @@ public class RunCrewManager : MonoBehaviour
 
         cleanUpCrewUpgradesById.Clear();
         RebuildUpgradeLookup(cleanUpCrewUpgradeDefinitions, CleanUpCrewId, cleanUpCrewUpgradesById);
+
+        birdCrewUpgradesById.Clear();
+        RebuildUpgradeLookup(birdCrewUpgradeDefinitions, string.Empty, birdCrewUpgradesById);
     }
 
     private static void RebuildUpgradeLookup(CrewUpgradeDefinition[] sourceDefinitions, string defaultCrewId, Dictionary<string, CrewUpgradeDefinition> targetLookup)
@@ -427,6 +553,12 @@ public class RunCrewManager : MonoBehaviour
 
             targetLookup[normalizedUpgradeId] = definition;
         }
+    }
+
+    private static bool IsBirdCrewId(string crewId)
+    {
+        string normalizedId = NormalizeId(crewId);
+        return normalizedId == BirdBoyCrewId || normalizedId == EvilBirdBoyCrewId;
     }
 
     private static string NormalizeId(string id)
