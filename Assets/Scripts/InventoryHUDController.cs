@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Displays the player inventory values on the HUD.
+/// </summary>
 public class InventoryHUDController : MonoBehaviour
 {
     [SerializeField] private PlayerInventory playerInventory;

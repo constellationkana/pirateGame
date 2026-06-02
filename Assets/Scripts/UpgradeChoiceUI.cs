@@ -4,13 +4,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays level-up upgrade choices and invokes a callback when one is selected.
+/// </summary>
 public class UpgradeChoiceUI : MonoBehaviour
 {
     [Serializable]
     private class ChoiceWidgets
     {
+        /// <summary>
+        /// UI Button reference used by this entry.
+        /// </summary>
         public Button button;
+        /// <summary>
+        /// Title text shown by this UI entry.
+        /// </summary>
         public TMP_Text titleText;
+        /// <summary>
+        /// Description text shown by this UI entry.
+        /// </summary>
         public TMP_Text descriptionText;
     }
 
@@ -25,6 +37,11 @@ public class UpgradeChoiceUI : MonoBehaviour
         HidePanel();
     }
 
+    /// <summary>
+    /// Shows selectable UI choices and reports the selected option.
+    /// </summary>
+    /// <param name="options">Options value used by this method.</param>
+    /// <param name="onChosen">On chosen value used by this method.</param>
     public void ShowChoices(List<UpgradeManager.UpgradeOption> options, Action<UpgradeManager.UpgradeOption> onChosen)
     {
         if (options == null || options.Count == 0)

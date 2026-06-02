@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Periodically spawns treasure chest pickups while respecting a maximum active chest count.
+/// </summary>
 public class TreasureChestSpawner : MonoBehaviour
 {
     [Header("Chest Spawn Settings")]
@@ -16,9 +19,50 @@ public class TreasureChestSpawner : MonoBehaviour
     private readonly HashSet<TreasureChestPickup> activeChests = new();
     private float nextSpawnTime;
     private RunTimerDirector runTimerDirector;
+    private float defaultSpawnInterval;
+    private int defaultMaxActiveChests;
+    private float defaultSpawnChance;
+
+    /// <summary>
+    /// Gets or sets the runtime chest spawn interval in seconds.
+    /// </summary>
+    public float SpawnInterval
+    {
+        get => spawnInterval;
+        set
+        {
+            spawnInterval = Mathf.Clamp(value, 0.1f, 60f);
+            nextSpawnTime = Mathf.Min(nextSpawnTime, Time.time + spawnInterval);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the runtime chance that an automatic spawn tick creates a chest.
+    /// </summary>
+    public float SpawnChance
+    {
+        get => spawnChance;
+        set => spawnChance = Mathf.Clamp01(value);
+    }
+
+    /// <summary>
+    /// Gets or sets the runtime maximum number of active treasure chests.
+    /// </summary>
+    public int MaxActiveChests
+    {
+        get => maxActiveChests;
+        set => maxActiveChests = Mathf.Clamp(value, 1, 50);
+    }
+
+    /// <summary>
+    /// Gets the current number of tracked active treasure chests.
+    /// </summary>
+    public int ActiveChestCount => activeChests.Count;
 
     private void Awake()
     {
+        CaptureDebugDefaults();
+
         if (playerTransform == null)
         {
             playerTransform = FindPlayerTransform();
@@ -51,12 +95,67 @@ public class TreasureChestSpawner : MonoBehaviour
         SpawnChest();
     }
 
+    /// <summary>
+    /// Removes a chest from the active tracking list when it is collected or destroyed.
+    /// </summary>
+    /// <param name="chest">Chest pickup leaving the active set.</param>
     public void NotifyChestRemoved(TreasureChestPickup chest)
     {
         if (chest != null)
         {
             activeChests.Remove(chest);
         }
+    }
+
+    /// <summary>
+    /// Immediately spawns one treasure chest with the existing spawn logic when required references are available.
+    /// </summary>
+    public void ForceSpawnChest()
+    {
+        CleanupMissingChests();
+
+        if (activeChests.Count >= MaxActiveChests)
+        {
+            Debug.LogWarning($"TreasureChestSpawner: Cannot force spawn because active chest count ({activeChests.Count}) reached MaxActiveChests ({MaxActiveChests}).", this);
+            return;
+        }
+
+        if (chestPrefab == null)
+        {
+            Debug.LogWarning("TreasureChestSpawner: Cannot force spawn because chestPrefab is missing.", this);
+            return;
+        }
+
+        if (!ResolvePlayerTransform())
+        {
+            Debug.LogWarning("TreasureChestSpawner: Cannot force spawn because no player transform could be found.", this);
+            return;
+        }
+
+        SpawnChest();
+        nextSpawnTime = Time.time + SpawnInterval;
+    }
+
+    /// <summary>
+    /// Restores runtime debug values to the values captured when the spawner awakened.
+    /// </summary>
+    public void ResetDebugValues()
+    {
+        SpawnInterval = defaultSpawnInterval;
+        MaxActiveChests = defaultMaxActiveChests;
+        SpawnChance = defaultSpawnChance;
+        nextSpawnTime = Time.time + SpawnInterval;
+    }
+
+    private void CaptureDebugDefaults()
+    {
+        defaultSpawnInterval = Mathf.Clamp(spawnInterval, 0.1f, 60f);
+        defaultMaxActiveChests = Mathf.Clamp(maxActiveChests, 1, 50);
+        defaultSpawnChance = Mathf.Clamp01(spawnChance);
+
+        spawnInterval = defaultSpawnInterval;
+        maxActiveChests = defaultMaxActiveChests;
+        spawnChance = defaultSpawnChance;
     }
 
     private bool IsRunActive()
@@ -71,12 +170,7 @@ public class TreasureChestSpawner : MonoBehaviour
 
     private void SpawnChest()
     {
-        if (playerTransform == null)
-        {
-            playerTransform = FindPlayerTransform();
-        }
-
-        if (playerTransform == null)
+        if (!ResolvePlayerTransform())
         {
             return;
         }
@@ -137,6 +231,16 @@ public class TreasureChestSpawner : MonoBehaviour
     private void CleanupMissingChests()
     {
         activeChests.RemoveWhere(chest => chest == null);
+    }
+
+    private bool ResolvePlayerTransform()
+    {
+        if (playerTransform == null)
+        {
+            playerTransform = FindPlayerTransform();
+        }
+
+        return playerTransform != null;
     }
 
     private static Transform FindPlayerTransform()

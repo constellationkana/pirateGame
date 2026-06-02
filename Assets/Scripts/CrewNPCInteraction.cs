@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Provides crew shop interaction data and opens the crew hiring UI when the player interacts.
+/// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class CrewNPCInteraction : MonoBehaviour
 {
@@ -23,12 +26,33 @@ public class CrewNPCInteraction : MonoBehaviour
 
     private bool playerInRange;
 
+    /// <summary>
+    /// Gets the crew identifier payload when this choice is crew-related.
+    /// </summary>
     public string CrewId => crewId;
+    /// <summary>
+    /// Gets the display name for this crew member.
+    /// </summary>
     public string CrewName => string.IsNullOrWhiteSpace(crewName) ? crewId : crewName;
+    /// <summary>
+    /// Gets the description text.
+    /// </summary>
     public string Description => description;
+    /// <summary>
+    /// Gets the crew ability description text.
+    /// </summary>
     public string AbilityDescription => abilityDescription;
+    /// <summary>
+    /// Gets the hiring price for this crew member.
+    /// </summary>
     public int Price => price > 0 ? price : GetDefaultPrice(crewId);
+    /// <summary>
+    /// Gets the portrait sprite for this crew member.
+    /// </summary>
     public Sprite CrewSprite => crewSprite;
+    /// <summary>
+    /// Gets the optional scroll background sprite for this crew member.
+    /// </summary>
     public Sprite HireScrollSprite => hireScrollSprite;
 
     private void Awake()

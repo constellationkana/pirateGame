@@ -39,6 +39,9 @@ public class SettingsMenuController : MonoBehaviour
         if (fullscreenToggle != null) fullscreenToggle.onValueChanged.RemoveListener(SetFullscreen);
     }
 
+    /// <summary>
+    /// Loads saved settings into the menu controls.
+    /// </summary>
     public void LoadSettings()
     {
         float master = PlayerPrefs.GetFloat(MasterVolumeKey, 1f);
@@ -55,6 +58,10 @@ public class SettingsMenuController : MonoBehaviour
         ApplyFullscreen(fullscreen);
     }
 
+    /// <summary>
+    /// Sets the saved master volume value.
+    /// </summary>
+    /// <param name="value">Value supplied by the settings UI control.</param>
     public void SetMasterVolume(float value)
     {
         ApplyMasterVolume(value);
@@ -62,18 +69,30 @@ public class SettingsMenuController : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// Sets the saved music volume value.
+    /// </summary>
+    /// <param name="value">Value supplied by the settings UI control.</param>
     public void SetMusicVolume(float value)
     {
         PlayerPrefs.SetFloat(MusicVolumeKey, value);
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// Sets the saved sound-effects volume value.
+    /// </summary>
+    /// <param name="value">Value supplied by the settings UI control.</param>
     public void SetSfxVolume(float value)
     {
         PlayerPrefs.SetFloat(SfxVolumeKey, value);
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// Sets the saved fullscreen preference.
+    /// </summary>
+    /// <param name="value">Value supplied by the settings UI control.</param>
     public void SetFullscreen(bool value)
     {
         ApplyFullscreen(value);

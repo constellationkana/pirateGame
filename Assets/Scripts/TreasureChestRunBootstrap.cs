@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Ensures treasure chest support services exist in the active run scene.
+/// </summary>
 public class TreasureChestRunBootstrap : MonoBehaviour
 {
     private static readonly string[] RunSceneNames = { "MainSea", "Stage2", "Stage3" };
@@ -28,6 +31,10 @@ public class TreasureChestRunBootstrap : MonoBehaviour
         EnsureRunSceneServices(scene);
     }
 
+    /// <summary>
+    /// Ensures required run-scene services exist and returns the run crew manager.
+    /// </summary>
+    /// <returns>The active run crew manager instance.</returns>
     public static RunCrewManager EnsureActiveRunSceneServices()
     {
         return EnsureRunSceneServices(SceneManager.GetActiveScene());

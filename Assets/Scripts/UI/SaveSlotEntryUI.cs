@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays and routes actions for one save slot entry in the main menu.
+/// </summary>
 public class SaveSlotEntryUI : MonoBehaviour
 {
     private static readonly Color ButtonNormalColor = new(0.84313726f, 0.6666667f, 0.27450982f, 1f);
@@ -38,6 +41,13 @@ public class SaveSlotEntryUI : MonoBehaviour
         ApplyPirateButtonStyle(deleteButton, DeleteNormalColor, DeleteHighlightedColor, DeletePressedColor, DeleteTextColor);
     }
 
+    /// <summary>
+    /// Configures this UI element with display data and callbacks.
+    /// </summary>
+    /// <param name="summary">Save-slot summary to display.</param>
+    /// <param name="onLoad">Callback invoked when this slot is loaded.</param>
+    /// <param name="onRename">Callback invoked when this slot is renamed.</param>
+    /// <param name="onDelete">Callback invoked when this slot is deleted.</param>
     public void Configure(PlayerProgression.SaveSlotSummary summary, Action<int> onLoad, Action<int> onRename, Action<int> onDelete)
     {
         slotId = summary.slotId;
@@ -108,7 +118,16 @@ public class SaveSlotEntryUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Invokes the configured load action.
+    /// </summary>
     public void Load() => loadAction?.Invoke(slotId);
+    /// <summary>
+    /// Invokes the configured rename action.
+    /// </summary>
     public void Rename() => renameAction?.Invoke(slotId);
+    /// <summary>
+    /// Invokes the configured delete action.
+    /// </summary>
     public void Delete() => deleteAction?.Invoke(slotId);
 }

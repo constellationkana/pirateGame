@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Creates and applies run upgrade choices for the player ship and abilities.
+/// </summary>
 public class UpgradeManager : MonoBehaviour
 {
     private const string HealthId = "health";
@@ -19,11 +22,23 @@ public class UpgradeManager : MonoBehaviour
     private const string HealthRegenId = "health_regen";
     private const string CannonballPierceId = "cannonball_pierce";
 
+    /// <summary>
+    /// Describes one selectable run upgrade option.
+    /// </summary>
     [Serializable]
     public class UpgradeOption
     {
+        /// <summary>
+        /// Unique identifier for this option.
+        /// </summary>
         public string id;
+        /// <summary>
+        /// Display name shown to the player.
+        /// </summary>
         public string displayName;
+        /// <summary>
+        /// Description shown for this upgrade option.
+        /// </summary>
         [TextArea] public string description;
     }
 
@@ -90,15 +105,31 @@ public class UpgradeManager : MonoBehaviour
     private readonly Dictionary<string, int> currentRunUpgradeLevels = new();
     private readonly Dictionary<string, string> currentRunUpgradeDisplayNames = new();
 
+    /// <summary>
+    /// Gets the current pickup magnet radius.
+    /// </summary>
     public float MagnetRadius => magnetRadius;
+    /// <summary>
+    /// Gets current run upgrade levels keyed by upgrade id.
+    /// </summary>
     public IReadOnlyDictionary<string, int> CurrentRunUpgradeLevels => currentRunUpgradeLevels;
 
+    /// <summary>
+    /// Gets the current run level for one upgrade id.
+    /// </summary>
+    /// <param name="upgradeId">Upgrade identifier to look up.</param>
+    /// <returns>The current run upgrade level value.</returns>
     public int GetCurrentRunUpgradeLevel(string upgradeId)
     {
         string canonicalId = GetCanonicalUpgradeId(upgradeId);
         return !string.IsNullOrWhiteSpace(canonicalId) && currentRunUpgradeLevels.TryGetValue(canonicalId, out int level) ? level : 0;
     }
 
+    /// <summary>
+    /// Gets a display name for one current run upgrade id.
+    /// </summary>
+    /// <param name="upgradeId">Upgrade identifier to look up.</param>
+    /// <returns>The current run upgrade display name value.</returns>
     public string GetCurrentRunUpgradeDisplayName(string upgradeId)
     {
         string canonicalId = GetCanonicalUpgradeId(upgradeId);
@@ -110,6 +141,9 @@ public class UpgradeManager : MonoBehaviour
         return currentRunUpgradeDisplayNames.TryGetValue(canonicalId, out string displayName) ? displayName : canonicalId;
     }
 
+    /// <summary>
+    /// Clears upgrade levels tracked for the current run.
+    /// </summary>
     public void ResetCurrentRunUpgradeLevels()
     {
         currentRunUpgradeLevels.Clear();
@@ -173,11 +207,20 @@ public class UpgradeManager : MonoBehaviour
         upgradeChoiceUI.ShowChoices(currentChoices, ApplyUpgrade);
     }
 
+    /// <summary>
+    /// Gets a random set of available upgrade options.
+    /// </summary>
+    /// <param name="choiceCount">Number of choices to return.</param>
+    /// <returns>A list of upgrade options available for selection.</returns>
     public List<UpgradeOption> GetRandomUpgradeChoices(int choiceCount)
     {
         return new List<UpgradeOption>(BuildRandomUpgradeChoices(choiceCount));
     }
 
+    /// <summary>
+    /// Applies a selected upgrade without charging currency.
+    /// </summary>
+    /// <param name="chosenOption">Upgrade option to apply.</param>
     public void ApplyFreeUpgrade(UpgradeOption chosenOption)
     {
         ApplyUpgradeInternal(chosenOption);

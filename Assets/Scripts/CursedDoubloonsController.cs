@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tracks and applies the cursed doubloons run ability.
+/// </summary>
 public class CursedDoubloonsController : MonoBehaviour
 {
     [Header("References")]
@@ -38,8 +41,17 @@ public class CursedDoubloonsController : MonoBehaviour
     private bool isUnlockedForRun;
     private bool isCycleActive;
 
+    /// <summary>
+    /// Gets whether this ability is unlocked for the current run.
+    /// </summary>
     public bool IsUnlockedForRun => isUnlockedForRun;
+    /// <summary>
+    /// Gets the current upgrade level for this ability.
+    /// </summary>
     public int UpgradeLevel => upgradeLevel;
+    /// <summary>
+    /// Gets the current doubloon count tracked by this ability.
+    /// </summary>
     public int CurrentDoubloonCount => targetDoubloonCount;
 
     private void Awake()
@@ -71,6 +83,9 @@ public class CursedDoubloonsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Activates the ability or increases its upgrade level.
+    /// </summary>
     public void ActivateOrUpgrade()
     {
         upgradeLevel = Mathf.Max(1, upgradeLevel + 1);
@@ -87,6 +102,9 @@ public class CursedDoubloonsController : MonoBehaviour
         StartActiveCycle();
     }
 
+    /// <summary>
+    /// Resets runtime ability state for a new run.
+    /// </summary>
     public void ResetForNewRun()
     {
         upgradeLevel = 0;
@@ -267,6 +285,10 @@ public class CursedDoubloonsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles a doubloon trigger collider for this ability.
+    /// </summary>
+    /// <param name="other">Collider that entered the trigger.</param>
     public void HandleDoubloonTrigger(Collider2D other)
     {
         if (!isUnlockedForRun || !isCycleActive || other == null)
@@ -301,6 +323,10 @@ class CursedDoubloonHitbox : MonoBehaviour
 {
     private CursedDoubloonsController controller;
 
+    /// <summary>
+    /// Initializes this component with runtime references and configuration values.
+    /// </summary>
+    /// <param name="owningController">Controller that owns this helper object.</param>
     public void Initialize(CursedDoubloonsController owningController)
     {
         controller = owningController;

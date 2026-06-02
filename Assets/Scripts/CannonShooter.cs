@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Fires cannonball prefabs from directional spawn points using keyboard or mouse input.
+/// </summary>
 public class CannonShooter : MonoBehaviour
 {
     [Header("References")]
@@ -31,6 +34,9 @@ public class CannonShooter : MonoBehaviour
     private float nextShootTime;
     private bool mouseFireQueued;
 
+    /// <summary>
+    /// Gets the cannonball prefab currently used for shots.
+    /// </summary>
     public GameObject CannonballPrefab => cannonballPrefab;
 
     private void Awake()
@@ -181,41 +187,74 @@ public class CannonShooter : MonoBehaviour
         TryFireDirectional(direction.normalized, spawnPoint);
     }
 
+    /// <summary>
+    /// Adds to the configured cannonball damage.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void AddCannonballDamage(int amount)
     {
         cannonballDamage = Mathf.Max(0, cannonballDamage + amount);
     }
 
+    /// <summary>
+    /// Adds to the configured cannonball travel speed.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void AddCannonballSpeed(float amount)
     {
         cannonballSpeed = Mathf.Max(0f, cannonballSpeed + amount);
     }
 
+    /// <summary>
+    /// Sets the size multiplier applied to spawned cannonballs.
+    /// </summary>
+    /// <param name="multiplier">Size multiplier.</param>
     public void SetCannonballSizeMultiplier(float multiplier)
     {
         cannonballSizeMultiplier = Mathf.Max(0.1f, multiplier);
     }
 
+    /// <summary>
+    /// Adds to the cannonball size multiplier.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void AddCannonballSizeMultiplier(float amount)
     {
         cannonballSizeMultiplier = Mathf.Max(0.1f, cannonballSizeMultiplier + amount);
     }
 
+    /// <summary>
+    /// Reduces the delay between shots while preserving the minimum cooldown.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void ReduceShootCooldown(float amount)
     {
         shootCooldown = Mathf.Max(0.05f, shootCooldown - amount);
     }
 
+    /// <summary>
+    /// Sets how many additional targets spawned cannonballs may pierce.
+    /// </summary>
+    /// <param name="pierceCount">Value used by this method.</param>
     public void SetCannonballPierceCount(int pierceCount)
     {
         cannonballPierceCount = Mathf.Max(0, pierceCount);
     }
 
+    /// <summary>
+    /// Adds to the configured cannonball pierce count.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void AddCannonballPierce(int amount)
     {
         cannonballPierceCount = Mathf.Max(0, cannonballPierceCount + amount);
     }
 
+    /// <summary>
+    /// Enables explosive cannonball settings for future shots.
+    /// </summary>
+    /// <param name="radius">Radius value.</param>
+    /// <param name="damage">Damage amount.</param>
     public void EnableExplosiveCannonballs(float radius, int damage)
     {
         explosiveCannonballs = true;

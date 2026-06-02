@@ -5,12 +5,24 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Identifies which type of end-of-run summary is being shown.
+/// </summary>
 public enum RunSummaryType
 {
+    /// <summary>
+    /// Summary shown when the player ship is defeated.
+    /// </summary>
     Death,
+    /// <summary>
+    /// Summary shown when the stage is completed.
+    /// </summary>
     StageComplete
 }
 
+/// <summary>
+/// Displays run-end summaries, awards configured bonuses, pauses the run, and routes summary buttons.
+/// </summary>
 [DisallowMultipleComponent]
 public class RunSummaryController : MonoBehaviour
 {
@@ -75,6 +87,11 @@ public class RunSummaryController : MonoBehaviour
         UnwireButtonListeners();
     }
 
+    /// <summary>
+    /// Shows the death summary if one is not already visible.
+    /// </summary>
+    /// <param name="deadShip">ShipHealth that died, when available.</param>
+    /// <returns>True when the summary is shown or was already visible.</returns>
     public bool TryShowDeathSummary(ShipHealth deadShip)
     {
         if (summaryShown)
@@ -91,6 +108,11 @@ public class RunSummaryController : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Shows the stage-complete summary if enabled and not already visible.
+    /// </summary>
+    /// <param name="defeatedBoss">Defeated boss ShipHealth, when available.</param>
+    /// <returns>True when a summary is shown or already visible; false when stage-complete summaries are disabled.</returns>
     public bool TryShowStageCompleteSummary(ShipHealth defeatedBoss)
     {
         if (!showSummaryOnStageComplete)
@@ -114,6 +136,7 @@ public class RunSummaryController : MonoBehaviour
 
     private void ShowSummary(RunSummaryType summaryType, ShipHealth contextShip)
     {
+        // Award flags prevent duplicate currency grants when multiple death/victory events fire in the same run.
         summaryShown = true;
         currentSummaryType = summaryType;
         ResolveReferences();
@@ -391,6 +414,9 @@ public class RunSummaryController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Reloads the configured retry scene or the current scene.
+    /// </summary>
     public void RetryRun()
     {
         string targetScene = string.IsNullOrWhiteSpace(retrySceneNameOverride)
@@ -399,8 +425,17 @@ public class RunSummaryController : MonoBehaviour
         LoadScene(targetScene);
     }
 
+    /// <summary>
+    /// Loads the configured map scene.
+    /// </summary>
     public void LoadMap() => LoadScene(mapSceneName);
+    /// <summary>
+    /// Loads the configured ship-shop scene.
+    /// </summary>
     public void LoadShipShop() => LoadScene(shipShopSceneName);
+    /// <summary>
+    /// Loads the configured main-menu scene.
+    /// </summary>
     public void LoadMainMenu() => LoadScene(mainMenuSceneName);
 
     private void LoadScene(string sceneName)
@@ -425,6 +460,7 @@ public class RunSummaryController : MonoBehaviour
 
     private void EnsureSummaryUiExists()
     {
+        // Runtime UI is a fallback for incomplete scenes; presentation scenes should normally provide polished references.
         if (summaryRoot != null)
         {
             return;

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls the player force field ability, including radius, damage, and tick timing upgrades.
+/// </summary>
 public class ForceFieldController : MonoBehaviour
 {
     [Header("Force Field")]
@@ -18,6 +21,9 @@ public class ForceFieldController : MonoBehaviour
     private float tickTimer;
     private ShipHealth selfHealth;
 
+    /// <summary>
+    /// Gets whether the force field is unlocked for the current run.
+    /// </summary>
     public bool ForceFieldUnlocked => forceFieldUnlocked;
 
     private void Awake()
@@ -111,6 +117,9 @@ public class ForceFieldController : MonoBehaviour
         visualTransform.localScale = new Vector3(diameter, diameter, 1f);
     }
 
+    /// <summary>
+    /// Unlocks force field behavior for the current run.
+    /// </summary>
     public void UnlockForceField()
     {
         forceFieldUnlocked = true;
@@ -119,17 +128,29 @@ public class ForceFieldController : MonoBehaviour
         UpdateVisualScale();
     }
 
+    /// <summary>
+    /// Adds to the configured radius.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void AddRadius(float amount)
     {
         radius = Mathf.Max(0.1f, radius + amount);
         UpdateVisualScale();
     }
 
+    /// <summary>
+    /// Adds to the configured damage.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void AddDamage(int amount)
     {
         damagePerTick = Mathf.Max(1, damagePerTick + amount);
     }
 
+    /// <summary>
+    /// Reduces the tick interval while preserving its minimum value.
+    /// </summary>
+    /// <param name="amount">Amount to add or subtract.</param>
     public void ReduceTickInterval(float amount)
     {
         tickInterval = Mathf.Max(0.1f, tickInterval - amount);
