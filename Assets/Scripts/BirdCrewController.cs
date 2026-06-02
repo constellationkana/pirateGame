@@ -49,6 +49,7 @@ public class BirdCrewController : MonoBehaviour
     private readonly List<Transform> parrots = new();
     private readonly List<ParrotMovementState> parrotMovementStates = new();
     private float nextFireTime;
+    private bool loggedDuplicateSuppression;
     private static Sprite birdBoyProjectileSprite;
     private static Sprite evilBirdBoyProjectileSprite;
     private static Sprite parrotPlaceholderSprite;
@@ -99,7 +100,7 @@ public class BirdCrewController : MonoBehaviour
     private void Update()
     {
         EnsureReferences();
-        if (!IsCrewActive())
+        if (!CanSpawnParrots())
         {
             ClearParrots();
             return;
@@ -134,7 +135,7 @@ public class BirdCrewController : MonoBehaviour
 
     private void RefreshActiveState()
     {
-        if (IsCrewActive())
+        if (CanSpawnParrots())
         {
             EnsureParrots();
         }
@@ -147,6 +148,28 @@ public class BirdCrewController : MonoBehaviour
     private bool IsCrewActive()
     {
         return runCrewManager != null && runCrewManager.IsCrewActive(CrewId);
+    }
+
+    private bool CanSpawnParrots()
+    {
+        if (!IsCrewActive())
+        {
+            loggedDuplicateSuppression = false;
+            return false;
+        }
+
+        bool isPrimaryController = IsPrimaryControllerForCrew();
+        if (!isPrimaryController && !loggedDuplicateSuppression)
+        {
+            Debug.Log($"[BirdCrewController] {GetControllerDebugName()} is active but will not spawn parrots because another {crewType} controller is the visual owner.", this);
+            loggedDuplicateSuppression = true;
+        }
+        else if (isPrimaryController)
+        {
+            loggedDuplicateSuppression = false;
+        }
+
+        return isPrimaryController;
     }
 
     private void FireAt(ShipHealth target)
@@ -215,42 +238,45 @@ public class BirdCrewController : MonoBehaviour
     private void EnsureParrots()
     {
         int desiredCount = Mathf.Max(0, parrotCount);
-        while (parrots.Count < desiredCount)
+        RemoveMissingParrotReferences();
+        if (parrots.Count == desiredCount)
         {
-            Transform parent = playerTransform != null ? playerTransform : transform;
-            GameObject parrotObject;
-            if (parrotPrefab != null)
+            return;
+        }
+
+        ClearParrots();
+
+        if (desiredCount == 0)
+        {
+            Debug.Log($"[BirdCrewController] {GetControllerDebugName()} spawned 0 parrots (parrotCount is 0).", this);
+            return;
+        }
+
+        Transform parent = playerTransform != null ? playerTransform : transform;
+        bool usingPrefab = parrotPrefab != null;
+        for (int i = 0; i < desiredCount; i++)
+        {
+            GameObject parrotObject = usingPrefab
+                ? Instantiate(parrotPrefab, parent.position, Quaternion.identity, parent)
+                : CreateRuntimeParrotObject(parent.position, parent);
+
+            parrotObject.name = $"{GetCrewDisplayName()} Parrot {i + 1}";
+            ParrotVisualMarker marker = parrotObject.GetComponent<ParrotVisualMarker>();
+            if (marker == null)
             {
-                Debug.Log("Using assigned parrot prefab");
-                parrotObject = Instantiate(parrotPrefab, parent.position, Quaternion.identity, parent);
-            }
-            else
-            {
-                Debug.Log("Using placeholder parrot");
-                parrotObject = CreateRuntimeParrotObject(parent.position, parent);
+                marker = parrotObject.AddComponent<ParrotVisualMarker>();
             }
 
-            parrotObject.name = crewType == BirdCrewType.BirdBoy ? "Bird-Boy Parrot" : "Evil-Bird-Boy Parrot";
+            marker.Owner = this;
+            marker.CrewType = crewType;
+
             parrots.Add(parrotObject.transform);
             ParrotMovementState movementState = new();
             parrotMovementStates.Add(movementState);
             PickNewParrotTarget(movementState);
         }
 
-        while (parrots.Count > desiredCount)
-        {
-            int lastIndex = parrots.Count - 1;
-            Transform parrot = parrots[lastIndex];
-            parrots.RemoveAt(lastIndex);
-            if (lastIndex < parrotMovementStates.Count)
-            {
-                parrotMovementStates.RemoveAt(lastIndex);
-            }
-            if (parrot != null)
-            {
-                Destroy(parrot.gameObject);
-            }
-        }
+        Debug.Log($"[BirdCrewController] {GetControllerDebugName()} spawned {parrots.Count}/{desiredCount} {GetCrewDisplayName()} parrot visuals using {(usingPrefab ? "prefab" : "placeholder")}.", this);
     }
 
     private void UpdateParrotMovement()
@@ -335,16 +361,51 @@ public class BirdCrewController : MonoBehaviour
 
     private void ClearParrots()
     {
+        int destroyedCount = 0;
+        HashSet<GameObject> destroyedObjects = new();
         for (int i = 0; i < parrots.Count; i++)
         {
-            if (parrots[i] != null)
+            if (parrots[i] != null && destroyedObjects.Add(parrots[i].gameObject))
             {
+                destroyedCount++;
                 Destroy(parrots[i].gameObject);
             }
         }
 
         parrots.Clear();
         parrotMovementStates.Clear();
+
+        ParrotVisualMarker[] markers = FindObjectsByType<ParrotVisualMarker>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (ParrotVisualMarker marker in markers)
+        {
+            if (marker != null && marker.Owner == this && destroyedObjects.Add(marker.gameObject))
+            {
+                destroyedCount++;
+                Destroy(marker.gameObject);
+            }
+        }
+
+        if (destroyedCount > 0)
+        {
+            Debug.Log($"[BirdCrewController] {GetControllerDebugName()} cleared {destroyedCount} existing parrot visuals before respawn/deactivation.", this);
+        }
+    }
+
+    private void RemoveMissingParrotReferences()
+    {
+        for (int i = parrots.Count - 1; i >= 0; i--)
+        {
+            if (parrots[i] != null)
+            {
+                continue;
+            }
+
+            parrots.RemoveAt(i);
+            if (i < parrotMovementStates.Count)
+            {
+                parrotMovementStates.RemoveAt(i);
+            }
+        }
     }
 
     private Transform GetFirePoint()
@@ -401,6 +462,49 @@ public class BirdCrewController : MonoBehaviour
         }
     }
 
+    private bool IsPrimaryControllerForCrew()
+    {
+        BirdCrewController[] controllers = FindObjectsByType<BirdCrewController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        BirdCrewController primaryController = null;
+        foreach (BirdCrewController controller in controllers)
+        {
+            if (controller == null || controller.CrewType != crewType || !controller.IsCrewActive())
+            {
+                continue;
+            }
+
+            if (primaryController == null || ShouldPreferController(controller, primaryController))
+            {
+                primaryController = controller;
+            }
+        }
+
+        return primaryController == null || primaryController == this;
+    }
+
+    private static bool ShouldPreferController(BirdCrewController candidate, BirdCrewController current)
+    {
+        bool candidateHasPrefab = candidate.parrotPrefab != null;
+        bool currentHasPrefab = current.parrotPrefab != null;
+        if (candidateHasPrefab != currentHasPrefab)
+        {
+            return candidateHasPrefab;
+        }
+
+        return candidate.GetInstanceID() < current.GetInstanceID();
+    }
+
+    private string GetCrewDisplayName()
+    {
+        return crewType == BirdCrewType.BirdBoy ? "Bird-Boy" : "Evil-Bird-Boy";
+    }
+
+    private string GetControllerDebugName()
+    {
+        string managerName = runCrewManager != null ? runCrewManager.name : "no RunCrewManager";
+        return $"{GetCrewDisplayName()} controller '{name}' (id {GetInstanceID()}, manager {managerName}, parrotCount {Mathf.Max(0, parrotCount)})";
+    }
+
     private GameObject CreateRuntimeProjectileObject(Vector3 position)
     {
         GameObject projectile = new(crewType == BirdCrewType.BirdBoy ? "Egg Missile" : "Poop Missile");
@@ -433,6 +537,12 @@ public class BirdCrewController : MonoBehaviour
         public Vector2 TargetOffset;
         public float NextTargetTime;
         public bool HasTarget;
+    }
+
+    private sealed class ParrotVisualMarker : MonoBehaviour
+    {
+        public BirdCrewController Owner;
+        public BirdCrewType CrewType;
     }
 
     private static Sprite GetBirdBoyProjectileSprite()
