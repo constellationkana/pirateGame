@@ -158,44 +158,33 @@ E: board/interact where applicable, including shop stand interactions when confi
 
 ## Team member contributions
 
-> Replace the placeholders below with exact team member names before the final presentation if desired.
-
-- Team Member 1 — core gameplay programming, player ship controls, combat, and run loop.
-- Team Member 2 — enemy spawning/AI, boss encounters, stage timing, and balancing.
-- Team Member 3 — UI/menu work, save slots, map flow, run summaries, and layout polish.
-- Team Member 4 — ShipShop upgrades, persistent progression, crew systems, and treasure rewards.
-- Team Member 5 — art/audio support, music, UI button audio, scene setup, testing, and presentation polish.
-
+- Kris Lopez:
+- Led overall project integration and Unity scene setup.
+- Built and refined the main pirate roguelite gameplay loop.
+- Implemented and configured Stage 1 / Stage 2 progression, enemy waves, balancing, and spawner timing.
+- Added ship combat systems including player cannon firing, glass cannon enemies/projectiles, and projectile tuning.
+- Polished major UI systems including ShipShop, in-run HUD, treasure chest UI, start-run flow, music volume, and global button sound.
+- Used Codex/ChatGPT heavily for code generation support, debugging, UI iteration, and implementation planning, then tested and integrated changes in Unity repeatedly.
+  
+- Adrian Rodas:
+- Main integrator of ShipShop and its upgrades/hires.
+- Made Main Menu and Saves.
+- Implemented and refined crew companion functionality.
+- Added Paul’s combat support behavior, including automatic cannonball firing at nearby enemies.
+- Added Clean-Up Crew behavior.
+- Implemented Bird Boy and Evil Bird Boy abilities, including parrot/bird-related projectile or drone behavior.
+- Fixed bird crew initialization, prefab assignment, duplicate visual issues, and homing/turning compile errors.
+- Helped integrate crew systems into the main run through RunCrewManager and related scene/prefab setup.
+- Used Codex/ChatGPT heavily for code generation support, debugging, UI iteration, and implementation planning, then tested and integrated changes in Unity repeatedly.
+  
 ## Known issues and limitations
 
 - Some systems are component/configuration dependent. Features such as repairs, boss health UI, start-run panels, treasure chests, run summaries, and crew rewards require the correct scene objects and Inspector references.
 - `MapSceneController` defaults Stage 1, Stage 2, and Stage 3 scene-name fields to `MainSea`; the Build Settings also include separate `Stage2` and `Stage3` scenes, so stage scene routing should be verified in the Unity Inspector before the presentation.
-- The developer-only Shift+U treasure chest debug menu is not part of the main player experience. If it does not open during the presentation but the normal run still works, skip the debug tool and demonstrate treasure chest rewards through normal gameplay.
 - Music and UI click audio are implemented and present in `MainMenu`, but audio clips, mixer settings, and volume-slider wiring should be tested in Play Mode.
 - Save data is stored locally with `PlayerPrefs`, so saves are machine/user specific and can persist between test runs unless reset or deleted through the save UI.
 - Balance values for enemy spawn timing, boss timing, upgrade prices, repair costs, and reward frequency may still need final tuning.
 - Some fallback UI is generated at runtime by scripts if scene UI references are missing; presentation scenes should use polished configured UI where possible.
-
-## Presentation demo route
-
-Use this route for the final demo so the team shows the strongest rubric evidence without depending on unfinished debug tools:
-
-1. Start in `MainMenu` and show new/continue save-slot flow, music, UI button audio, and settings if configured.
-2. Open the `Map` scene and explain stage locking/unlocking and the relationship between Stage 1 (`MainSea`) and later build scenes.
-3. Launch the main run scene, press `Start Run` if the panel appears, and demonstrate boarded ship movement, mouse/arrow cannon firing, enemy waves, pickups, and repairs if enough wood is available.
-4. If a treasure chest appears naturally, pick it up and explain that the reward UI pauses the run and offers upgrade/crew choices. If it does not appear quickly, describe it as a run reward system rather than relying on the developer debug menu.
-5. Show either boss/stage-complete flow or player-death/run-summary flow, depending on which is fastest and most stable in the live demo.
-6. Return to `Map` or `ShipShop` to show persistent doubloons, upgrades, crew hiring, and progression across runs.
-7. Close by explaining known limitations, AI-assisted development, and what the team would improve with more time.
-
-## Final presentation checklist
-
-- Replace placeholder team member labels with real names or assign each speaker to the matching contribution area.
-- Pull the latest branch, open Unity `6000.4.4f1`, and confirm there are no Console compile errors before presenting.
-- Confirm Build Settings / Build Profiles include `MainMenu`, `Map`, `MainSea`, `ShipShop`, `Stage2`, and `Stage3`.
-- Run through the demo route once before presenting and keep a backup plan: if treasure chests or the debug tool do not appear quickly, continue with combat, resources, run summary, and ShipShop progression.
-- Prepare each team member to explain the code or assets they personally worked on, including any AI-assisted sections they reviewed and modified.
-- Do not reset or rewrite save data during the presentation unless the team intentionally wants a clean save-slot demo.
 
 ## AI tools statement
 

@@ -262,7 +262,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets the display name for the active save slot.
     /// </summary>
-    /// <returns>The active save display name, or a fallback message when no save is active.</returns>
+    /// <returns>The requested string value.</returns>
     public static string GetActiveSaveName() => HasActiveSaveSlot ? GetSaveSlotName(ActiveSaveSlotId) : "No Active Save";
 
     /// <summary>
@@ -278,7 +278,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Creates a new save slot, makes it active, and initializes default progression.
     /// </summary>
-    /// <returns>The create new save slot value.</returns>
+    /// <returns>The requested integer value.</returns>
     public static int CreateNewSaveSlot()
     {
         int slotId = Mathf.Max(0, PlayerPrefs.GetInt(NextSaveSlotIdKey, 0));
@@ -405,7 +405,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Builds summaries for every stored save slot.
     /// </summary>
-    /// <returns>A sorted list of save or crew identifiers for UI display.</returns>
+    /// <returns>The requested list.</returns>
     public static List<SaveSlotSummary> GetAllSaveSlotSummaries()
     {
         List<SaveSlotSummary> summaries = new();
@@ -458,7 +458,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets the current saved doubloon total.
     /// </summary>
-    /// <returns>The doubloons value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetDoubloons() => totalDoubloons;
 
     /// <summary>
@@ -513,7 +513,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets the highest unlocked stage, including any stored PlayerPrefs value.
     /// </summary>
-    /// <returns>The highest unlocked stage value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetHighestUnlockedStage()
     {
         highestUnlockedStage = Mathf.Max(FirstStageNumber, highestUnlockedStage);
@@ -573,22 +573,22 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets the legacy permanent health upgrade level.
     /// </summary>
-    /// <returns>The permanent health level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentHealthLevel() => permanentHealthLevel;
     /// <summary>
     /// Gets the legacy permanent speed upgrade level.
     /// </summary>
-    /// <returns>The permanent speed level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentSpeedLevel() => permanentSpeedLevel;
     /// <summary>
     /// Gets the legacy permanent magnet upgrade level.
     /// </summary>
-    /// <returns>The permanent magnet level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentMagnetLevel() => permanentMagnetLevel;
     /// <summary>
     /// Gets the legacy permanent cannon-damage upgrade level.
     /// </summary>
-    /// <returns>The permanent cannon damage level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentCannonDamageLevel() => permanentCannonDamageLevel;
 
     /// <summary>
@@ -647,32 +647,32 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets the purchased base cannonball-speed upgrade level.
     /// </summary>
-    /// <returns>The base cannonball speed level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetBaseCannonballSpeedLevel() => GetUpgradeLevel(UpgradeBaseCannonballSpeedId);
     /// <summary>
     /// Gets the purchased base magnet-radius upgrade level.
     /// </summary>
-    /// <returns>The base magnet radius level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetBaseMagnetRadiusLevel() => GetUpgradeLevel(UpgradeBaseMagnetRadiusId);
     /// <summary>
     /// Gets the purchased explosion-power upgrade level.
     /// </summary>
-    /// <returns>The explosion power level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetExplosionPowerLevel() => GetUpgradeLevel(UpgradeExplosionPowerId);
     /// <summary>
     /// Gets the purchased barnacle-power upgrade level.
     /// </summary>
-    /// <returns>The barnacle power level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetBarnaclePowerLevel() => GetUpgradeLevel(UpgradeBarnaclePowerId);
     /// <summary>
     /// Gets the purchased cursed-doubloons damage upgrade level.
     /// </summary>
-    /// <returns>The cursed doubloons damage level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetCursedDoubloonsDamageLevel() => GetUpgradeLevel(UpgradeCursedDoubloonsDamageId);
     /// <summary>
     /// Gets the purchased force-field damage upgrade level.
     /// </summary>
-    /// <returns>The force field damage level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetForceFieldDamageLevel() => GetUpgradeLevel(UpgradeForceFieldDamageId);
 
     /// <summary>
@@ -762,7 +762,7 @@ public class PlayerProgression : MonoBehaviour
     /// Gets the stored level for a named generic upgrade.
     /// </summary>
     /// <param name="id">Progression identifier.</param>
-    /// <returns>The upgrade level value.</returns>
+    /// <returns>The requested integer value.</returns>
     public int GetUpgradeLevel(string id)
     {
         string normalizedId = NormalizeId(id);
@@ -775,7 +775,7 @@ public class PlayerProgression : MonoBehaviour
     /// Sets the stored level for a named generic upgrade and saves progression.
     /// </summary>
     /// <param name="id">Progression identifier.</param>
-    /// <param name="level">Value used by this method.</param>
+    /// <param name="level">Parameter used by this method.</param>
     public void SetUpgradeLevel(string id, int level)
     {
         string normalizedId = NormalizeId(id);
@@ -836,7 +836,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets all unlocked crew identifiers in sorted order.
     /// </summary>
-    /// <returns>A sorted list of save or crew identifiers for UI display.</returns>
+    /// <returns>The requested list.</returns>
     public List<string> GetUnlockedCrewIds()
     {
         List<string> unlockedCrewIds = new(crewUnlockIds);
@@ -847,7 +847,7 @@ public class PlayerProgression : MonoBehaviour
     /// <summary>
     /// Gets the currently selected ship cosmetic id.
     /// </summary>
-    /// <returns>The active save display name, or a fallback message when no save is active.</returns>
+    /// <returns>The requested string value.</returns>
     public string GetSelectedShipCosmeticId() => selectedShipCosmeticId;
 
     /// <summary>
