@@ -359,7 +359,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 100
   crewSprite: {fileID: 7443152337332035106, guid: a8c68cbc1d3def84db883f5030d0b118, type: 3}
-  hireScrollSprite: {fileID: 0}
+  hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -2017,7 +2017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -170}
+  m_AnchoredPosition: {x: 150, y: -170}
   m_SizeDelta: {x: 410, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233908857
@@ -4092,8 +4092,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 220}
-  m_SizeDelta: {x: 500, y: 55}
+  m_AnchoredPosition: {x: 150, y: 220}
+  m_SizeDelta: {x: 520, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &598277805
 MonoBehaviour:
@@ -4575,7 +4575,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713942624}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -4707,7 +4707,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 5000
   crewSprite: {fileID: -7482780077706626799, guid: 8c3a03d522178654087657f0354b5655, type: 3}
-  hireScrollSprite: {fileID: 0}
+  hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -5146,8 +5146,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: -35}
-  m_SizeDelta: {x: 500, y: 125}
+  m_AnchoredPosition: {x: 155, y: -35}
+  m_SizeDelta: {x: 560, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &809551555
 MonoBehaviour:
@@ -6042,7 +6042,7 @@ MonoBehaviour:
   abilityDescription: Automatically fires cannonballs alongside the player.
   price: 7000
   crewSprite: {fileID: -8089562441598252974, guid: 0bc6aa827b9eb9d469415ccf98feaa04, type: 3}
-  hireScrollSprite: {fileID: 0}
+  hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -6205,7 +6205,7 @@ MonoBehaviour:
     wood.
   price: 3500
   crewSprite: {fileID: 21300000, guid: 391f01a2fe2aef147a29c4fbd10ccc16, type: 3}
-  hireScrollSprite: {fileID: 0}
+  hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -6368,7 +6368,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 100
   crewSprite: {fileID: -6120868022549596203, guid: 234eb5fd926f2034bbc41b17b702ea8a, type: 3}
-  hireScrollSprite: {fileID: 0}
+  hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -8431,7 +8431,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 100
   crewSprite: {fileID: 4324719897817041111, guid: e16c5b2a73f6feb46aac634c179638c2, type: 3}
-  hireScrollSprite: {fileID: 0}
+  hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -11844,8 +11844,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: 110}
-  m_SizeDelta: {x: 500, y: 125}
+  m_AnchoredPosition: {x: 155, y: 110}
+  m_SizeDelta: {x: 560, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1716759273
 MonoBehaviour:
@@ -12832,6 +12832,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1900000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900000002}
+  - component: {fileID: 1900000004}
+  - component: {fileID: 1900000003}
+  m_Layer: 5
+  m_Name: ScrollBackgroundImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1900000002
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900000001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 290354902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1050, y: 700}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1900000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1900000004
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900000001}
+  m_CullTransparentMesh: 1
 --- !u!1 &1918854259
 GameObject:
   m_ObjectHideFlags: 0
@@ -15138,81 +15213,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4fd4de76de215204da1d2c86b6ff7aae, type: 3}
---- !u!1 &1900000001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1900000002}
-  - component: {fileID: 1900000004}
-  - component: {fileID: 1900000003}
-  m_Layer: 5
-  m_Name: ScrollBackgroundImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1900000002
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900000001}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 290354902}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1050, y: 700}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1900000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1900000004
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900000001}
-  m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
