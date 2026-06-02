@@ -13,6 +13,7 @@ public class CrewNPCInteraction : MonoBehaviour
     [SerializeField] private string abilityDescription;
     [SerializeField] private int price;
     [SerializeField] private Sprite crewSprite;
+    [SerializeField] private Sprite hireScrollSprite;
 
     [Header("Interaction")]
     [SerializeField] private ShipShopController shopController;
@@ -28,6 +29,7 @@ public class CrewNPCInteraction : MonoBehaviour
     public string AbilityDescription => abilityDescription;
     public int Price => price > 0 ? price : GetDefaultPrice(crewId);
     public Sprite CrewSprite => crewSprite;
+    public Sprite HireScrollSprite => hireScrollSprite;
 
     private void Awake()
     {

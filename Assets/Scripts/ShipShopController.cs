@@ -134,6 +134,9 @@ public class ShipShopController : MonoBehaviour
     [SerializeField] private TMP_Text crewPriceText;
     [SerializeField] private TMP_Text crewStatusText;
     [SerializeField] private Image crewPortraitImage;
+    [SerializeField] private Image crewScrollBackgroundImage;
+    [SerializeField] private Sprite defaultCrewScrollSprite;
+    [SerializeField] private bool hideTextWhenScrollHasBakedText = false;
     [SerializeField] private Button crewHireButton;
     [SerializeField] private Button crewCloseButton;
 
@@ -633,11 +636,16 @@ public class ShipShopController : MonoBehaviour
 
         if (selectedCrew == null)
         {
+            SetCrewTextVisibility(true);
             SetCrewText(string.Empty, string.Empty, string.Empty, string.Empty, "No crew selected.");
             SetCrewPortrait(null);
+            SetCrewScrollBackground(null);
             SetCrewHireButton(false, "Hire");
             return;
         }
+
+        SetCrewScrollBackground(selectedCrew.HireScrollSprite);
+        SetCrewTextVisibility(!hideTextWhenScrollHasBakedText || selectedCrew.HireScrollSprite == null);
 
         bool hasActiveSave = PlayerProgression.HasActiveSaveSlot;
         bool isUnlocked = hasActiveSave && progression.IsCrewUnlocked(selectedCrew.CrewId);
@@ -669,6 +677,32 @@ public class ShipShopController : MonoBehaviour
 
         crewPortraitImage.sprite = sprite;
         crewPortraitImage.enabled = sprite != null;
+    }
+
+    private void SetCrewScrollBackground(Sprite sprite)
+    {
+        if (crewScrollBackgroundImage == null) return;
+
+        Sprite backgroundSprite = sprite != null ? sprite : defaultCrewScrollSprite;
+        crewScrollBackgroundImage.sprite = backgroundSprite;
+        crewScrollBackgroundImage.enabled = backgroundSprite != null;
+    }
+
+    private void SetCrewTextVisibility(bool visible)
+    {
+        SetObjectActive(crewNameText, visible);
+        SetObjectActive(crewDescriptionText, visible);
+        SetObjectActive(crewAbilityText, visible);
+        SetObjectActive(crewPriceText, visible);
+        SetObjectActive(crewStatusText, visible);
+    }
+
+    private static void SetObjectActive(Component component, bool active)
+    {
+        if (component != null)
+        {
+            component.gameObject.SetActive(active);
+        }
     }
 
     private void SetCrewHireButton(bool interactable, string label)

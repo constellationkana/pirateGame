@@ -359,6 +359,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 100
   crewSprite: {fileID: 7443152337332035106, guid: a8c68cbc1d3def84db883f5030d0b118, type: 3}
+  hireScrollSprite: {fileID: 0}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -4706,6 +4707,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 5000
   crewSprite: {fileID: -7482780077706626799, guid: 8c3a03d522178654087657f0354b5655, type: 3}
+  hireScrollSprite: {fileID: 0}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -6040,6 +6042,7 @@ MonoBehaviour:
   abilityDescription: Automatically fires cannonballs alongside the player.
   price: 7000
   crewSprite: {fileID: -8089562441598252974, guid: 0bc6aa827b9eb9d469415ccf98feaa04, type: 3}
+  hireScrollSprite: {fileID: 0}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -6202,6 +6205,7 @@ MonoBehaviour:
     wood.
   price: 3500
   crewSprite: {fileID: 21300000, guid: 391f01a2fe2aef147a29c4fbd10ccc16, type: 3}
+  hireScrollSprite: {fileID: 0}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -6364,6 +6368,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 100
   crewSprite: {fileID: -6120868022549596203, guid: 234eb5fd926f2034bbc41b17b702ea8a, type: 3}
+  hireScrollSprite: {fileID: 0}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -8426,6 +8431,7 @@ MonoBehaviour:
   abilityDescription: Summons birds that shoot eggs at enemy ships.
   price: 100
   crewSprite: {fileID: 4324719897817041111, guid: e16c5b2a73f6feb46aac634c179638c2, type: 3}
+  hireScrollSprite: {fileID: 0}
   shopController: {fileID: 1398161182}
   promptText: {fileID: 1064288032}
   interactionPrompt: Press E to talk
@@ -9995,6 +10001,9 @@ MonoBehaviour:
   crewPriceText: {fileID: 233908857}
   crewStatusText: {fileID: 713942626}
   crewPortraitImage: {fileID: 655280701}
+  crewScrollBackgroundImage: {fileID: 1900000003}
+  defaultCrewScrollSprite: {fileID: 0}
+  hideTextWhenScrollHasBakedText: 0
   crewHireButton: {fileID: 1065166595}
   crewCloseButton: {fileID: 1783214678}
   cosmeticIds: []
