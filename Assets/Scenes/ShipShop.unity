@@ -357,7 +357,7 @@ MonoBehaviour:
   description: Hire Bird-Boy to join your crew. Combat abilities are not implemented
     yet. A darker version of Bird-Boy with much worse manners.
   abilityDescription: Summons birds that shoot eggs at enemy ships.
-  price: 100
+  price: 5000
   crewSprite: {fileID: 7443152337332035106, guid: a8c68cbc1d3def84db883f5030d0b118, type: 3}
   hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
@@ -6366,7 +6366,7 @@ MonoBehaviour:
   description: Hire Bird-Boy to join your crew. Combat abilities are not implemented
     yet. A strange kid who trained parrots in the art of warfare.
   abilityDescription: Summons birds that shoot eggs at enemy ships.
-  price: 100
+  price: 5000
   crewSprite: {fileID: -6120868022549596203, guid: 234eb5fd926f2034bbc41b17b702ea8a, type: 3}
   hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
@@ -8429,7 +8429,7 @@ MonoBehaviour:
     yet. Carries explosive barrels everywhere and definitely should not be trusted.
     manners.
   abilityDescription: Summons birds that shoot eggs at enemy ships.
-  price: 100
+  price: 8000
   crewSprite: {fileID: 4324719897817041111, guid: e16c5b2a73f6feb46aac634c179638c2, type: 3}
   hireScrollSprite: {fileID: -4615649784339027528, guid: 93760e6b3a6f01641add01a6f8e93ff0, type: 3}
   shopController: {fileID: 1398161182}
