@@ -8,6 +8,9 @@ public class MusicManager : MonoBehaviour
 {
     private const string LegacySettingsMusicVolumeKey = "settings.musicVolume";
 
+    /// <summary>
+    /// Gets the persistent singleton instance.
+    /// </summary>
     public static MusicManager Instance { get; private set; }
 
     [SerializeField] private AudioSource musicSource;
@@ -15,6 +18,9 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private float defaultVolume = 0.6f;
     [SerializeField] private string volumePrefsKey = "MusicVolume";
 
+    /// <summary>
+    /// Gets the saved music volume in the range used by the AudioSource.
+    /// </summary>
     public float MusicVolume { get; private set; }
 
     private void Awake()
@@ -37,6 +43,10 @@ public class MusicManager : MonoBehaviour
         ConfigureAndPlayDefaultMusic();
     }
 
+    /// <summary>
+    /// Sets the global music volume, updates the AudioSource, and saves it to PlayerPrefs.
+    /// </summary>
+    /// <param name="volume">Requested volume, clamped between 0 and 1.</param>
     public void SetMusicVolume(float volume)
     {
         MusicVolume = Mathf.Clamp01(volume);

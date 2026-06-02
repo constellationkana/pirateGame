@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Tracks ship hit points, health regeneration, damage, healing, and death events.
+/// </summary>
 public class ShipHealth : MonoBehaviour
 {
     [Header("Health")]
@@ -19,12 +22,30 @@ public class ShipHealth : MonoBehaviour
     private bool isDead;
     private float regenerationTimer;
 
+    /// <summary>
+    /// Gets the maximum health value.
+    /// </summary>
     public int MaxHealth => maxHealth;
+    /// <summary>
+    /// Gets the current health value.
+    /// </summary>
     public int CurrentHealth => currentHealth;
+    /// <summary>
+    /// Gets current health divided by max health.
+    /// </summary>
     public float HealthPercent => maxHealth <= 0 ? 0f : (float)currentHealth / maxHealth;
+    /// <summary>
+    /// Gets whether this ship has died.
+    /// </summary>
     public bool IsDead => isDead;
 
+    /// <summary>
+    /// Event raised by OnHealthChanged.
+    /// </summary>
     public event Action<ShipHealth> OnHealthChanged;
+    /// <summary>
+    /// Event raised by OnDeath.
+    /// </summary>
     public event Action<ShipHealth> OnDeath;
 
     private void Awake()
@@ -43,6 +64,10 @@ public class ShipHealth : MonoBehaviour
         TickHealthRegeneration();
     }
 
+    /// <summary>
+    /// Applies positive damage to the ship and triggers death when health reaches zero.
+    /// </summary>
+    /// <param name="damage">Damage amount.</param>
     public void TakeDamage(int damage)
     {
         if (damage <= 0 || isDead)
@@ -61,6 +86,10 @@ public class ShipHealth : MonoBehaviour
         NotifyHealthChanged();
     }
 
+    /// <summary>
+    /// Restores positive health without exceeding max health.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void Heal(int amount)
     {
         if (amount <= 0 || isDead || currentHealth >= maxHealth)
@@ -72,6 +101,11 @@ public class ShipHealth : MonoBehaviour
         NotifyHealthChanged();
     }
 
+    /// <summary>
+    /// Enables periodic health regeneration with the provided amount and interval.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
+    /// <param name="interval">Seconds between ticks.</param>
     public void EnableHealthRegeneration(int amount, float interval)
     {
         healthRegenerationEnabled = true;
@@ -80,6 +114,11 @@ public class ShipHealth : MonoBehaviour
         regenerationTimer = 0f;
     }
 
+    /// <summary>
+    /// Improves existing regeneration, or enables it if it is not active.
+    /// </summary>
+    /// <param name="amountIncrease">Additional health restored per tick.</param>
+    /// <param name="intervalReduction">Seconds to subtract from the interval.</param>
     public void ImproveHealthRegeneration(int amountIncrease, float intervalReduction)
     {
         if (!healthRegenerationEnabled)
@@ -110,6 +149,11 @@ public class ShipHealth : MonoBehaviour
         Heal(regenerationAmount);
     }
 
+    /// <summary>
+    /// Increases maximum health and adjusts current health.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
+    /// <param name="healToFull">True to set current health to the new maximum.</param>
     public void AddMaxHealth(int amount, bool healToFull)
     {
         if (amount <= 0 || isDead)

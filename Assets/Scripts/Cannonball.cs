@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Moves a cannonball projectile, applies ship damage on impact, and optionally supports explosions and piercing.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 public class Cannonball : MonoBehaviour
@@ -38,6 +41,9 @@ public class Cannonball : MonoBehaviour
     private bool explosionTriggered;
     private readonly HashSet<ShipHealth> piercedTargets = new();
 
+    /// <summary>
+    /// Gets whether this cannonball is marked as player-fired.
+    /// </summary>
     public bool FiredByPlayer => firedByPlayer;
 
     private void Awake()
@@ -54,6 +60,12 @@ public class Cannonball : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
+    /// <summary>
+    /// Sets initial projectile direction, speed, and owner reference.
+    /// </summary>
+    /// <param name="direction">Direction vector to use.</param>
+    /// <param name="speed">Projectile speed.</param>
+    /// <param name="ownerObject">Object that fired the projectile.</param>
     public void Initialize(Vector2 direction, float speed, GameObject ownerObject)
     {
         owner = ownerObject;
@@ -74,28 +86,50 @@ public class Cannonball : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffsetDegrees);
     }
 
+    /// <summary>
+    /// Sets the direct-hit damage for this cannonball.
+    /// </summary>
+    /// <param name="newDamage">Damage value to apply.</param>
     public void SetDamage(int newDamage)
     {
         damage = Mathf.Max(0, newDamage);
     }
 
+    /// <summary>
+    /// Sets and applies the projectile size multiplier.
+    /// </summary>
+    /// <param name="multiplier">Size multiplier.</param>
     public void SetSizeMultiplier(float multiplier)
     {
         sizeMultiplier = Mathf.Max(0.1f, multiplier);
         ApplySizeMultiplier();
     }
 
+    /// <summary>
+    /// Marks whether the projectile belongs to the player.
+    /// </summary>
+    /// <param name="playerOwned">True when the projectile belongs to the player.</param>
     public void SetFiredByPlayer(bool playerOwned)
     {
         firedByPlayer = playerOwned;
     }
 
+    /// <summary>
+    /// Sets the number of targets this cannonball can pierce after a hit.
+    /// </summary>
+    /// <param name="count">Non-negative count value.</param>
     public void SetPierceCount(int count)
     {
         pierceCount = Mathf.Max(0, count);
         piercedTargets.Clear();
     }
 
+    /// <summary>
+    /// Configures whether this cannonball can explode and how much area damage it deals.
+    /// </summary>
+    /// <param name="enabled">True to enable the feature.</param>
+    /// <param name="radius">Radius value.</param>
+    /// <param name="damageAmount">Damage amount.</param>
     public void SetExplosion(bool enabled, float radius, int damageAmount)
     {
         explosive = enabled;
@@ -103,22 +137,48 @@ public class Cannonball : MonoBehaviour
         explosionDamage = Mathf.Max(0, damageAmount);
     }
 
+    /// <summary>
+    /// Configures the explosion visual effect prefab and lifetime.
+    /// </summary>
+    /// <param name="effectPrefab">Effect prefab to spawn.</param>
+    /// <param name="effectLifetime">Seconds before the spawned effect is destroyed.</param>
     public void SetExplosionEffect(GameObject effectPrefab, float effectLifetime)
     {
         explosionEffectPrefab = effectPrefab;
         explosionEffectLifetime = Mathf.Max(0f, effectLifetime);
     }
 
+    /// <summary>
+    /// Sets the physics layer mask used when finding explosion damage targets.
+    /// </summary>
+    /// <param name="damageMask">Layer mask to use.</param>
     public void SetExplosionDamageMask(LayerMask damageMask)
     {
         explosionDamageMask = damageMask;
     }
 
+    /// <summary>
+    /// Configures explosion settings for this cannonball.
+    /// </summary>
+    /// <param name="enabled">True to enable the feature.</param>
+    /// <param name="radius">Radius value.</param>
+    /// <param name="damageAmount">Damage amount.</param>
+    /// <param name="effectPrefab">Effect prefab to spawn.</param>
+    /// <param name="damageMask">Layer mask to use.</param>
     public void ConfigureExplosion(bool enabled, float radius, int damageAmount, GameObject effectPrefab, LayerMask damageMask)
     {
         ConfigureExplosion(enabled, radius, damageAmount, effectPrefab, explosionEffectLifetime, damageMask);
     }
 
+    /// <summary>
+    /// Configures explosion settings for this cannonball.
+    /// </summary>
+    /// <param name="enabled">True to enable the feature.</param>
+    /// <param name="radius">Radius value.</param>
+    /// <param name="damageAmount">Damage amount.</param>
+    /// <param name="effectPrefab">Effect prefab to spawn.</param>
+    /// <param name="effectLifetime">Seconds before the spawned effect is destroyed.</param>
+    /// <param name="damageMask">Layer mask to use.</param>
     public void ConfigureExplosion(bool enabled, float radius, int damageAmount, GameObject effectPrefab, float effectLifetime, LayerMask damageMask)
     {
         SetExplosion(enabled, radius, damageAmount);

@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays treasure chest reward options and invokes callbacks when the player chooses one.
+/// </summary>
 public class TreasureChestChoiceUI : MonoBehaviour
 {
     [Serializable]
@@ -45,11 +48,22 @@ public class TreasureChestChoiceUI : MonoBehaviour
         HidePanel(false);
     }
 
+    /// <summary>
+    /// Shows reward options and reports the selected choice.
+    /// </summary>
+    /// <param name="options">Reward options to display.</param>
+    /// <param name="onChosen">Callback invoked with the selected choice.</param>
     public void ShowChoices(List<TreasureChestChoice> options, Action<TreasureChestChoice> onChosen)
     {
         ShowChoices(options, onChosen, null);
     }
 
+    /// <summary>
+    /// Shows reward options and reports the selected choice.
+    /// </summary>
+    /// <param name="options">Reward options to display.</param>
+    /// <param name="onChosen">Callback invoked with the selected choice.</param>
+    /// <param name="onComplete">Callback invoked after a choice is applied.</param>
     public void ShowChoices(List<TreasureChestChoice> options, Action<TreasureChestChoice> onChosen, Action onComplete)
     {
         if (options == null || options.Count == 0)

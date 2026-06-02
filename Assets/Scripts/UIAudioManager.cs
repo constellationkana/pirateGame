@@ -8,6 +8,9 @@ using UnityEngine.UI;
 /// </summary>
 public class UIAudioManager : MonoBehaviour
 {
+    /// <summary>
+    /// Gets the persistent singleton instance.
+    /// </summary>
     public static UIAudioManager Instance { get; private set; }
 
     [SerializeField] private AudioSource audioSource;
@@ -61,6 +64,9 @@ public class UIAudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Plays the configured UI button click sound when available.
+    /// </summary>
     public void PlayButtonClick()
     {
         if (audioSource == null || buttonClickClip == null)
@@ -71,6 +77,9 @@ public class UIAudioManager : MonoBehaviour
         audioSource.PlayOneShot(buttonClickClip, Mathf.Clamp01(buttonVolume));
     }
 
+    /// <summary>
+    /// Registers every active Button in the current scene for UI click audio.
+    /// </summary>
     public void RegisterButtonsInScene()
     {
         Button[] buttons = FindButtonsIncludingInactive();
