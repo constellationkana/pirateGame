@@ -1043,7 +1043,7 @@ MonoBehaviour:
   spawnRadiusMin: 5
   spawnRadiusMax: 14
   maxActiveChests: 10
-  spawnChance: 0.768
+  spawnChance: 0.005
 --- !u!4 &239843267
 Transform:
   m_ObjectHideFlags: 0
@@ -3530,7 +3530,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 12
+  spawnInterval: 6.5
   maxEnemiesAlive: 3
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -3539,7 +3539,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 0
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 12
+  baseSpawnInterval: 6.5
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 4
@@ -4430,7 +4430,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 15
+  spawnInterval: 8
   maxEnemiesAlive: 5
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -4439,7 +4439,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 0
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 6
+  baseSpawnInterval: 8
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 0.75
   baseMaxEnemiesAlive: 5
@@ -5345,7 +5345,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 10
+  spawnInterval: 7
   maxEnemiesAlive: 4
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -5354,7 +5354,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 1
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 10
+  baseSpawnInterval: 7
   minSpawnInterval: 1.5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 3
@@ -12380,7 +12380,7 @@ MonoBehaviour:
   playerShipTransform: {fileID: 1331628595}
   playerShipController: {fileID: 1331628591}
   playerShipHealth: {fileID: 1331628600}
-  spawnInterval: 15
+  spawnInterval: 12
   maxEnemiesAlive: 3
   minSpawnDistanceFromPlayer: 8
   maxSpawnDistanceFromPlayer: 15
@@ -12389,7 +12389,7 @@ MonoBehaviour:
   logSpawnedEnemySetup: 0
   scaleDifficultyOverTime: 1
   elapsedRunTime: 0
-  baseSpawnInterval: 15
+  baseSpawnInterval: 12
   minSpawnInterval: 5
   spawnIntervalDecreasePerMinute: 1
   baseMaxEnemiesAlive: 4
@@ -12472,7 +12472,7 @@ MonoBehaviour:
   awardTimeBonusOnDeath: 1
   showSummaryOnStageComplete: 1
   awardTimeBonusOnStageComplete: 1
-  stageCompleteBonusDoubloons: 0
+  stageCompleteBonusDoubloons: 1000
   deathTitle: Run Over
   stageCompleteTitle: Stage Complete
   doubloonsPerMinuteSurvived: 100
@@ -14560,6 +14560,54 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &990000000000000101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 990000000000000102}
+  - component: {fileID: 990000000000000103}
+  m_Layer: 0
+  m_Name: TreasureChestRunBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &990000000000000102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990000000000000101}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &990000000000000103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990000000000000101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c032a4bc2e940b9ba4e88ee58408c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TreasureChestRunBootstrap
+  birdBoyParrotPrefab: {fileID: 5327056619004534245, guid: fd61c443fc5f4d94b9e9ceb48c9adfba, type: 3}
+  birdBoyProjectilePrefab: {fileID: 7647643754018381715, guid: 0da224c95a200e74e8a8be5b2474453c, type: 3}
+  evilBirdBoyParrotPrefab: {fileID: 6288803801949133849, guid: fa1f47776c65bf64e938a5d6fd920d5e, type: 3}
+  evilBirdBoyProjectilePrefab: {fileID: 6364319900914590261, guid: 9f95dd952ed47af4abb330662259b8e1, type: 3}
 --- !u!1001 &7762188766314543364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14894,54 +14942,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfca77aa3a0275f438c95cead65ead42, type: 3}
---- !u!1 &990000000000000101
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 990000000000000102}
-  - component: {fileID: 990000000000000103}
-  m_Layer: 0
-  m_Name: TreasureChestRunBootstrap
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &990000000000000102
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990000000000000101}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &990000000000000103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990000000000000101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c032a4bc2e940b9ba4e88ee58408c0c, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::TreasureChestRunBootstrap
-  birdBoyParrotPrefab: {fileID: 5327056619004534245, guid: fd61c443fc5f4d94b9e9ceb48c9adfba, type: 3}
-  birdBoyProjectilePrefab: {fileID: 7647643754018381715, guid: 0da224c95a200e74e8a8be5b2474453c, type: 3}
-  evilBirdBoyParrotPrefab: {fileID: 6288803801949133849, guid: fa1f47776c65bf64e938a5d6fd920d5e, type: 3}
-  evilBirdBoyProjectilePrefab: {fileID: 6364319900914590261, guid: 9f95dd952ed47af4abb330662259b8e1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
