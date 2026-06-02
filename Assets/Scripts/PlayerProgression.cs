@@ -13,40 +13,133 @@ public class PlayerProgression : MonoBehaviour
     [Serializable]
     public class SaveSlotSummary
     {
+        /// <summary>
+        /// Save-slot identifier.
+        /// </summary>
         public int slotId;
+        /// <summary>
+        /// Save-slot display name.
+        /// </summary>
         public string saveName;
+        /// <summary>
+        /// Saved doubloon count for this slot.
+        /// </summary>
         public int doubloons;
+        /// <summary>
+        /// Total saved upgrade count for this slot.
+        /// </summary>
         public int upgradeCount;
+        /// <summary>
+        /// Total saved unlock count for this slot.
+        /// </summary>
         public int unlockCount;
+        /// <summary>
+        /// Whether this save slot is currently active.
+        /// </summary>
         public bool isActive;
     }
 
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockHealthRegenId = "health_regen";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockDashId = "dash";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockMagnetId = "magnet";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockForceFieldId = "force_field";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockCannonballSizeId = "cannonball_size";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockCannonballSpeedId = "cannonball_speed";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockCannonballShootRateId = "cannonball_shoot_rate";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockCannonballExplosionId = "cannonball_explosion";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockCannonballPierceId = "cannonball_pierce";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockBarnaclesId = "barnacles";
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockCursedDoubloonsId = "cursed_doubloons";
 
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeBaseHealthId = "base_health";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeBaseSpeedId = "base_speed";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeBaseCannonDamageId = "base_cannon_damage";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeBaseCannonballSpeedId = "base_cannonball_speed";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeBaseMagnetRadiusId = "base_magnet_radius";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeExplosionPowerId = "explosion_power";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeBarnaclePowerId = "barnacle_power";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeCursedDoubloonsDamageId = "cursed_doubloons_damage";
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeForceFieldDamageId = "force_field_damage";
 
+    /// <summary>
+    /// Progression unlock identifier.
+    /// </summary>
     public const string UnlockMagnetRadius = UnlockMagnetId;
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeHealthId = UpgradeBaseHealthId;
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeSpeedId = UpgradeBaseSpeedId;
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeMagnetRadiusId = UpgradeBaseMagnetRadiusId;
+    /// <summary>
+    /// Progression upgrade identifier.
+    /// </summary>
     public const string UpgradeCannonDamageId = UpgradeBaseCannonDamageId;
 
     private const string LegacyHasSaveFileKey = "HasSaveFile";
@@ -1179,6 +1272,7 @@ public class PlayerProgression : MonoBehaviour
 
     private void LoadGenericProgression(int slotId)
     {
+        // Generic unlock/upgrade keys let newer shop systems share one save format while legacy fields remain supported.
         genericUnlockIds.Clear();
         AddCsvIds(genericUnlockIds, PlayerPrefs.GetString(GetSlotKey(slotId, GenericUnlockIdsKey), string.Empty));
 
@@ -1230,6 +1324,7 @@ public class PlayerProgression : MonoBehaviour
 
     private void MigrateLegacyProgressionIntoGenericKeys()
     {
+        // Keep older saved fields playable by mirroring them into the newer generic progression collections.
         if (dashUnlocked) genericUnlockIds.Add(UnlockDashId);
         if (forceFieldUnlocked) genericUnlockIds.Add(UnlockForceFieldId);
         if (permanentMagnetLevel > 0) genericUnlockIds.Add(UnlockMagnetRadius);
@@ -1242,6 +1337,7 @@ public class PlayerProgression : MonoBehaviour
 
     private void SaveGenericProgression(int slotId)
     {
+        // Save both the id list and individual id keys so counts, lookups, and cleanup all have stable data.
         PlayerPrefs.SetString(GetSlotKey(slotId, GenericUnlockIdsKey), string.Join(",", genericUnlockIds));
         foreach (string id in genericUnlockIds)
         {

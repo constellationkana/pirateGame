@@ -32,13 +32,37 @@ public class RunTimerDirector : MonoBehaviour
     [System.Serializable]
     public class TimedSpawnerEvent
     {
+        /// <summary>
+        /// Display/debug name for this timed spawner event.
+        /// </summary>
         public string eventName;
+        /// <summary>
+        /// Elapsed run time required before this event triggers.
+        /// </summary>
         public float triggerTimeSeconds;
+        /// <summary>
+        /// Spawner GameObjects enabled when this event triggers.
+        /// </summary>
         public GameObject[] spawnerObjectsToEnable;
+        /// <summary>
+        /// Spawner components enabled when this event triggers.
+        /// </summary>
         public MonoBehaviour[] spawnerComponentsToEnable;
+        /// <summary>
+        /// Spawner GameObjects disabled when this event triggers.
+        /// </summary>
         public GameObject[] spawnerObjectsToDisable;
+        /// <summary>
+        /// Spawner components disabled when this event triggers.
+        /// </summary>
         public MonoBehaviour[] spawnerComponentsToDisable;
+        /// <summary>
+        /// Message shown when this timed event triggers.
+        /// </summary>
         public string eventMessage;
+        /// <summary>
+        /// Tracks whether this event has already fired during the current run.
+        /// </summary>
         [HideInInspector] public bool triggered;
     }
 
@@ -264,6 +288,7 @@ public class RunTimerDirector : MonoBehaviour
 
     private void CheckTimedSpawnerEvents()
     {
+        // Prefer configured timed events; fall back to the older one-minute spawner hook for existing scenes.
         if (timedSpawnerEvents == null || timedSpawnerEvents.Length == 0)
         {
             CheckLegacySecondSpawnerEvent();
@@ -434,6 +459,7 @@ public class RunTimerDirector : MonoBehaviour
 
     private void SpawnBoss()
     {
+        // Boss prefabs can vary by scene, so references are resolved defensively after instantiation.
         if (bossShipPrefab == null)
         {
             Debug.LogWarning("RunTimerDirector: Boss ship prefab is not assigned.", this);

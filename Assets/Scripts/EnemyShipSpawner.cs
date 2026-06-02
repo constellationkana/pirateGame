@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns enemy ships around the player during a run.
+/// </summary>
 public class EnemyShipSpawner : MonoBehaviour
 {
     [Header("References")]

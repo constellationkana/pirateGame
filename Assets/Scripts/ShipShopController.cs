@@ -15,23 +15,44 @@ public class ShipShopController : MonoBehaviour
     [Serializable]
     private class UpgradePurchaseConfig
     {
+        /// <summary>
+        /// Starting cost for the first purchase level.
+        /// </summary>
         public int baseCost = 50;
+        /// <summary>
+        /// Additional cost added per purchased level.
+        /// </summary>
         public int costIncreasePerLevel = 50;
+        /// <summary>
+        /// Maximum allowed purchase level; zero means uncapped.
+        /// </summary>
         [Tooltip("0 means uncapped.")]
         public int maxLevel = 10;
+        /// <summary>
+        /// Stat increase applied for each purchased level.
+        /// </summary>
         public float statIncreasePerLevel = 1f;
     }
 
     [Serializable]
     private class UnlockPurchaseConfig
     {
+        /// <summary>
+        /// Doubloon cost for this unlock.
+        /// </summary>
         public int cost = 100;
     }
 
     [Serializable]
     private class MenuButtonReferences
     {
+        /// <summary>
+        /// Text label associated with this UI button reference.
+        /// </summary>
         public TMP_Text labelText;
+        /// <summary>
+        /// UI Button reference used by this entry.
+        /// </summary>
         public Button button;
     }
 
@@ -199,6 +220,7 @@ public class ShipShopController : MonoBehaviour
 
     private void EnsureButtonListener(Button button, UnityAction action, string methodName)
     {
+        // Runtime listeners are added only when the same persistent UnityEvent method is not already wired in the scene.
         if (button == null || action == null)
         {
             return;
@@ -606,6 +628,7 @@ public class ShipShopController : MonoBehaviour
 
     private void TryBuyLevel(string upgradeId, UpgradePurchaseConfig config, string requiredUnlockId, string successMessage)
     {
+        // All permanent upgrade purchases flow through this shared guard so UI buttons stay consistent.
         if (!CanAttemptPurchase()) return;
         if (!string.IsNullOrWhiteSpace(requiredUnlockId) && !progression.IsUnlocked(requiredUnlockId))
         {

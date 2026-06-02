@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Moves an enemy ship toward the player ship and supports temporary slowing.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class SimpleEnemyShipAI : MonoBehaviour
 {
@@ -35,12 +38,21 @@ public class SimpleEnemyShipAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes this component with runtime references and configuration values.
+    /// </summary>
+    /// <param name="newTargetShip">Target ship transform.</param>
+    /// <param name="newPlayerShipController">Player ship controller reference.</param>
     public void Initialize(Transform newTargetShip, ShipController2D newPlayerShipController)
     {
         targetShip = newTargetShip;
         playerShipController = newPlayerShipController;
     }
 
+    /// <summary>
+    /// Applies slow behavior.
+    /// </summary>
+    /// <param name="duration">Duration in seconds.</param>
     public void ApplySlow(float duration)
     {
         if (duration <= 0f)

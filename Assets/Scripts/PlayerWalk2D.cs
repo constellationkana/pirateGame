@@ -1,14 +1,26 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles walking-player movement and interaction input outside the ship.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerWalk2D : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
     
+    /// <summary>
+    /// Sprite shown when the walking player faces downward/front.
+    /// </summary>
     [Header("Directional Sprites")]
     public Sprite frontSprite;
+    /// <summary>
+    /// Sprite shown when the walking player faces upward/back.
+    /// </summary>
     public Sprite backSprite;
+    /// <summary>
+    /// Sprite shown when the walking player faces left or right.
+    /// </summary>
     public Sprite sideSprite;
 
     private Rigidbody2D rb;
@@ -67,6 +79,10 @@ public class PlayerWalk2D : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the can move value.
+    /// </summary>
+    /// <param name="value">True to allow movement; false to stop walking movement.</param>
     public void SetCanMove(bool value)
     {
         canMove = value;

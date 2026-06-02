@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Applies the selected ship cosmetic sprite or visual settings to the player ship.
+/// </summary>
 public class ShipCosmeticApplier : MonoBehaviour
 {
     [SerializeField] private string[] cosmeticIds;

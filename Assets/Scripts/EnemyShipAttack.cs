@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls enemy ship attack behavior against a target ship.
+/// </summary>
 public class EnemyShipAttack : MonoBehaviour
 {
     [Header("References")]
@@ -38,6 +41,12 @@ public class EnemyShipAttack : MonoBehaviour
         if (playerShipController == null) Debug.LogWarning("EnemyShipAttack: PlayerShipController reference is missing.", this);
     }
 
+    /// <summary>
+    /// Initializes this component with runtime references and configuration values.
+    /// </summary>
+    /// <param name="newTargetShip">Target ship transform.</param>
+    /// <param name="newPlayerShipController">Player ship controller reference.</param>
+    /// <param name="newTargetShipHealth">Target ship health reference.</param>
     public void Initialize(Transform newTargetShip, ShipController2D newPlayerShipController, ShipHealth newTargetShipHealth)
     {
         targetShip = newTargetShip;

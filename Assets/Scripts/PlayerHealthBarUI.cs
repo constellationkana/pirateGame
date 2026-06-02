@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Updates the player health bar UI from a ShipHealth component.
+/// </summary>
 public class PlayerHealthBarUI : MonoBehaviour
 {
     [SerializeField] private ShipHealth shipHealth;

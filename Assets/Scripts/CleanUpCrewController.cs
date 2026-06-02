@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Destroys temporary crew-related objects after their configured lifetime.
+/// </summary>
 public class CleanUpCrewController : MonoBehaviour
 {
     [Header("References")]

@@ -6,6 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays the in-run pause/progression menu and handles its navigation buttons.
+/// </summary>
 public class PauseProgressionMenu : MonoBehaviour
 {
     [Header("Input")]
@@ -100,6 +103,9 @@ public class PauseProgressionMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggles this pause or shop menu between open and closed states.
+    /// </summary>
     public void ToggleMenu()
     {
         if (isOpen)
@@ -112,6 +118,9 @@ public class PauseProgressionMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens this menu and applies its pause behavior.
+    /// </summary>
     public void OpenMenu()
     {
         if (isOpen)
@@ -141,6 +150,9 @@ public class PauseProgressionMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Closes the pause menu and resumes gameplay time.
+    /// </summary>
     public void ResumeGame()
     {
         isOpen = false;
@@ -148,6 +160,9 @@ public class PauseProgressionMenu : MonoBehaviour
         RestoreGameplayTimeScale();
     }
 
+    /// <summary>
+    /// Shows the upgrades panel inside the pause menu.
+    /// </summary>
     public void OpenUpgradesPanel()
     {
         if (!IsCurrentRunUpgradePanelAvailable())
@@ -160,12 +175,18 @@ public class PauseProgressionMenu : MonoBehaviour
         RefreshUpgradesText();
     }
 
+    /// <summary>
+    /// Shows the controls panel inside the pause menu.
+    /// </summary>
     public void OpenControlsPanel()
     {
         ShowSubpanel(controlsPanel);
         SetControlsText();
     }
 
+    /// <summary>
+    /// Returns the pause menu to its main panel.
+    /// </summary>
     public void BackToMainMenuPanel()
     {
         ShowMainMenuPanel();
@@ -173,24 +194,36 @@ public class PauseProgressionMenu : MonoBehaviour
         RefreshMenuText();
     }
 
+    /// <summary>
+    /// Saves when possible and loads the configured map scene.
+    /// </summary>
     public void LoadMap()
     {
         SaveActiveSlotIfAvailable();
         LoadScene(mapSceneName, nameof(mapSceneName));
     }
 
+    /// <summary>
+    /// Saves when possible and loads the configured ship shop scene.
+    /// </summary>
     public void LoadShipShop()
     {
         SaveActiveSlotIfAvailable();
         LoadScene(shipShopSceneName, nameof(shipShopSceneName));
     }
 
+    /// <summary>
+    /// Saves when possible and loads the configured main menu scene.
+    /// </summary>
     public void LoadMainMenu()
     {
         SaveActiveSlotIfAvailable();
         LoadScene(mainMenuSceneName, nameof(mainMenuSceneName));
     }
 
+    /// <summary>
+    /// Saves the active progression slot and refreshes menu text.
+    /// </summary>
     public void SaveGame()
     {
         PlayerProgression.SaveActiveSlot();
@@ -199,12 +232,18 @@ public class PauseProgressionMenu : MonoBehaviour
         Debug.Log($"PauseProgressionMenu: Saved active slot '{PlayerProgression.GetActiveSaveName()}'.", this);
     }
 
+    /// <summary>
+    /// Refreshes the progression status text shown in the menu.
+    /// </summary>
     public void RefreshProgressionText()
     {
         RefreshRunStatsText();
         RefreshUpgradesText();
     }
 
+    /// <summary>
+    /// Refreshes the upgrade status text shown in the menu.
+    /// </summary>
     public void RefreshUpgradesText()
     {
         RefreshActiveSaveText();

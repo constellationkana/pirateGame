@@ -136,6 +136,7 @@ public class RunSummaryController : MonoBehaviour
 
     private void ShowSummary(RunSummaryType summaryType, ShipHealth contextShip)
     {
+        // Award flags prevent duplicate currency grants when multiple death/victory events fire in the same run.
         summaryShown = true;
         currentSummaryType = summaryType;
         ResolveReferences();
@@ -459,6 +460,7 @@ public class RunSummaryController : MonoBehaviour
 
     private void EnsureSummaryUiExists()
     {
+        // Runtime UI is a fallback for incomplete scenes; presentation scenes should normally provide polished references.
         if (summaryRoot != null)
         {
             return;

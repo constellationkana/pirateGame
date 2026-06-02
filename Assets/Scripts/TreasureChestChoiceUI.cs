@@ -13,9 +13,21 @@ public class TreasureChestChoiceUI : MonoBehaviour
     [Serializable]
     private class ChoiceWidgets
     {
+        /// <summary>
+        /// UI Button reference used by this entry.
+        /// </summary>
         public Button button;
+        /// <summary>
+        /// Name text shown by this UI entry.
+        /// </summary>
         public TMP_Text nameText;
+        /// <summary>
+        /// Description text shown by this UI entry.
+        /// </summary>
         public TMP_Text descriptionText;
+        /// <summary>
+        /// Type text shown by this UI entry.
+        /// </summary>
         public TMP_Text typeText;
     }
 
@@ -84,6 +96,7 @@ public class TreasureChestChoiceUI : MonoBehaviour
             panelRoot.SetActive(true);
         }
 
+        // Store the previous time scale so chest selection can pause gameplay without permanently changing scene speed.
         previousTimeScale = Time.timeScale;
         Time.timeScale = 0f;
 
@@ -173,6 +186,7 @@ public class TreasureChestChoiceUI : MonoBehaviour
 
     private void EnsureRuntimeUI()
     {
+        // Runtime UI is a safety fallback when the scene has not been wired with chest choice widgets.
         if (HasConfiguredChoices())
         {
             ApplyTreasureChestStyle();
