@@ -1,31 +1,29 @@
-This project used ChatGPT and Codex Integration into Unity.  
-# PirateGame
+# PirateGame — Unity 6 Pirate Roguelite Class Project
 
-A Unity 6 2D pirate prototype focused on a small playable vertical slice: board a ship, sail around an ocean scene, fight enemy ships, collect resources, and spend progression in a ship shop.
+PirateGame is a Unity 6 / C# 2D pirate action prototype built for the final class presentation. The current vertical slice focuses on starting or continuing a save, choosing a stage from a map, launching a run, sailing a player ship, fighting enemy waves, collecting resources, earning run rewards, defeating a boss, and spending persistent progress in the Ship Shop.
+
+This repository has also used ChatGPT and Codex during development for brainstorming, debugging, UI polish, code support, documentation, and asset/audio support. The team reviewed, tested, and modified generated suggestions before including them in the project.
 
 ## Current gameplay loop
 
-1. Start from the main menu or main sea scene.
-2. Walk to the player ship and board it.
-3. Sail with the player ship.
-4. Fire cannons at enemy ships.
-5. Avoid enemy ships and projectiles.
-6. Destroy enemies to earn wood and doubloons.
-7. Use resources and upgrades to improve future runs.
-8. When the player ship is defeated, load the `ShipShop` scene.
-9. Buy upgrades, then return to `MainSea` for another run.
+1. Open `MainMenu`.
+2. Start a new save slot or continue an existing save slot.
+3. Use the `Map` scene to pick an unlocked stage.
+4. Enter the selected run scene and press the start-run button when the stage UI is configured for button-based starts.
+5. Sail the player ship, fight enemy ships, survive timed waves/spawner events, and collect wood/doubloons.
+6. Find treasure chests during active runs for temporary upgrade, crew, or crew-upgrade choices.
+7. Survive long enough for boss encounters and defeat the boss to complete a stage and unlock later stages.
+8. If the player ship is destroyed, the run summary/death flow can show run stats and navigation choices.
+9. Return to the map or visit `ShipShop` to spend persistent doubloons on permanent upgrades, unlocks, and crew hiring.
+10. Start another run with improved progression.
 
 ## Unity version
-
-This project is currently set up for:
 
 ```text
 Unity 6000.4.4f1
 ```
 
-Open the project with Unity Hub using the repository root folder, not a duplicate local copy.
-
-Expected local project structure:
+Open the repository root folder in Unity Hub:
 
 ```text
 pirateGame/
@@ -35,256 +33,181 @@ pirateGame/
 └── README.md
 ```
 
-## Scenes
+## Scenes in Build Settings
 
-The build settings currently include these scenes:
+The current `ProjectSettings/EditorBuildSettings.asset` includes these enabled scenes:
 
 ```text
 Assets/Scenes/MainMenu.unity
+Assets/Scenes/Map.unity
 Assets/Scenes/MainSea.unity
 Assets/Scenes/ShipShop.unity
+Assets/Scenes/Stage2.unity
+Assets/Scenes/Stage3.unity
 ```
 
-`MainSea` is the main gameplay scene. `ShipShop` is the upgrade/shop scene that the player reaches after the player ship is defeated.
+Scene roles:
+
+- `MainMenu` — title/menu flow, new game, continue, save-slot list, settings, credits, background music, and global UI button audio.
+- `Map` — stage selection, stage unlock status, navigation to the Ship Shop or Main Menu.
+- `MainSea` — primary stage/run scene used by Stage 1 and default map configuration.
+- `ShipShop` — persistent upgrade and crew-hiring scene.
+- `Stage2` / `Stage3` — additional build-setting stage scenes for later/unlocked stage content.
 
 ## Controls
 
-### On foot
+### General / ship controls
 
 ```text
-WASD / movement input: move player
-E: board/interact where applicable
+WASD: move the player ship while boarded
+Left mouse button: fire cannonballs toward the mouse cursor while boarded
+Space: also fires toward the mouse cursor while boarded
+Arrow keys: fire directional cannons while boarded
+R: repair the ship if ShipRepairController is present and the player has enough wood
+U: open/close the pause/progression menu in run scenes and the ShipShop pause menu where those components are present
+Shift: dash if the dash system is present and unlocked
 ```
 
-### While boarded on PlayerShip
+### Interaction controls
 
 ```text
-WASD: move PlayerShip
-Arrow keys: fire cannon in fixed directions
-Space: fire toward mouse cursor
+E: board/interact where applicable, including shop stand interactions when configured
 ```
 
-### ShipShop
+## Major features
+
+### Save slots and persistent progression
+
+- `MainMenuController` supports creating a new save, continuing existing saves, selecting save slots, renaming save slots, and deleting save slots.
+- `PlayerProgression` stores save-slot data with `PlayerPrefs`, including doubloons, upgrade levels, unlocks, crew unlocks, cosmetics, completed stages, and highest unlocked stage.
+- The pause/progression menu can save the active slot and show progression/run information during play.
+
+### Map and stage selection
+
+- `MapSceneController` provides Stage 1, Stage 2, and Stage 3 buttons.
+- Stage buttons are gated by progression unlock state.
+- Boss victory can mark a stage complete and unlock later stages through `PlayerProgression`.
+
+### Start-run flow
+
+- `StageStartController` can force the player onto the ship at stage start, hide the walking player while boarded, lock unboarding during a run, and show a `Start Run` button.
+- `RunTimerDirector` supports runs that start when the player boards, from a button, or immediately, depending on scene configuration.
 
-```text
-E: interact with shop stands when in range
-```
+### Ship combat
 
-## Major systems
-
-### Player ship
-
-Key scripts:
-
-```text
-Assets/Scripts/ShipController2D.cs
-Assets/Scripts/CannonShooter.cs
-Assets/Scripts/ShipHealth.cs
-Assets/Scripts/PlayerShipDefeatHandler.cs
-Assets/Scripts/PlayerStartingStatsApplier.cs
-```
-
-The player ship handles boarded movement, cannon shooting, health, defeat scene transition, and application of permanent upgrades from progression.
-
-### Boarding
-
-Key scripts:
-
-```text
-Assets/Scripts/BoardShipTrigger.cs
-Assets/Scripts/PlayerWalk2D.cs
-```
-
-The player can board the ship through a trigger zone. While boarded, the ship becomes the main controlled object.
-
-### Enemy ships
-
-Key scripts:
-
-```text
-Assets/Scripts/EnemyShipSpawner.cs
-Assets/Scripts/SimpleEnemyShipAI.cs
-Assets/Scripts/EnemyShipAttack.cs
-Assets/Scripts/ShipDeathDropper.cs
-```
-
-Enemy ships spawn around the player ship, receive runtime references to `PlayerShip`, chase/follow the player ship, attack, take damage, and drop resources on death.
-
-When debugging spawned enemies, verify that spawned `EnemyShip(Clone)` objects have:
-
-```text
-SimpleEnemyShipAI enabled
-EnemyShipAttack enabled
-SimpleEnemyShipAI → Target Ship assigned
-SimpleEnemyShipAI → Player Ship Controller assigned
-EnemyShipAttack → Target Ship assigned
-EnemyShipAttack → Player Ship Controller assigned
-EnemyShipAttack → Target Ship Health assigned
-```
-
-### Projectiles
-
-Key scripts:
-
-```text
-Assets/Scripts/Cannonball.cs
-Assets/Scripts/CannonShooter.cs
-Assets/Scripts/EnemyShipAttack.cs
-```
-
-Both player cannon shots and enemy projectiles use projectile damage logic that can damage objects with `ShipHealth` while ignoring the projectile owner.
-
-### Resources and inventory
-
-Key scripts:
-
-```text
-Assets/Scripts/PlayerInventory.cs
-Assets/Scripts/ResourcePickup.cs
-Assets/Scripts/InventoryHUDController.cs
-```
-
-Enemy ships can drop wood and doubloons. Pickups add to the player's inventory. Doubloons also feed into persistent progression through `PlayerProgression`.
-
-### Progression and upgrades
-
-Key scripts:
-
-```text
-Assets/Scripts/PlayerProgression.cs
-Assets/Scripts/ShipShopController.cs
-Assets/Scripts/ShopStandInteraction.cs
-Assets/Scripts/UpgradeManager.cs
-Assets/Scripts/PlayerStartingStatsApplier.cs
-```
-
-Persistent upgrades use `PlayerPrefs` through `PlayerProgression`. The ship shop can sell upgrades such as health, speed, magnet radius, cannon damage, dash unlock, force-field unlock, and cosmetics. `PlayerStartingStatsApplier` applies permanent upgrade levels at the start of a run.
-
-### Runtime upgrades
-
-Key scripts:
-
-```text
-Assets/Scripts/UpgradeManager.cs
-Assets/Scripts/UpgradeChoiceUI.cs
-Assets/Scripts/PlayerLevelSystem.cs
-```
-
-The run can offer upgrade choices as the player levels up. Some upgrades are gated by shop unlocks.
-
-## Important setup notes
-
-### PlayerShip requirements
-
-The `PlayerShip` GameObject should have:
-
-```text
-ShipController2D
-ShipHealth
-CannonShooter
-PlayerInventory
-PlayerShipDefeatHandler
-PlayerStartingStatsApplier
-Rigidbody2D
-Collider2D
-```
-
-Recommended:
-
-```text
-Name: PlayerShip
-Tag: PlayerShip
-Rigidbody2D Gravity Scale: 0
-Freeze Rotation Z: checked
-```
-
-### PlayerShip cannon points
-
-The player ship should have directional cannon spawn points:
-
-```text
-CannonPoint
-CannonPointUp
-CannonPointDown
-CannonPointLeft
-CannonPointRight
-```
-
-Assign those to `CannonShooter` in the Inspector.
-
-### Enemy prefab requirements
-
-Enemy prefabs should have:
-
-```text
-SimpleEnemyShipAI
-EnemyShipAttack
-ShipHealth
-ShipDeathDropper
-Rigidbody2D
-Collider2D
-```
-
-Recommended:
-
-```text
-Rigidbody2D Gravity Scale: 0
-Rigidbody2D Simulated: checked
-Freeze Rotation Z: unchecked if using MoveRotation for facing
-```
-
-### ShipShop setup
-
-`ShipShop` should include:
-
-```text
-ShipShopController
-ShopStandInteraction objects
-TMP text fields for shop feedback and upgrade labels
-A stand or button that calls ShipShopController.StartRun()
-```
-
-`ShipShop` must be listed in Build Settings / Build Profiles for `SceneManager.LoadScene("ShipShop")` to work.
-
-## Repository sync warning
-
-This project previously had duplicate local repo folders. If Unity does not show the latest scripts, verify the exact folder Unity opened:
-
-```text
-Right-click a script in Unity → Show in Explorer
-```
-
-Make sure it points to the same local folder used by GitKraken / terminal. If not, open the correct project folder through Unity Hub.
-
-## Suggested vertical-slice polish checklist
-
-### Critical
-
-- Confirm spawned enemy prefabs move, face, attack, die, and drop resources.
-- Confirm enemy projectiles damage `PlayerShip`.
-- Confirm `PlayerShip` health reaching zero loads `ShipShop`.
-- Confirm `ShipShop` is listed in Build Settings.
-- Confirm upgrades bought in `ShipShop` are applied when returning to `MainSea`.
-
-### Must-have polish
-
-- Add clear player health UI.
-- Add clearer hit feedback for player and enemy ships.
-- Add simple sound effects for cannon fire, hits, pickups, and shop purchases.
-- Add a visible defeat transition before loading `ShipShop`.
-- Add clearer shop prompts and upgrade descriptions.
-
-### Optional later work
-
-- Add more enemy types.
-- Add islands and map objectives.
-- Add animations for ship movement, cannon fire, explosions, and pickups.
-- Add save reset / debug menu for testing PlayerPrefs progression.
-- Add balancing pass for spawn interval, enemy count, projectile speed, and upgrade costs.
-
-## Development notes
-
-- Prefer small pull requests.
-- Avoid manually editing prefab YAML unless necessary.
-- When Codex changes scripts but Unity does not reflect them, ask for direct copy-paste full-file replacements and manually edit through Visual Studio.
-- Test in Play Mode after each small change.
+- `ShipController2D` handles boarded WASD ship movement.
+- `CannonShooter` supports left-click and Space mouse-aimed firing, plus arrow-key directional cannon fire.
+- `Cannonball` and ship-health scripts support projectile damage, player/enemy hits, explosive cannonballs, pierce upgrades, and owner filtering.
+- `ShipRepairController` supports spending wood with `R` to heal the ship when that component is attached and inventory/health references are available.
+
+### Enemy waves, spawners, and boss encounters
+
+- Enemy spawners and enemy AI scripts create hostile ships that chase/attack the player ship.
+- `RunTimerDirector` can enable normal spawners when a run starts, trigger timed spawner events, display event messages, and spawn a boss after a configured time.
+- `BossDefeatHandler` handles victory messaging, stage completion, and optional stage-complete summaries.
+
+### Resources: wood and doubloons
+
+- Enemy deaths can drop resources.
+- `PlayerInventory` stores run resources such as wood and doubloons.
+- Doubloons are also used for persistent progression through `PlayerProgression`.
+- Wood is used by the repair controller when repairs are available.
+
+### ShipShop upgrades and crew hiring
+
+`ShipShopController` supports permanent purchases and unlocks such as:
+
+- Base health upgrades
+- Health regeneration unlock
+- Base speed upgrades
+- Dash unlock
+- Base cannon damage upgrades
+- Cannonball size, speed, shoot-rate, explosion, and pierce unlocks/upgrades
+- Magnet unlock
+- Force-field unlock/damage upgrades
+- Barnacles and cursed-doubloon ability upgrades
+- Crew hiring through the crew menu when crew NPCs and data are configured
+
+### Treasure chest rewards
+
+- `TreasureChestSpawner` can spawn treasure chests during active runs.
+- `TreasureChestPickup` opens reward choices when the player collects a chest.
+- `TreasureChestChoiceUI` pauses the game and lets the player choose up to three rewards from available upgrade, crew, and crew-upgrade choices.
+
+### Music and UI audio
+
+- `MusicManager` is present in `MainMenu`, persists across scene loads, plays configured default background music, and stores music volume with `PlayerPrefs`.
+- `MusicVolumeSliderUI` connects a UI slider to the persistent music manager.
+- `UIAudioManager` is present in `MainMenu`, persists across scene loads, and automatically adds button-click sound hooks to Unity UI buttons.
+
+### Run summary, death, and stage complete flow
+
+- `RunSummaryController` can show death and stage-complete summaries, pause time while the summary is visible, show run duration/resource/progression information, and navigate to retry, map, Ship Shop, or Main Menu.
+- Player death and boss defeat are the main paths that can trigger the summary flow when the scene objects are configured.
+
+## Technologies used
+
+- Unity 6 (`6000.4.4f1`)
+- C# scripts
+- Unity 2D physics and UI systems
+- TextMeshPro
+- Unity Input System package
+- PlayerPrefs for local save/progression data
+- Git and GitHub for version control and collaboration
+- ChatGPT/Codex for brainstorming, debugging, UI polish, code support, documentation, and asset/audio support
+
+## Team member contributions
+
+- Kris Lopez:
+- Led overall project integration and Unity scene setup.
+- Built and refined the main pirate roguelite gameplay loop.
+- Implemented and configured Stage 1 / Stage 2 progression, enemy waves, balancing, and spawner timing.
+- Added ship combat systems including player cannon firing, glass cannon enemies/projectiles, and projectile tuning.
+- Polished major UI systems including ShipShop, in-run HUD, treasure chest UI, start-run flow, music volume, and global button sound.
+- Used Codex/ChatGPT heavily for code generation support, debugging, UI iteration, and implementation planning, then tested and integrated changes in Unity repeatedly.
+  
+- Adrian Rodas:
+- Main integrator of ShipShop and its upgrades/hires.
+- Made Main Menu and Saves.
+- Implemented and refined crew companion functionality.
+- Added Paul’s combat support behavior, including automatic cannonball firing at nearby enemies.
+- Added Clean-Up Crew behavior.
+- Implemented Bird Boy and Evil Bird Boy abilities, including parrot/bird-related projectile or drone behavior.
+- Fixed bird crew initialization, prefab assignment, duplicate visual issues, and homing/turning compile errors.
+- Helped integrate crew systems into the main run through RunCrewManager and related scene/prefab setup.
+- Used Codex/ChatGPT heavily for code generation support, debugging, UI iteration, and implementation planning, then tested and integrated changes in Unity repeatedly.
+  
+## Known issues and limitations
+
+- Some systems are component/configuration dependent. Features such as repairs, boss health UI, start-run panels, treasure chests, run summaries, and crew rewards require the correct scene objects and Inspector references.
+- `MapSceneController` defaults Stage 1, Stage 2, and Stage 3 scene-name fields to `MainSea`; the Build Settings also include separate `Stage2` and `Stage3` scenes, so stage scene routing should be verified in the Unity Inspector before the presentation.
+- Music and UI click audio are implemented and present in `MainMenu`, but audio clips, mixer settings, and volume-slider wiring should be tested in Play Mode.
+- Save data is stored locally with `PlayerPrefs`, so saves are machine/user specific and can persist between test runs unless reset or deleted through the save UI.
+- Balance values for enemy spawn timing, boss timing, upgrade prices, repair costs, and reward frequency may still need final tuning.
+- Some fallback UI is generated at runtime by scripts if scene UI references are missing; presentation scenes should use polished configured UI where possible.
+
+## AI tools statement
+
+ChatGPT and Codex were used as development assistants for brainstorming gameplay ideas, debugging C# issues, improving UI polish, supporting documentation updates, and helping with asset/audio planning or implementation support. AI output was not treated as final by itself: the team inspected, tested, edited, and integrated the work into the Unity project.
+
+## How to run for the presentation
+
+1. Clone or pull the latest `main` branch.
+2. Open the repository root folder in Unity Hub using Unity `6000.4.4f1` or a compatible Unity 6 version.
+3. Open `Assets/Scenes/MainMenu.unity`.
+4. Confirm Build Settings / Build Profiles include these enabled scenes:
+
+   ```text
+   MainMenu
+   Map
+   MainSea
+   ShipShop
+   Stage2
+   Stage3
+   ```
+
+5. Press Play.
+6. Start a new save or continue an existing save.
+7. Select an unlocked stage on the map.
+8. Press the stage `Start Run` button if shown, then play the run.
+9. After testing a run, use the run summary, pause menu, map, or Ship Shop navigation to show progression features.
