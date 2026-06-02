@@ -2,8 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Stores save-slot data, currency, unlocks, upgrades, crew, cosmetics, and stage progression using PlayerPrefs.
+/// </summary>
 public class PlayerProgression : MonoBehaviour
 {
+    /// <summary>
+    /// Provides display data for one save slot in the save selector UI.
+    /// </summary>
     [Serializable]
     public class SaveSlotSummary
     {
@@ -116,6 +122,9 @@ public class PlayerProgression : MonoBehaviour
     private readonly HashSet<int> completedStages = new();
     private int highestUnlockedStage = FirstStageNumber;
 
+    /// <summary>
+    /// Gets the persistent progression singleton, creating one if no scene instance exists.
+    /// </summary>
     public static PlayerProgression Instance
     {
         get
@@ -144,11 +153,28 @@ public class PlayerProgression : MonoBehaviour
         Load();
     }
 
+    /// <summary>
+    /// Gets the currently selected save-slot identifier, or -1 when no slot is active.
+    /// </summary>
     public static int ActiveSaveSlotId => PlayerPrefs.GetInt(ActiveSaveSlotIdKey, NoActiveSaveSlot);
+    /// <summary>
+    /// Gets whether the active save-slot id points to an existing save slot.
+    /// </summary>
     public static bool HasActiveSaveSlot => SlotExists(ActiveSaveSlotId);
+    /// <summary>
+    /// Returns whether any save slot exists.
+    /// </summary>
+    /// <returns>True when at least one save slot is stored.</returns>
     public static bool HasSaveFile() => GetSaveSlotIds().Count > 0;
+    /// <summary>
+    /// Gets the display name for the active save slot.
+    /// </summary>
+    /// <returns>The requested string value.</returns>
     public static string GetActiveSaveName() => HasActiveSaveSlot ? GetSaveSlotName(ActiveSaveSlotId) : "No Active Save";
 
+    /// <summary>
+    /// Ensures a save slot exists and updates the legacy save-file flag.
+    /// </summary>
     public static void MarkSaveExists()
     {
         EnsureActiveSaveSlot(true);
@@ -156,6 +182,10 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// Creates a new save slot, makes it active, and initializes default progression.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public static int CreateNewSaveSlot()
     {
         int slotId = Mathf.Max(0, PlayerPrefs.GetInt(NextSaveSlotIdKey, 0));
@@ -187,6 +217,11 @@ public class PlayerProgression : MonoBehaviour
         return slotId;
     }
 
+    /// <summary>
+    /// Selects an existing save slot and loads its progression when available.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
+    /// <returns>True if the slot exists and was activated; otherwise false.</returns>
     public static bool SetActiveSaveSlot(int slotId)
     {
         if (!SlotExists(slotId))
@@ -208,6 +243,12 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Renames an existing save slot.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
+    /// <param name="newName">New display name.</param>
+    /// <returns>True if the slot exists and was renamed; otherwise false.</returns>
     public static bool RenameSaveSlot(int slotId, string newName)
     {
         if (!SlotExists(slotId))
@@ -223,6 +264,11 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Deletes an existing save slot and selects another slot when needed.
+    /// </summary>
+    /// <param name="slotId">Save-slot identifier.</param>
+    /// <returns>True if the slot existed and was deleted; otherwise false.</returns>
     public static bool DeleteSaveSlot(int slotId)
     {
         if (!SlotExists(slotId))
@@ -263,6 +309,10 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Builds summaries for every stored save slot.
+    /// </summary>
+    /// <returns>The requested list.</returns>
     public static List<SaveSlotSummary> GetAllSaveSlotSummaries()
     {
         List<SaveSlotSummary> summaries = new();
@@ -285,6 +335,9 @@ public class PlayerProgression : MonoBehaviour
         return summaries;
     }
 
+    /// <summary>
+    /// Clears progression data for the active save slot and writes default values.
+    /// </summary>
     public static void ResetAllProgression()
     {
         int slotId = EnsureActiveSaveSlot(true);
@@ -304,10 +357,21 @@ public class PlayerProgression : MonoBehaviour
         Debug.Log($"PlayerProgression: Reset progression for active save slot {slotId}.");
     }
 
+    /// <summary>
+    /// Saves the current singleton progression data to the active save slot.
+    /// </summary>
     public static void SaveActiveSlot() => Instance.Save();
 
+    /// <summary>
+    /// Gets the current saved doubloon total.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetDoubloons() => totalDoubloons;
 
+    /// <summary>
+    /// Adds positive doubloons to the active progression and saves.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
     public void AddDoubloons(int amount)
     {
         if (amount <= 0) return;
@@ -315,6 +379,11 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Attempts to spend doubloons from the active progression.
+    /// </summary>
+    /// <param name="amount">Amount to apply.</param>
+    /// <returns>True when the amount can be spent or is non-positive; otherwise false.</returns>
     public bool SpendDoubloons(int amount)
     {
         if (!HasActiveSaveSlot) return false;
@@ -326,11 +395,20 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Checks whether a stage number is currently available.
+    /// </summary>
+    /// <param name="stageNumber">One-based stage number.</param>
+    /// <returns>True when the stage is within the unlocked range.</returns>
     public bool IsStageUnlocked(int stageNumber)
     {
         return stageNumber >= FirstStageNumber && stageNumber <= GetHighestUnlockedStage();
     }
 
+    /// <summary>
+    /// Raises the highest unlocked stage to include the provided stage number.
+    /// </summary>
+    /// <param name="stageNumber">One-based stage number.</param>
     public void UnlockStage(int stageNumber)
     {
         if (stageNumber < FirstStageNumber) return;
@@ -339,6 +417,10 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Gets the highest unlocked stage, including any stored PlayerPrefs value.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetHighestUnlockedStage()
     {
         highestUnlockedStage = Mathf.Max(FirstStageNumber, highestUnlockedStage);
@@ -353,6 +435,10 @@ public class PlayerProgression : MonoBehaviour
         return highestUnlockedStage;
     }
 
+    /// <summary>
+    /// Marks a stage complete and unlocks the next stage.
+    /// </summary>
+    /// <param name="stageNumber">One-based stage number.</param>
     public void CompleteStage(int stageNumber)
     {
         if (stageNumber < FirstStageNumber) return;
@@ -362,26 +448,61 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Gets whether the dash unlock is currently owned.
+    /// </summary>
+    /// <returns>True when dash is unlocked.</returns>
     public bool IsDashUnlocked() => IsUnlocked(UnlockDashId) || dashUnlocked;
+    /// <summary>
+    /// Gets whether the force-field unlock is currently owned.
+    /// </summary>
+    /// <returns>True when force field is unlocked.</returns>
     public bool IsForceFieldUnlocked() => IsUnlocked(UnlockForceFieldId) || forceFieldUnlocked;
 
+    /// <summary>
+    /// Unlocks dash and saves the progression state.
+    /// </summary>
     public void UnlockDash()
     {
         dashUnlocked = true;
         Unlock(UnlockDashId);
     }
 
+    /// <summary>
+    /// Unlocks force field and saves the progression state.
+    /// </summary>
     public void UnlockForceField()
     {
         forceFieldUnlocked = true;
         Unlock(UnlockForceFieldId);
     }
 
+    /// <summary>
+    /// Gets the legacy permanent health upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentHealthLevel() => permanentHealthLevel;
+    /// <summary>
+    /// Gets the legacy permanent speed upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentSpeedLevel() => permanentSpeedLevel;
+    /// <summary>
+    /// Gets the legacy permanent magnet upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentMagnetLevel() => permanentMagnetLevel;
+    /// <summary>
+    /// Gets the legacy permanent cannon-damage upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetPermanentCannonDamageLevel() => permanentCannonDamageLevel;
 
+    /// <summary>
+    /// Attempts to buy one permanent health upgrade level.
+    /// </summary>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <returns>True if the purchase succeeded; otherwise false.</returns>
     public bool BuyPermanentHealthUpgrade(int cost)
     {
         if (!SpendDoubloons(cost)) return false;
@@ -390,6 +511,11 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Attempts to buy one permanent speed upgrade level.
+    /// </summary>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <returns>True if the purchase succeeded; otherwise false.</returns>
     public bool BuyPermanentSpeedUpgrade(int cost)
     {
         if (!SpendDoubloons(cost)) return false;
@@ -398,6 +524,11 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Attempts to buy one permanent magnet upgrade level and unlock magnet support.
+    /// </summary>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <returns>True if the purchase succeeded; otherwise false.</returns>
     public bool BuyPermanentMagnetUpgrade(int cost)
     {
         if (!SpendDoubloons(cost)) return false;
@@ -407,6 +538,11 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Attempts to buy one permanent cannon-damage upgrade level.
+    /// </summary>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <returns>True if the purchase succeeded; otherwise false.</returns>
     public bool BuyPermanentCannonDamageUpgrade(int cost)
     {
         if (!SpendDoubloons(cost)) return false;
@@ -415,13 +551,43 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Gets the purchased base cannonball-speed upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetBaseCannonballSpeedLevel() => GetUpgradeLevel(UpgradeBaseCannonballSpeedId);
+    /// <summary>
+    /// Gets the purchased base magnet-radius upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetBaseMagnetRadiusLevel() => GetUpgradeLevel(UpgradeBaseMagnetRadiusId);
+    /// <summary>
+    /// Gets the purchased explosion-power upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetExplosionPowerLevel() => GetUpgradeLevel(UpgradeExplosionPowerId);
+    /// <summary>
+    /// Gets the purchased barnacle-power upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetBarnaclePowerLevel() => GetUpgradeLevel(UpgradeBarnaclePowerId);
+    /// <summary>
+    /// Gets the purchased cursed-doubloons damage upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetCursedDoubloonsDamageLevel() => GetUpgradeLevel(UpgradeCursedDoubloonsDamageId);
+    /// <summary>
+    /// Gets the purchased force-field damage upgrade level.
+    /// </summary>
+    /// <returns>The requested integer value.</returns>
     public int GetForceFieldDamageLevel() => GetUpgradeLevel(UpgradeForceFieldDamageId);
 
+    /// <summary>
+    /// Attempts to buy a named unlock for the active save slot.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <returns>True if the unlock was purchased; otherwise false.</returns>
     public bool TryPurchaseUnlock(string id, int cost)
     {
         if (!HasActiveSaveSlot) return false;
@@ -434,6 +600,14 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Attempts to buy one level of a named upgrade.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <param name="maxLevel">Maximum allowed level; values less than or equal to zero are uncapped.</param>
+    /// <param name="requiredUnlockId">Optional unlock identifier required before purchase.</param>
+    /// <returns>True if an upgrade level was purchased; otherwise false.</returns>
     public bool TryPurchaseUpgrade(string id, int cost, int maxLevel, string requiredUnlockId = null)
     {
         if (!HasActiveSaveSlot) return false;
@@ -449,12 +623,21 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Checks whether a named generic unlock is owned.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <returns>True when the unlock id is stored.</returns>
     public bool IsUnlocked(string id)
     {
         string normalizedId = NormalizeId(id);
         return !string.IsNullOrEmpty(normalizedId) && genericUnlockIds.Contains(normalizedId);
     }
 
+    /// <summary>
+    /// Stores a named generic unlock and saves progression.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
     public void Unlock(string id)
     {
         string normalizedId = NormalizeId(id);
@@ -466,6 +649,10 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Removes a named generic unlock from the active progression.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
     public void Lock(string id)
     {
         string normalizedId = NormalizeId(id);
@@ -478,6 +665,11 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Gets the stored level for a named generic upgrade.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <returns>The requested integer value.</returns>
     public int GetUpgradeLevel(string id)
     {
         string normalizedId = NormalizeId(id);
@@ -486,6 +678,11 @@ public class PlayerProgression : MonoBehaviour
         return genericUpgradeLevels.TryGetValue(normalizedId, out int level) ? Mathf.Max(0, level) : 0;
     }
 
+    /// <summary>
+    /// Sets the stored level for a named generic upgrade and saves progression.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <param name="level">Parameter used by this method.</param>
     public void SetUpgradeLevel(string id, int level)
     {
         string normalizedId = NormalizeId(id);
@@ -506,18 +703,32 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Adds to a named generic upgrade level and saves progression.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <param name="amount">Amount to apply.</param>
     public void AddUpgradeLevel(string id, int amount = 1)
     {
         if (amount == 0) return;
         SetUpgradeLevel(id, Mathf.Max(0, GetUpgradeLevel(id) + amount));
     }
 
+    /// <summary>
+    /// Checks whether a crew member has been hired or unlocked.
+    /// </summary>
+    /// <param name="crewId">Crew identifier.</param>
+    /// <returns>True when the crew id is stored.</returns>
     public bool IsCrewUnlocked(string crewId)
     {
         string normalizedId = NormalizeId(crewId);
         return !string.IsNullOrEmpty(normalizedId) && crewUnlockIds.Contains(normalizedId);
     }
 
+    /// <summary>
+    /// Stores a crew unlock for the active save slot.
+    /// </summary>
+    /// <param name="crewId">Crew identifier.</param>
     public void UnlockCrew(string crewId)
     {
         if (!HasActiveSaveSlot) return;
@@ -529,6 +740,10 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Gets all unlocked crew identifiers in sorted order.
+    /// </summary>
+    /// <returns>The requested list.</returns>
     public List<string> GetUnlockedCrewIds()
     {
         List<string> unlockedCrewIds = new(crewUnlockIds);
@@ -536,8 +751,16 @@ public class PlayerProgression : MonoBehaviour
         return unlockedCrewIds;
     }
 
+    /// <summary>
+    /// Gets the currently selected ship cosmetic id.
+    /// </summary>
+    /// <returns>The requested string value.</returns>
     public string GetSelectedShipCosmeticId() => selectedShipCosmeticId;
 
+    /// <summary>
+    /// Selects a ship cosmetic and records it as owned.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
     public void SetSelectedShipCosmeticId(string id)
     {
         selectedShipCosmeticId = string.IsNullOrWhiteSpace(id) ? "default" : id;
@@ -548,11 +771,22 @@ public class PlayerProgression : MonoBehaviour
         Save();
     }
 
+    /// <summary>
+    /// Checks whether a ship cosmetic is owned.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <returns>True for blank/default ids or owned cosmetics.</returns>
     public bool IsCosmeticOwned(string id)
     {
         return string.IsNullOrWhiteSpace(id) || id == "default" || ownedCosmetics.Contains(id);
     }
 
+    /// <summary>
+    /// Attempts to buy a ship cosmetic with doubloons.
+    /// </summary>
+    /// <param name="id">Progression identifier.</param>
+    /// <param name="cost">Doubloon cost.</param>
+    /// <returns>True if the cosmetic is already available or was purchased; otherwise false.</returns>
     public bool BuyCosmetic(string id, int cost)
     {
         if (string.IsNullOrWhiteSpace(id) || id == "default") return true;
@@ -564,6 +798,9 @@ public class PlayerProgression : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Writes the current progression state to PlayerPrefs for the active save slot.
+    /// </summary>
     public void Save()
     {
         int slotId = EnsureActiveSaveSlot(true);
@@ -583,6 +820,9 @@ public class PlayerProgression : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// Loads the active save slot from PlayerPrefs into the cached progression state.
+    /// </summary>
     public void Load()
     {
         if (!HasActiveSaveSlot)

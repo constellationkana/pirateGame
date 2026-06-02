@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Periodically spawns treasure chest pickups while respecting a maximum active chest count.
+/// </summary>
 public class TreasureChestSpawner : MonoBehaviour
 {
     [Header("Chest Spawn Settings")]
@@ -51,6 +54,10 @@ public class TreasureChestSpawner : MonoBehaviour
         SpawnChest();
     }
 
+    /// <summary>
+    /// Removes a chest from the active tracking list when it is collected or destroyed.
+    /// </summary>
+    /// <param name="chest">Chest pickup leaving the active set.</param>
     public void NotifyChestRemoved(TreasureChestPickup chest)
     {
         if (chest != null)
