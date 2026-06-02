@@ -166,6 +166,8 @@ public class TreasureChestPickup : MonoBehaviour
             {
                 RunCrewManager.PaulCrewId => "Recruit Paul",
                 RunCrewManager.CleanUpCrewId => "Recruit Clean-Up Crew",
+                RunCrewManager.BirdBoyCrewId => "Recruit Bird-Boy",
+                RunCrewManager.EvilBirdBoyCrewId => "Recruit Evil-Bird-Boy",
                 _ => crew.displayName
             };
             pool.Add(new TreasureChestChoice(
@@ -188,10 +190,12 @@ public class TreasureChestPickup : MonoBehaviour
 
         AddPaulUpgradeChoices(pool);
         AddCleanUpCrewUpgradeChoices(pool);
+        AddBirdCrewUpgradeChoices(pool, RunCrewManager.BirdBoyCrewId);
+        AddBirdCrewUpgradeChoices(pool, RunCrewManager.EvilBirdBoyCrewId);
 
         foreach (RunCrewManager.CrewDefinition crew in runCrewManager.GetActiveCrew())
         {
-            if (crew == null || crew.id == RunCrewManager.PaulCrewId || crew.id == RunCrewManager.CleanUpCrewId)
+            if (crew == null || crew.id == RunCrewManager.PaulCrewId || crew.id == RunCrewManager.CleanUpCrewId || crew.id == RunCrewManager.BirdBoyCrewId || crew.id == RunCrewManager.EvilBirdBoyCrewId)
             {
                 continue;
             }
@@ -255,6 +259,27 @@ public class TreasureChestPickup : MonoBehaviour
         }
     }
 
+    private void AddBirdCrewUpgradeChoices(List<TreasureChestChoice> pool, string crewId)
+    {
+        foreach (RunCrewManager.CrewUpgradeDefinition upgrade in runCrewManager.GetAvailableBirdCrewUpgrades(crewId))
+        {
+            if (upgrade == null)
+            {
+                continue;
+            }
+
+            int nextLevel = runCrewManager.GetBirdCrewUpgradeLevel(upgrade.id) + 1;
+            int maxLevel = runCrewManager.GetMaxBirdCrewUpgradeLevel(upgrade.id);
+            string levelSuffix = maxLevel > 1 ? $" Lv. {nextLevel}" : string.Empty;
+            pool.Add(new TreasureChestChoice(
+                TreasureChestChoiceType.CrewUpgrade,
+                $"{upgrade.displayName}{levelSuffix}",
+                upgrade.description,
+                crewId: upgrade.crewId,
+                crewUpgradeId: upgrade.id));
+        }
+    }
+
     private void EnsureReferences()
     {
         if (upgradeManager == null)
@@ -273,6 +298,10 @@ public class TreasureChestPickup : MonoBehaviour
             runCrewManager = managerObject.AddComponent<RunCrewManager>();
             managerObject.AddComponent<PaulCrewController>();
             managerObject.AddComponent<CleanUpCrewController>();
+            BirdCrewController birdBoyController = managerObject.AddComponent<BirdCrewController>();
+            birdBoyController.SetCrewType(BirdCrewController.BirdCrewType.BirdBoy);
+            BirdCrewController evilBirdBoyController = managerObject.AddComponent<BirdCrewController>();
+            evilBirdBoyController.SetCrewType(BirdCrewController.BirdCrewType.EvilBirdBoy);
         }
 
         if (choiceUI == null)
