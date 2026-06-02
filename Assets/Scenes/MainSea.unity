@@ -3835,6 +3835,27 @@ MonoBehaviour:
     description: Clean-Up Crew repairs happen more often for this run, using wood
       faster.
     maxLevel: 3
+  birdCrewUpgradeDefinitions:
+  - id: bird_boy_damage
+    crewId: bird_boy
+    displayName: 'Bird-Boy: Increase Bird Damage'
+    description: Egg missiles deal more damage for this run.
+    maxLevel: 3
+  - id: bird_boy_cooldown
+    crewId: bird_boy
+    displayName: 'Bird-Boy: Reduce Bird Cooldown'
+    description: Parrots shoot egg missiles faster for this run.
+    maxLevel: 3
+  - id: evil_bird_boy_damage
+    crewId: evil_bird_boy
+    displayName: 'Evil-Bird-Boy: Increase Damage'
+    description: Poop missiles deal more damage for this run.
+    maxLevel: 3
+  - id: evil_bird_boy_cooldown
+    crewId: evil_bird_boy
+    displayName: 'Evil-Bird-Boy: Reduce Cooldown'
+    description: Parrots throw poop missiles faster for this run.
+    maxLevel: 3
 --- !u!4 &766876283
 Transform:
   m_ObjectHideFlags: 0
@@ -6965,6 +6986,8 @@ GameObject:
   - component: {fileID: 1331628609}
   - component: {fileID: 1331628610}
   - component: {fileID: 1331628611}
+  - component: {fileID: 1331628613}
+  - component: {fileID: 1331628612}
   m_Layer: 6
   m_Name: PlayerShip
   m_TagString: PlayerShip
@@ -7474,6 +7497,78 @@ MonoBehaviour:
   repairIntervalReductionPerLevel: 0.5
   minimumRepairInterval: 1.5
   maxFasterRepairLevel: 3
+--- !u!114 &1331628612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2c3d4e5f60718293a4b5c6d7e8f901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdCrewController
+  crewType: 1
+  runCrewManager: {fileID: 766876282}
+  playerTransform: {fileID: 1331628595}
+  parrotPrefab: {fileID: 6288803801949133849, guid: fa1f47776c65bf64e938a5d6fd920d5e, type: 3}
+  orbitRadius: 1.6
+  orbitSpeed: 120
+  parrotCount: 2
+  projectilePrefab: {fileID: 6364319900914590261, guid: 9f95dd952ed47af4abb330662259b8e1, type: 3}
+  projectileSpeed: 8
+  baseDamage: 1
+  baseCooldown: 1.5
+  firingCooldown: 1.5
+  detectionRadius: 8
+  homingTurnSpeed: 360
+  slowChance: 0.25
+  slowDuration: 1.5
+  damageIncreasePerLevel: 1
+  cooldownReductionPerLevel: 0.2
+  minimumCooldown: 0.35
+  maxDamageUpgradeLevel: 3
+  maxCooldownUpgradeLevel: 3
+  enemyDetectionMask:
+    serializedVersion: 2
+    m_Bits: 1011
+--- !u!114 &1331628613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331628590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2c3d4e5f60718293a4b5c6d7e8f901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdCrewController
+  crewType: 0
+  runCrewManager: {fileID: 766876282}
+  playerTransform: {fileID: 1331628595}
+  parrotPrefab: {fileID: 5327056619004534245, guid: fd61c443fc5f4d94b9e9ceb48c9adfba, type: 3}
+  orbitRadius: 1.6
+  orbitSpeed: 120
+  parrotCount: 2
+  projectilePrefab: {fileID: 7647643754018381715, guid: 0da224c95a200e74e8a8be5b2474453c, type: 3}
+  projectileSpeed: 8
+  baseDamage: 10
+  baseCooldown: 1.5
+  firingCooldown: 1.5
+  detectionRadius: 8
+  homingTurnSpeed: 360
+  slowChance: 0.25
+  slowDuration: 1.5
+  damageIncreasePerLevel: 1
+  cooldownReductionPerLevel: 0.2
+  minimumCooldown: 0.35
+  maxDamageUpgradeLevel: 3
+  maxCooldownUpgradeLevel: 3
+  enemyDetectionMask:
+    serializedVersion: 2
+    m_Bits: 1011
 --- !u!1 &1347083638
 GameObject:
   m_ObjectHideFlags: 0
